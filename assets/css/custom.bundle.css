@@ -1,0 +1,78 @@
+body {
+  font-family: "Quicksand", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.apexcharts-text,
+.apexcharts-title-text,
+.apexcharts-legend-text {
+  font-family: "Quicksand", sans-serif !important;
+}
+
+.mainpage-logo-side {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.mainpage-container-side {
+  background-color: #458C41;
+  display: block !important;
+}
+
+.mainpage-title-side {
+  font-size: 40px;
+}
+
+.link-primary {
+  color:#458C41 !important;
+}
+
+.link-primary:hover {
+  color:#71c96c !important;
+}
+
+.btn-darkgreen {
+  color: white;
+  background-color: #458C41 !important;
+}
+
+.btn-darkgreen:hover {
+  color: white;
+  background-color: #286125 !important;
+}
+
+.btn-darkgreen:focus {
+  color: white;
+  background-color: #286125 !important;
+}
+
+.tableaction-hover:hover {
+  background-color: #f1f1f1;
+  transition: 0.5s;
+  cursor: pointer; 
+}
+
+.is-rotate-on {
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
+}
+
+@media (max-width: 1200px)  {
+  .mainpage-container-side {
+    display: none !important;
+  }
+}
