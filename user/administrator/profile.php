@@ -26,9 +26,7 @@ try {
 
         $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
-
     }
-    
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -211,11 +209,19 @@ try {
                         <div class=" container-fluid  d-flex flex-stack flex-wrap flex-sm-nowrap">
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                    Fiest Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
+                                    Profile <small class="text-muted fs-6 fw-normal ms-1"></small>
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
                                         Administrator
+                                    </li>
+                                    <li class="breadcrumb-item text-muted">
+                                        Apps
+                                    </li>
+                                    <li class="breadcrumb-item text-dark">
+                                        <a href="profile.php" class="text-dark text-hover-primary">
+                                            Profile
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -228,7 +234,57 @@ try {
                         <div class="container-fluid">
                             <div class="row g-xl-12">
                                 <div class="col-xxl-12">
-                                    
+                                    <div class="card mb-5 mb-xl-10">
+                                        <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
+                                            <div class="card-title m-0">
+                                                <h3 class="fw-bold m-0">Profile Details</h3>
+                                            </div>
+                                        </div>
+                                        <div id="kt_account_settings_profile_details" class="collapse show" tabindex="-1" style="outline: none;">
+                                            <form id="kt_account_profile_details_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
+                                                <div class="card-body border-top p-9">
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Avatar</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('/craft/assets/media/svg/avatars/blank.svg')">
+                                                                <div class="image-input-wrapper w-125px h-125px" style="background-image: url(/craft/assets/media/avatars/300-1.jpg)"></div>
+                                                                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
+                                                                    <i class="ki-duotone ki-pencil fs-7"><span class="path1"></span><span class="path2"></span></i>
+                                                                    <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
+                                                                    <input type="hidden" name="avatar_remove">
+                                                                </label>
+                                                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
+                                                                    <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i> </span>
+                                                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
+                                                                    <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i> </span>
+                                                            </div>
+                                                            <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="First name" value="Max">
+                                                                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                                                </div>
+                                                                <div class="col-lg-6 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" name="lname" class="form-control form-control-lg form-control-solid" placeholder="Last name" value="Smith">
+                                                                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                                    <button type="reset" class="btn btn-light btn-active-light-primary me-2">Discard</button>
+                                                    <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">Save Changes</button>
+                                                </div>
+                                                <input type="hidden">
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

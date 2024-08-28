@@ -211,11 +211,19 @@ try {
                         <div class=" container-fluid  d-flex flex-stack flex-wrap flex-sm-nowrap">
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                    Fiest Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
+                                    Dashboard <small class="text-muted fs-6 fw-normal ms-1"></small>
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
                                         Administrator
+                                    </li>
+                                    <li class="breadcrumb-item text-muted">
+                                        Apps
+                                    </li>
+                                    <li class="breadcrumb-item text-dark">
+                                        <a href="dashboard.php" class="text-dark text-hover-primary">
+                                            Dashboard
+                                        </a>
                                     </li>
                                 </ul>
                             </div>

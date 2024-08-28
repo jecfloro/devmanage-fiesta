@@ -26,9 +26,7 @@ try {
 
         $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
-
     }
-    
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -211,11 +209,19 @@ try {
                         <div class=" container-fluid  d-flex flex-stack flex-wrap flex-sm-nowrap">
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                    Fiest Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
+                                    Settings <small class="text-muted fs-6 fw-normal ms-1"></small>
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
                                         Administrator
+                                    </li>
+                                    <li class="breadcrumb-item text-muted">
+                                        Apps
+                                    </li>
+                                    <li class="breadcrumb-item text-dark">
+                                        <a href="settings.php" class="text-dark text-hover-primary">
+                                            Settings
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -228,7 +234,138 @@ try {
                         <div class="container-fluid">
                             <div class="row g-xl-12">
                                 <div class="col-xxl-12">
-                                    
+                                    <div class="card  mb-5 mb-xl-10">
+                                        <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_signin_method">
+                                            <div class="card-title m-0">
+                                                <h3 class="fw-bold m-0">Sign-in Method</h3>
+                                            </div>
+                                        </div>
+                                        <div id="kt_account_settings_signin_method" class="collapse show" tabindex="-1" style="outline: none;">
+                                            <div class="card-body border-top p-9">
+                                                <div class="d-flex flex-wrap align-items-center">
+                                                    <div id="kt_signin_email" class="">
+                                                        <div class="fs-6 fw-bold mb-1">Email Address</div>
+                                                        <div class="fw-semibold text-gray-600">support@keenthemes.com</div>
+                                                    </div>
+                                                    <div id="kt_signin_email_edit" class="flex-row-fluid d-none">
+                                                        <form id="kt_signin_change_email" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-6 mb-4 mb-lg-0">
+                                                                    <div class="fv-row mb-0 fv-plugins-icon-container">
+                                                                        <label for="emailaddress" class="form-label fs-6 fw-bold mb-3">Enter New Email Address</label>
+                                                                        <input type="email" class="form-control form-control-lg form-control-solid" id="emailaddress" placeholder="Email Address" name="emailaddress" value="support@keenthemes.com">
+                                                                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="fv-row mb-0 fv-plugins-icon-container">
+                                                                        <label for="confirmemailpassword" class="form-label fs-6 fw-bold mb-3">Confirm Password</label>
+                                                                        <input type="password" class="form-control form-control-lg form-control-solid" name="confirmemailpassword" id="confirmemailpassword">
+                                                                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex">
+                                                                <button id="kt_signin_submit" type="button" class="btn btn-primary me-2 px-6">Update Email</button>
+                                                                <button id="kt_signin_cancel" type="button" class="btn btn-color-gray-400 btn-active-light-primary px-6">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div id="kt_signin_email_button" class="ms-auto">
+                                                        <button class="btn btn-light btn-active-light-primary">Change Email</button>
+                                                    </div>
+                                                </div>
+                                                <div class="separator separator-dashed my-6"></div>
+                                                <div class="d-flex flex-wrap align-items-center mb-10">
+                                                    <div id="kt_signin_password" class="">
+                                                        <div class="fs-6 fw-bold mb-1">Password</div>
+                                                        <div class="fw-semibold text-gray-600">************</div>
+                                                    </div>
+                                                    <div id="kt_signin_password_edit" class="flex-row-fluid d-none">
+                                                        <form id="kt_signin_change_password" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
+                                                            <div class="row mb-1">
+                                                                <div class="col-lg-4">
+                                                                    <div class="fv-row mb-0 fv-plugins-icon-container fv-plugins-bootstrap5-row-invalid">
+                                                                        <label for="currentpassword" class="form-label fs-6 fw-bold mb-3">Current Password</label>
+                                                                        <input type="password" class="form-control form-control-lg form-control-solid is-invalid" name="currentpassword" id="currentpassword">
+                                                                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                                                            <div data-field="currentpassword" data-validator="notEmpty">Current Password is required</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="fv-row mb-0 fv-plugins-icon-container">
+                                                                        <label for="newpassword" class="form-label fs-6 fw-bold mb-3">New Password</label>
+                                                                        <input type="password" class="form-control form-control-lg form-control-solid " name="newpassword" id="newpassword">
+                                                                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="fv-row mb-0 fv-plugins-icon-container">
+                                                                        <label for="confirmpassword" class="form-label fs-6 fw-bold mb-3">Confirm New Password</label>
+                                                                        <input type="password" class="form-control form-control-lg form-control-solid " name="confirmpassword" id="confirmpassword">
+                                                                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-text mb-5">Password must be at least 8 character and contain symbols</div>
+                                                            <div class="d-flex">
+                                                                <button id="kt_password_submit" type="button" class="btn btn-primary me-2 px-6">Update Password</button>
+                                                                <button id="kt_password_cancel" type="button" class="btn btn-color-gray-400 btn-active-light-primary px-6">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div id="kt_signin_password_button" class="ms-auto">
+                                                        <button class="btn btn-light btn-active-light-primary">Reset Password</button>
+                                                    </div>
+                                                </div>
+                                                <div class="notice d-flex bg-light-primary rounded border border-dashed  p-6">
+                                                    <i class="ki-duotone ki-shield-tick fs-2tx text-primary me-4"><span class="path1"></span><span class="path2"></span></i>
+                                                    <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
+                                                        <div class="mb-3 mb-md-0 fw-semibold">
+                                                            <h4 class="text-gray-900 fw-bold">Secure Your Account</h4>
+                                                            <div class="fs-6 text-gray-700 pe-7">Two-factor authentication adds an extra layer of security to your account. To log in, in addition you'll need to provide a 6 digit code</div>
+                                                        </div>
+                                                        <a href="#" class="btn btn-primary px-6 align-self-center text-nowrap" data-bs-toggle="modal" data-bs-target="#kt_modal_two_factor_authentication">
+                                                            Enable </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-12">
+                                    <div class="card  ">
+                                        <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_deactivate" aria-expanded="true" aria-controls="kt_account_deactivate">
+                                            <div class="card-title m-0">
+                                                <h3 class="fw-bold m-0">Deactivate Account</h3>
+                                            </div>
+                                        </div>
+                                        <div id="kt_account_settings_deactivate" class="collapse show">
+                                            <form id="kt_account_deactivate_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
+                                                <div class="card-body border-top p-9">
+                                                    <div class="notice d-flex bg-light-warning rounded border-warning border border-dashed mb-9 p-6">
+                                                        <i class="ki-duotone ki-information fs-2tx text-warning me-4"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                                                        <div class="d-flex flex-stack flex-grow-1 ">
+                                                            <div class=" fw-semibold">
+                                                                <h4 class="text-gray-900 fw-bold">You Are Deactivating Your Account</h4>
+                                                                <div class="fs-6 text-gray-700 ">For extra security, this requires you to confirm your email or phone number when you reset yousignr password. <br><a class="fw-bold" href="#">Learn more</a></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-check form-check-solid fv-row fv-plugins-icon-container">
+                                                        <input name="deactivate" class="form-check-input" type="checkbox" value="" id="deactivate">
+                                                        <label class="form-check-label fw-semibold ps-2 fs-6" for="deactivate">I confirm my account deactivation</label>
+                                                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                                    <button id="kt_account_deactivate_account_submit" type="submit" class="btn btn-danger fw-semibold">Deactivate Account</button>
+                                                </div>
+                                                <input type="hidden">
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
