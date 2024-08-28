@@ -1,3 +1,9 @@
+<?php 
+    
+    include './app/connection/MYSQLSERVER.php';
+    include './app/sessions/UserSession.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -59,7 +65,7 @@
                                 </div>
                                 <div class="fv-row mb-10">
                                     <label class="form-label fs-6 fw-bold text-dark">Email Address</label>
-                                    <input class="form-control form-control-lg form-control-solid" type="text" name="user_employeeId" id="user_employeeId" autocomplete="off" placeholder="user@gmail.com"/>
+                                    <input class="form-control form-control-lg form-control-solid" type="text" name="user_email" id="user_email" autocomplete="off" placeholder="user@gmail.com"/>
                                 </div>
                                 <div class="fv-row mb-10">
                                     <div class="d-flex flex-stack mb-2">

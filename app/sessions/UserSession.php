@@ -1,14 +1,22 @@
 <?php
 
-    include '../connection/SQLSERVER.php';
+    include '../connection/MYSQLSERVER.php';
 
     if ($_SESSION['isLoggedIn'] == 1 && $_SESSION['isDisabled'] == 0 && $_SESSION['isAdmin'] == 1) {
-        header("Location: ../../user/administrator/dashboard-hr.php");
+        header("Location: ../../user/administrator/");
     } else {
 
+        $_SESSION['session_usercode'] = 0;
+    
         $_SESSION['isLoggedIn'] = 0;
         $_SESSION['isDisabled'] = 0;
+
         $_SESSION['isAdmin'] = 0;
+        $_SESSION['isCustomer'] = 0;
+        $_SESSION['isBranchManager'] = 0;
+        $_SESSION['isCreditInvestigator'] = 0;
+        $_SESSION['isCreditCoordinator'] = 0;
+        $_SESSION['isCashier'] = 0;
 
         session_start(); //to ensure you are using same session
         session_destroy(); //destroy the session

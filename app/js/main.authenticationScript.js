@@ -4,17 +4,17 @@ import { defaultFormat, PasswordFormat, emailFormat, phoneFormat } from "./main.
 import { sweetAlertSuccess, sweetAlertError } from "./main.SweetAlert.js";
 
 // Focus Input
-$("#user_employeeId").focus();
+$("#user_email").focus();
 
 $("#authBtnLogin_submit").click(function(e) {
 
     e.preventDefault();
 
-    var user_employeeId = $("#user_employeeId").val().trim();
+    var user_email = $("#user_email").val().trim();
     var user_password = $("#user_password").val().trim();
 
-    if (user_employeeId == "") {
-        sweetAlertError("Employee ID is empty!");
+    if (user_email == "") {
+        sweetAlertError("Email is empty!");
         return;
     }
 
@@ -23,8 +23,8 @@ $("#authBtnLogin_submit").click(function(e) {
         return;
     }
 
-    if (!user_employeeId.match(defaultFormat)) {
-        sweetAlertError("Invalid Characters on Employee ID!");
+    if (!user_email.match(emailFormat)) {
+        sweetAlertError("Email format must be user@gmail.com!");
         return;
     }
 
@@ -37,7 +37,7 @@ $("#authBtnLogin_submit").click(function(e) {
         url: '../../app/functions/authentication/fn_authentication.php',
         type: 'POST',
         data: {
-            user_employeeId: user_employeeId,
+            user_email: user_email,
             user_password: user_password
         },
         cache: false,

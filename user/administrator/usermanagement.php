@@ -1,6 +1,6 @@
 <?php
 
-include '../../app/connection/SQLSERVER.php';
+include '../../app/connection/MYSQLSERVER.php';
 include '../../app/sessions/AdministratorSession.php';
 require '../../app/setting/AESCLASS.php';
 
@@ -12,68 +12,27 @@ $date = date("Y-m-d");
 $todaysDate = date("Y-m-d H:i:s");
 
 try {
-    $conn = new PDO("sqlsrv:server=$TS8_dbserver;database=$TS8_dbname", $TS8_dbuser, $TS8_dbpassword);
+    $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $usercode = $_SESSION['session_usercode'];
 
-    $select_user = $conn->query("SELECT * FROM [RMCI.SYS].[dbo].[appsysUsers] WHERE [PK_appsysUsers] = '$usercode'");
-    $rselect_user = $select_user->fetchall(PDO::FETCH_ASSOC);
+    $userprofile = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
+    $userprofile->execute();
+    $cuserprofile = $userprofile->rowCount();
+    $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
 
-    // Account Information
-    $fullname = secureToken::tokendecrypt($rselect_user[0]["pi_fullname"]);
-    $email = secureToken::tokendecrypt($rselect_user[0]["useremail"]);
+    if ($cuserprofile > 0) {
 
-    // mkdir("F:/JECO E. FLORO/", 0, true);
+        $fullname = $ruserprofile["userFullName"];
+        $email = $ruserprofile["user_email"];
 
-    $select_group = $conn->query("SELECT * FROM [RMCI.SYS].[dbo].[appsysGroups] ORDER BY [group_name] ASC");
-    $rselect_group = $select_group->fetchall(PDO::FETCH_ASSOC);
+    }
 
-    $select_department = $conn->query("SELECT * FROM [RMCI.SYS].[dbo].[appsysDepartments] ORDER BY [department_name] ASC");
-    $rselect_department = $select_department->fetchall(PDO::FETCH_ASSOC);
+    $user = $conn->prepare("SELECT * FROM appsysusers");
+    $user->execute();
+    $cuser = $user->rowCount();
 
-    $select_position = $conn->query("SELECT * FROM [RMCI.SYS].[dbo].[appsysPositions] ORDER BY [position_name] ASC");
-    $rselect_position = $select_position->fetchall(PDO::FETCH_ASSOC);
-
-    $select_userlist = $conn->query("SELECT TOP (1000) a.[PK_appsysUsers]
-            ,a.[FK_appsysGroups]
-            ,b.[group_name]
-            ,a.[FK_appsysDepartments]
-            ,c.[department_name]
-            ,a.[FK_appsysPositions]
-            ,d.[position_name]
-            ,a.[usercode]
-            ,a.[userpass]
-            ,a.[usertype]
-            ,a.[useremail]
-            ,a.[logtime]
-            ,a.[logout]
-            ,a.[systemHR]
-            ,a.[systemBilling]
-            ,a.[systemMedicalRecords]
-            ,a.[systemAccounting]
-            ,a.[sysHRadminaccess]
-            ,a.[sysHRemployeeaccess] 
-            ,a.[sysHRdepartmentHead]
-            ,a.[sysHRscheduleAdd]
-            ,a.[sysHRscheduleApproval]
-            ,a.[sysHRdeleteaccess]
-            ,a.[passchangedate]
-            ,a.[usercreatedate]
-            ,a.[syslock]
-            ,a.[syslockdate]
-            ,a.[lockaccount]
-            ,a.[pi_lastname]
-            ,a.[pi_middlename]
-            ,a.[pi_firstname]
-            ,a.[pi_suffixname]
-            ,a.[pi_fullname]
-        FROM [RMCI.SYS].[dbo].[appsysUsers] 
-        AS a JOIN [appsysGroups] 
-        AS b ON a.FK_appsysGroups = b.PK_appsysGroups JOIN [appsysDepartments] 
-        AS c ON a.FK_appsysDepartments = c.PK_appsysDepartments JOIN [appsysPositions]
-        AS d ON a.FK_appsysPositions = d.PK_appsysPositions ORDER BY [PK_appsysUsers] ASC");
-    $rselect_userlist = $select_userlist->fetchall(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -84,7 +43,7 @@ try {
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
-    <title>Rivera Medical Center, Inc. - HR Management System</title>
+    <title>Fiesta Appliances</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:locale" content="en_US" />
@@ -132,11 +91,11 @@ try {
         <div class="page d-flex flex-row flex-column-fluid">
             <div id="kt_aside" class="aside aside-default  aside-hoverable " data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
                 <div class="aside-logo flex-column-auto px-10 pt-9 pb-5" id="kt_aside_logo">
-                    <a href="dashboard-hr.php">
-                        <img alt="Logo" src="../../assets/media/logos/RMCI.png" width="100px" class="max-h-50px logo-default theme-light-show" />
-                        <img alt="Logo" src="../../assets/media/logos/RMCI-ALT.png" width="100px" class="max-h-50px logo-default theme-dark-show" />
-                        <img alt="Logo" src="../../assets/media/logos/RMCI.png" width="40px" class="max-h-50px logo-minimize theme-light-show" />
-                        <img alt="Logo" src="../../assets/media/logos/RMCI-ALT.png" width="40px" class="max-h-50px logo-minimize theme-dark-show" />
+                    <a href="/">
+                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="60px" class="max-h-50px logo-default theme-light-show" />
+                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="60px" class="max-h-50px logo-default theme-dark-show" />
+                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px" class="max-h-50px logo-minimize theme-light-show" />
+                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px" class="max-h-50px logo-minimize theme-dark-show" />
                     </a>
                 </div>
                 <div class="aside-menu flex-column-fluid ps-3 pe-1">
@@ -157,9 +116,9 @@ try {
                                     <i class="ki-duotone ki-abstract-14 fs-1"><span class="path1"></span><span class="path2"></span></i>
                                 </div>
                             </div>
-                            <a href="dashboard-hr.php" class="d-lg-none">
-                                <img alt="Logo" src="../../assets/media/logos/RMCI.png" width="60px" class="mh-40px theme-light-show" />
-                                <img alt="Logo" src="../../assets/media/logos/RMCI-ALT.png" width="60px" class="mh-40px theme-dark-show" />
+                            <a href="/" class="d-lg-none">
+                                <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px" class="mh-40px theme-light-show" />
+                                <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px" class="mh-40px theme-dark-show" />
                             </a>
                             <div class="btn btn-icon w-auto ps-0 btn-active-color-primary d-none d-lg-inline-flex me-2 me-lg-5 " data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="aside-minimize">
                                 <i class="ki-duotone ki-black-left-line fs-1 rotate-180"><span class="path1"></span><span class="path2"></span></i>
@@ -256,19 +215,19 @@ try {
                         <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap">
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                    Settings <small class="text-muted fs-6 fw-normal ms-1"></small>
+                                    User Management <small class="text-muted fs-6 fw-normal ms-1"></small>
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        <a href="dashboard-hr.php" class="text-muted text-hover-primary">
-                                            Home
-                                        </a>
+                                        Administrator
                                     </li>
                                     <li class="breadcrumb-item text-muted">
                                         Apps
                                     </li>
                                     <li class="breadcrumb-item text-dark">
-                                        User Management
+                                        <a href="usermanagement.php" class="text-dark text-hover-primary">
+                                            User Management
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -286,13 +245,39 @@ try {
                                             <div class="card-header border-0 pt-6">
                                                 <div class="card-title">
                                                     <div class="d-flex align-items-center position-relative my-1">
-                                                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-hrusermanagement-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search User" />
+                                                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-usermanagement-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search User" />
                                                     </div>
                                                 </div>
                                                 <div class="card-toolbar">
                                                     <!-- Search -->
                                                     <div class="d-flex justify-content-end gap-3 flex-wrap">
-                                                        <button type="button" class="btn btn-primary d-flex align-items-center ps-5" data-bs-toggle="modal" data-bs-target="#modal_hrAddUser">
+                                                        <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                            <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i> Filter
+                                                        </button>
+                                                        <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
+                                                            <div class="px-7 py-5">
+                                                                <div class="fs-5 text-dark fw-bold">Filter Options</div>
+                                                            </div>
+                                                            <div class="separator border-gray-200"></div>
+                                                            <div class="px-7 py-5" data-kt-user-table-filter="form">
+                                                                <div class="mb-10">
+                                                                    <label class="form-label fs-6 fw-semibold">User Type:</label>
+                                                                    <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true">
+                                                                        <option></option>
+                                                                        <option value="Administrator">Administrator</option>
+                                                                        <option value="Customer">Customer</option>
+                                                                        <option value="Branch Manager">Branch Manager</option>
+                                                                        <option value="Credit Investigator">Credit Investigator</option>
+                                                                        <option value="Credit Coordinator">Credit Coordinator</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="d-flex justify-content-end">
+                                                                    <button type="reset" class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">Reset</button>
+                                                                    <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-useryupe-table-filter="filter">Apply</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" class="btn btn-primary d-flex align-items-center ps-5" data-bs-toggle="modal" data-bs-target="#modal_AddUser">
                                                             <i class="ki-duotone ki-plus fs-2"></i>
                                                             <span>Add User</span>
                                                         </button>
@@ -304,530 +289,7 @@ try {
                                                             <span>Refresh</span>
                                                         </a>
                                                     </div>
-                                                    <div class="modal fade" id="modal_hrAddUser" tabindex="-1" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered mw-650px">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header" id="modal_hrAddUserHeader">
-                                                                    <h2 class="fw-bold">User Details</h2>
-                                                                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-body px-5 my-7">
-                                                                    <div>
-                                                                        <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="modal_hrAddUser" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_hrAddUserHeader" data-kt-scroll-wrappers="#modal_hrAddUser" data-kt-scroll-offset="300px">
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2 d-flex align-items-center gap-3">
-                                                                                    User Code
-                                                                                </label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_usercode" placeholder="User Code" aria-label="User Code" aria-describedby="ii_" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Last Name</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_lastname" placeholder="Last Name" aria-label="Last Name" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">First Name</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_firstname" placeholder="First Name" aria-label="First Name" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Middle Name</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_middlename" placeholder="Middle Name" aria-label="Middle Name" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Suffix Name</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3 opacity-0">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_suffixname" placeholder="Suffix Name" aria-label="Suffix Name" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">User Group</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <select name="" id="ii_usergroup" class="form-control form-control-select">
-                                                                                        <option value="">Not Applicable</option>
-                                                                                        <?php if (count($rselect_group) > 0) { ?>
-                                                                                            <?php for ($ii = 0; $ii < count($rselect_group); $ii++) { ?>
-                                                                                                <option value="<?php echo $rselect_group[$ii]["PK_appsysGroups"]; ?>"><?php echo $rselect_group[$ii]["group_name"]; ?></option>
-                                                                                            <?php } ?>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Department</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <select name="" id="ii_department" class="form-control form-control-select">
-                                                                                        <option value="">Not Applicable</option>
-                                                                                        <?php if (count($rselect_department) > 0) { ?>
-                                                                                            <?php for ($jj = 0; $jj < count($rselect_department); $jj++) { ?>
-                                                                                                <option value="<?php echo $rselect_department[$jj]["PK_appsysDepartments"]; ?>"><?php echo $rselect_department[$jj]["department_name"]; ?></option>
-                                                                                            <?php } ?>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Position</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <select name="" id="ii_position" class="form-control form-control-select">
-                                                                                        <option value="">Not Applicable</option>
-                                                                                        <?php if (count($rselect_position) > 0) { ?>
-                                                                                            <?php for ($kk = 0; $kk < count($rselect_position); $kk++) { ?>
-                                                                                                <option value="<?php echo $rselect_position[$kk]["PK_appsysPositions"]; ?>"><?php echo $rselect_position[$kk]["position_name"]; ?></option>
-                                                                                            <?php } ?>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="text-center pt-10">
-                                                                            <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">
-                                                                                Discard
-                                                                            </button>
-                                                                            <button type="submit" class="btn btn-primary" data-ii-adduser-modal-action="submit" data-passaccess="add">
-                                                                                <span class="indicator-label">
-                                                                                    Submit
-                                                                                </span>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal fade" id="modal_hrEditUser" tabindex="-1" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered mw-650px">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header" id="modal_hrAddUserHeader">
-                                                                    <h2 class="fw-bold">User Details</h2>
-                                                                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-body px-5 my-7">
-                                                                    <div>
-                                                                        <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="modal_hrEditUser" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_hrEditUserHeader" data-kt-scroll-wrappers="#modal_hrEditUser" data-kt-scroll-offset="300px">
-                                                                            <div class="fv-row mb-0" hidden>
-                                                                                <label class="fw-semibold fs-6 mb-2 d-flex align-items-center gap-3">
-                                                                                    User ID
-                                                                                </label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_useridedit" placeholder="User ID" aria-label="User ID" aria-describedby="ii_" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" readonly />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2 d-flex align-items-center gap-3">
-                                                                                    User Code
-                                                                                </label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_usercodeedit" placeholder="User Code" aria-label="User Code" aria-describedby="ii_" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">New Password</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="password" class="form-control" id="ii_newpasswordedit" placeholder="New Password" aria-label="Password" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Confirm Password</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="password" class="form-control" id="ii_confirmpasswordedit" placeholder="Confirm Password" aria-label="Password" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Email Address</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_emailaddressedit" placeholder="Email Address" aria-label="Email Address" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Last Name</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_lastnameedit" placeholder="Last Name" aria-label="Last Name" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">First Name</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_firstnameedit" placeholder="First Name" aria-label="First Name" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Middle Name</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_middlenameedit" placeholder="Middle Name" aria-label="Middle Name" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Suffix Name</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3 opacity-0">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_suffixnameedit" placeholder="Suffix Name" aria-label="Suffix Name" aria-describedby="ii_" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">User Group</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <select name="" id="ii_usergroupedit" class="form-control form-control-select">
-                                                                                        <option value="">Not Applicable</option>
-                                                                                        <?php if (count($rselect_group) > 0) { ?>
-                                                                                            <?php for ($ii = 0; $ii < count($rselect_group); $ii++) { ?>
-                                                                                                <option value="<?php echo $rselect_group[$ii]["PK_appsysGroups"]; ?>"><?php echo $rselect_group[$ii]["group_name"]; ?></option>
-                                                                                            <?php } ?>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Department</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <select name="" id="ii_departmentedit" class="form-control form-control-select">
-                                                                                        <option value="">Not Applicable</option>
-                                                                                        <?php if (count($rselect_department) > 0) { ?>
-                                                                                            <?php for ($jj = 0; $jj < count($rselect_department); $jj++) { ?>
-                                                                                                <option value="<?php echo $rselect_department[$jj]["PK_appsysDepartments"]; ?>"><?php echo $rselect_department[$jj]["department_name"]; ?></option>
-                                                                                            <?php } ?>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Position</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <select name="" id="ii_positionedit" class="form-control form-control-select">
-                                                                                        <option value="">Not Applicable</option>
-                                                                                        <?php if (count($rselect_position) > 0) { ?>
-                                                                                            <?php for ($kk = 0; $kk < count($rselect_position); $kk++) { ?>
-                                                                                                <option value="<?php echo $rselect_position[$kk]["PK_appsysPositions"]; ?>"><?php echo $rselect_position[$kk]["position_name"]; ?></option>
-                                                                                            <?php } ?>
-                                                                                        <?php } ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="text-center pt-10">
-                                                                            <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">
-                                                                                Discard
-                                                                            </button>
-                                                                            <button type="submit" class="btn btn-primary" data-ii-edituser-modal-action="submit" data-passaccess="edit">
-                                                                                <span class="indicator-label">
-                                                                                    Submit
-                                                                                </span>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal fade" id="modal_hrModule" tabindex="-1" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered mw-650px">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header" id="modal_hrAddUserHeader">
-                                                                    <h2 class="fw-bold">Miscellaneous Module</h2>
-                                                                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-body px-5 my-7">
-                                                                    <div>
-                                                                        <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="modal_hrModule" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_hrModuleHeader" data-kt-scroll-wrappers="#modal_hrModule" data-kt-scroll-offset="300px">
-                                                                            <div class="fv-row mb-0" hidden>
-                                                                                <label class="fw-semibold fs-6 mb-2 d-flex align-items-center gap-3">
-                                                                                    User ID
-                                                                                </label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_useridmodule" placeholder="User ID" aria-label="User ID" aria-describedby="ii_" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" readonly />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="bg-gray-100 p-3 rounded fw-bolder">
-                                                                                Administrative Accessibility
-                                                                            </div>
-                                                                            <div class="pt-5">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" value="" id="chkbxAdministrativeAccess" />
-                                                                                    <label class="form-check-label" for="chkbxAdministrativeAccess">
-                                                                                        Grant user an administrative access
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="bg-gray-100 p-3 rounded fw-bolder mt-10">
-                                                                                System Accessibility
-                                                                            </div>
-                                                                            <div class="pt-5">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" value="" id="chkbxHRAccess" />
-                                                                                    <label class="form-check-label" for="chkbxHRAccess">
-                                                                                        Human Resource Attendance and Payroll System
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="pt-5">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" value="" id="chkbxAccountingAccess" />
-                                                                                    <label class="form-check-label" for="chkbxAccountingAccess">
-                                                                                        Accounting Report Claims System
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="pt-5">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" value="" id="chkMedicalRecordsAccess" />
-                                                                                    <label class="form-check-label" for="chkMedicalRecordsAccess">
-                                                                                        Medical Records Report Claims System
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="pt-5">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" value="" id="chkbxBillingAccess" />
-                                                                                    <label class="form-check-label" for="chkbxBillingAccess">
-                                                                                        Billing Patient Doctors Reference Remover System
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="bg-gray-100 p-3 rounded fw-bolder mt-10">
-                                                                                User Accessibility
-                                                                            </div>
-                                                                            <div class="pt-5">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" value="" id="chkbxGrantDepartmentHead" />
-                                                                                    <label class="form-check-label" for="chkbxGrantDepartmentHead">
-                                                                                        Make this user as a Department Head
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="pt-5">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" value="" id="chkbxGrantHRAdmin" />
-                                                                                    <label class="form-check-label" for="chkbxGrantHRAdmin">
-                                                                                        Grant this user as an admin on HR System
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="pt-5">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" value="" id="chkbxGrantHRSchedule" />
-                                                                                    <label class="form-check-label" for="chkbxGrantHRSchedule">
-                                                                                        Grant this user to set Schedule on Department
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="pt-5">
-                                                                                <div class="form-check">
-                                                                                    <input class="form-check-input" type="checkbox" value="" id="chkbxGrantHRApproval" />
-                                                                                    <label class="form-check-label" for="chkbxGrantHRApproval">
-                                                                                        Grant this user to approve Schedule on Department
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="text-center pt-10">
-                                                                            <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">
-                                                                                Discard
-                                                                            </button>
-                                                                            <button type="submit" class="btn btn-primary" data-ii-editmodule-modal-action="submit" data-passaccess="module">
-                                                                                <span class="indicator-label">
-                                                                                    Submit
-                                                                                </span>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal fade" id="modal_hrLock" tabindex="-1" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered mw-650px">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header" id="modal_hrLockHeader">
-                                                                    <h2 class="fw-bold">Lock Account</h2>
-                                                                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-body px-5 my-7">
-                                                                    <div>
-                                                                        <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="modal_hrLock" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_hrModuleHeader" data-kt-scroll-wrappers="#modal_hrModule" data-kt-scroll-offset="300px">
-                                                                            <div class="fv-row mb-0" hidden>
-                                                                                <label class="fw-semibold fs-6 mb-2 d-flex align-items-center gap-3">
-                                                                                    User ID
-                                                                                </label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_useridlock" placeholder="User ID" aria-label="User ID" aria-describedby="ii_" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" readonly />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2 d-flex align-items-center gap-3">
-                                                                                    Confirm
-                                                                                </label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_userlockconfirm" placeholder="Type 'Confirm' to lock account" aria-label="Lock" aria-describedby="ii_"/>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="text-center pt-10">
-                                                                            <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">
-                                                                                Discard
-                                                                            </button>
-                                                                            <button type="submit" class="btn btn-primary" data-ii-lockaccount-modal-action="submit" data-passaccess="lock" disabled>
-                                                                                <span class="indicator-label">
-                                                                                    Submit
-                                                                                </span>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal fade" id="modal_hrPasswordAccess" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal fade" id="modal_PasswordAccess" tabindex="-1" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered mw-650px">
                                                             <div class="modal-content">
                                                                 <div class="modal-header" id="modal_hrPasswordAccessHeaderDelete">
@@ -894,69 +356,77 @@ try {
                                                 </div>
                                             </div>
                                             <div class="card-body py-4">
-                                                <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_hrUsermanagement">
+                                                <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_Usermanagement">
                                                     <thead>
                                                         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                                            <th></th>
                                                             <th>Fullname</th>
+                                                            <th>Email</th>
                                                             <th>Role</th>
-                                                            <th>Status</th>
-                                                            <th>User Group</th>
-                                                            <th>Department</th>
-                                                            <th>Position</th>
+                                                            <th>User Type</th>
+                                                            <th>Activation Status</th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="text-gray-600 fw-semibold">
-                                                        <?php if (count($rselect_userlist) > 0) { ?>
-                                                            <?php for ($ll = 0; $ll < count($rselect_userlist); $ll++) { ?>
+                                                        <?php if ($cuser > 0) { ?>
+                                                            <?php while ($ruser = $user->fetch(PDO::FETCH_ASSOC)) { ?>
                                                                 <tr>
                                                                     <td>
-                                                                        <img alt="Logo" class="bg-secondary rounded" src="../../assets/media/avatars/user-avatar.png" width="60" />
-                                                                    </td>
-                                                                    <td class="text-nowrap">
-                                                                        <div class="d-flex flex-column">
-                                                                            <span class="fw-bolder text-primary">
-                                                                                <?php echo secureToken::tokendecrypt($rselect_userlist[$ll]["pi_fullname"]); ?>
-                                                                            </span>
-                                                                            <span class="text-gray-500"><?php echo $rselect_userlist[$ll]["usercode"] ?></span>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <?php if ($rselect_userlist[$ll]["usertype"] == 1) { ?>
-                                                                            <div class="d-flex align-items-center gap-3">
-                                                                                <i class="ki-duotone ki-key fs-2x text-primary">
-                                                                                    <span class="path1"></span>
-                                                                                    <span class="path2"></span>
-                                                                                </i>
-                                                                                <span class="fw-bolder">Admin</span>
-                                                                            </div>
+                                                                        <?php if ($ruser["userFullName"] != "") { ?>
+                                                                            <?php echo $ruser["userFullName"]; ?>
+                                                                        <?php } else { ?>
+                                                                            PROFILE NOT SET
                                                                         <?php } ?>
-                                                                        <?php if ($rselect_userlist[$ll]["sysHRdepartmentHead"] == 1) { ?>
-                                                                            <div class="d-flex align-items-center gap-3">
-                                                                                <i class="ki-duotone ki-user-tick fs-2x text-primary">
-                                                                                    <span class="path1"></span>
-                                                                                    <span class="path2"></span>
-                                                                                    <span class="path3"></span>
-                                                                                </i>
-                                                                                <span class="fw-bolder">Department Head</span>
-                                                                            </div>
+                                                                    </td>
+                                                                    <td><?php echo $ruser["user_email"]; ?></td>
+                                                                    <td>
+                                                                        <?php if ($ruser["isAdmin"] == 1) { ?>
+                                                                            <i class="ki-duotone ki-key fs-2x text-primary">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
                                                                         <?php } ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php if ($rselect_userlist[$ll]["lockaccount"] == 1) { ?>
-                                                                            <span class="badge badge-secondary fw-bolder">Locked</span>
+                                                                        <?php if ($ruser["isAdmin"] == 1) { ?>
+                                                                            <span class="badge bg-secondary text-dark rounded">Administrator</span>
+                                                                        <?php } ?>
+                                                                        <?php if ($ruser["isCustomer"] == 1) { ?>
+                                                                            <span class="bg-secondary text-dark">Customer</span>
+                                                                        <?php } ?>
+                                                                        <?php if ($ruser["isBranchManager"] == 1) { ?>
+                                                                            <span class="bg-secondary text-dark">Branch Manager</span>
+                                                                        <?php } ?>
+                                                                        <?php if ($ruser["isCreditInvestigator"] == 1) { ?>
+                                                                            <span class="bg-secondary text-dark">Credit Investigator</span>
+                                                                        <?php } ?>
+                                                                        <?php if ($ruser["isCreditCoordinator"] == 1) { ?>
+                                                                            <span class="bg-secondary text-dark">Credit Coordinator</span>
+                                                                        <?php } ?>
+                                                                        <?php if ($ruser["isCashier"] == 1) { ?>
+                                                                            <span class="bg-secondary text-dark">Credit Coordinator</span>
                                                                         <?php } ?>
                                                                     </td>
                                                                     <td>
-                                                                        <span><?php echo $rselect_userlist[$ll]["group_name"] ?></span>
+                                                                        <?php if ($ruser["isActivated"] == 0) { ?>
+                                                                            <i class="ki-duotone ki-sms fs-2x text-primary">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                        <?php } else { ?>
+                                                                            <span class="badge bg-darkgreen">Activated</span>
+                                                                        <?php } ?>
                                                                     </td>
-                                                                    <td><?php echo $rselect_userlist[$ll]["department_name"] ?></td>
-                                                                    <td><?php echo $rselect_userlist[$ll]["position_name"] ?></td>
                                                                     <td class="text-end datainput">
                                                                         <div class="d-flex justify-content-end gap-2">
-                                                                            <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rselect_userlist[$ll]["PK_appsysUsers"]; ?>" data-ii-input-module-action="edit">
-                                                                                <i class="ki-duotone ki-setting-3 fs-2x">
+                                                                            <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-edit-action="edit">
+                                                                                <i class="ki-duotone ki-notepad-edit fs-2x">
+                                                                                    <span class="path1"></span>
+                                                                                    <span class="path2"></span>
+                                                                                </i>
+                                                                            </div>
+                                                                            <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-lock-action="lock">
+                                                                                <i class="ki-duotone ki-lock-2 fs-2x">
                                                                                     <span class="path1"></span>
                                                                                     <span class="path2"></span>
                                                                                     <span class="path3"></span>
@@ -964,14 +434,8 @@ try {
                                                                                     <span class="path5"></span>
                                                                                 </i>
                                                                             </div>
-                                                                            <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rselect_userlist[$ll]["PK_appsysUsers"]; ?>" data-ii-input-edit-action="edit">
-                                                                                <i class="ki-duotone ki-notepad-edit fs-2x">
-                                                                                    <span class="path1"></span>
-                                                                                    <span class="path2"></span>
-                                                                                </i>
-                                                                            </div>
-                                                                            <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rselect_userlist[$ll]["PK_appsysUsers"]; ?>" data-ii-input-lock-action="lock">
-                                                                                <i class="ki-duotone ki-lock-2 fs-2x">
+                                                                            <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-delete-action="delete">
+                                                                                <i class="ki-duotone ki-trash fs-2x">
                                                                                     <span class="path1"></span>
                                                                                     <span class="path2"></span>
                                                                                     <span class="path3"></span>
@@ -1020,7 +484,7 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
-    <script src="../../assets/js/datatables/hr-usermanagement.js"></script>
+    <script src="../../assets/js/datatables/tb-usermanagement.js"></script>
     <script type="module" src="../../app/js/main.usermanagement.js"></script>
 </body>
 

@@ -3,7 +3,7 @@
 class secureToken
 {
     private static $secretKey = '$2y$12$c7mgCRtmzfZ7IhX9ItelD.zPUnBkF3zpaBEcSPuQMCnQfl/uX4lXi';
-    private static $secretIv = 'rmci.com.ph';
+    private static $secretIv = 'fiestappliances.com.ph';
     private static $encryptMethod = "AES-256-CBC";
     public static function tokenencrypt($data)
     {
