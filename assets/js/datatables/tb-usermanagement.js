@@ -58,6 +58,25 @@ var KTUsersList = function () {
         });
     }
 
+    var handleResetDatatable = () => {
+
+        
+        const filterForm = document.querySelector('[data-kt-user-table-filter="form"]');
+        const resetButton = filterForm.querySelector('[data-kt-useryupe-table-filter="reset"]');
+        const selectOptions = filterForm.querySelectorAll('select');
+
+        resetButton.addEventListener('click', function () {
+
+            selectOptions.forEach(select => {
+                $(select).val('').trigger('change');
+            });
+
+            // Reset datatable --- official docs reference: https://datatables.net/reference/api/search()
+            datatable.search('').draw();
+
+        });
+    }
+
     return {
         // Public functions  
         init: function () {
@@ -68,6 +87,7 @@ var KTUsersList = function () {
             initUserTable();
             handleSearchDatatable();
             handleFilterDatatable();
+            handleResetDatatable();
 
         }
     }

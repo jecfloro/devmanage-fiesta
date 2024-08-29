@@ -272,7 +272,7 @@ try {
                                                                     </select>
                                                                 </div>
                                                                 <div class="d-flex justify-content-end">
-                                                                    <button type="reset" class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">Reset</button>
+                                                                    <button type="reset" class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6" data-kt-menu-dismiss="true" data-kt-useryupe-table-filter="reset">Reset</button>
                                                                     <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-useryupe-table-filter="filter">Apply</button>
                                                                 </div>
                                                             </div>
