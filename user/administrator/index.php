@@ -23,12 +23,9 @@ try {
     $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
 
     if ($cuserprofile > 0) {
-
-        $fullname = $ruserprofile["userFullName"];
+        $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
         $email = $ruserprofile["user_email"];
-
     }
-    
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }

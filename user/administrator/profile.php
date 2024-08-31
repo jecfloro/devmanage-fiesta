@@ -24,7 +24,19 @@ try {
 
     if ($cuserprofile > 0) {
 
-        $fullname = $ruserprofile["userFullName"];
+        $infoLastname = secureToken::tokendecrypt($ruserprofile["userLastname"]);
+        $infoFirstName = secureToken::tokendecrypt($ruserprofile["userFirstName"]);
+        $infoMiddleName = secureToken::tokendecrypt($ruserprofile["userMiddleName"]);
+        $infoNickName = secureToken::tokendecrypt($ruserprofile["userNickName"]);
+        $infoGender = $ruserprofile["userGender"];
+        $infoCivilStatus = secureToken::tokendecrypt($ruserprofile["userCivilStatus"]);
+        $infoNationality = secureToken::tokendecrypt($ruserprofile["userNationality"]);
+        $infoAge = $ruserprofile["userAge"];
+        $infoBirthday = $ruserprofile["userDateofBirth"];
+        $infoPlaceOfBirth = secureToken::tokendecrypt($ruserprofile["userPlaceofBirth"]);
+        $contactnumber = secureToken::tokendecrypt($ruserprofile["userContactNumber"]);
+        $infoAddress = secureToken::tokendecrypt($ruserprofile["userAddress"]);
+        $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
         $email = $ruserprofile["user_email"];
     }
 } catch (PDOException $e) {
@@ -244,42 +256,105 @@ try {
                                             <form id="kt_account_profile_details_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
                                                 <div class="card-body border-top p-9">
                                                     <div class="row mb-6">
-                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Avatar</label>
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
                                                         <div class="col-lg-8">
-                                                            <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('/craft/assets/media/svg/avatars/blank.svg')">
-                                                                <div class="image-input-wrapper w-125px h-125px" style="background-image: url(/craft/assets/media/avatars/300-1.jpg)"></div>
-                                                                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
-                                                                    <i class="ki-duotone ki-pencil fs-7"><span class="path1"></span><span class="path2"></span></i>
-                                                                    <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
-                                                                    <input type="hidden" name="avatar_remove">
-                                                                </label>
-                                                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" aria-label="Cancel avatar" data-bs-original-title="Cancel avatar" data-kt-initialized="1">
-                                                                    <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i> </span>
-                                                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" aria-label="Remove avatar" data-bs-original-title="Remove avatar" data-kt-initialized="1">
-                                                                    <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i> </span>
+                                                            <div class="row g-3">
+                                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_lastname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Last Name" value="<?php echo $infoLastname; ?>">
+                                                                </div>
+                                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_firstname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="First Name" value="<?php echo $infoFirstName; ?>">
+                                                                </div>
+                                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_middlename" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Middle Name (Optional)" value="<?php echo $infoMiddleName; ?>">
+                                                                </div>
+                                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_nickname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Nick Name" value="<?php echo $infoNickName; ?>">
+                                                                </div>
                                                             </div>
-                                                            <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-6">
-                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Gender</label>
                                                         <div class="col-lg-8">
-                                                            <div class="row">
-                                                                <div class="col-lg-6 fv-row fv-plugins-icon-container">
-                                                                    <input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="First name" value="Max">
-                                                                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Gender" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_gender">
+                                                                    <option></option>
+                                                                    <option value="0" <?php if ($infoGender == 0) { echo "selected"; } ?>>Male</option>
+                                                                    <option value="1" <?php if ($infoGender == 1) { echo "selected"; } ?>>Female</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Civil Status</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Civil Status" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_civilstatus">
+                                                                    <option></option>
+                                                                    <option value="SINGLE" <?php if ($infoCivilStatus == "SINGLE") { echo "selected"; } ?>>Single</option>
+                                                                    <option value="MARRIED" <?php if ($infoCivilStatus == "MARRIED") { echo "selected"; } ?>>Married</option>
+                                                                    <option value="DIVORCED" <?php if ($infoCivilStatus == "DIVORCED") { echo "selected"; } ?>>Divorced</option>
+                                                                    <option value="WIDOWED" <?php if ($infoCivilStatus == "WIDOWED") { echo "selected"; } ?>>Widowed</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Nationality</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <input type="text" id="ii_nationality" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Nationality" value="<?php echo $infoNationality; ?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Age</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <input type="number" min="0" max="200" id="ii_age" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age" value="<?php echo $infoAge; ?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Birthdate</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Brithdate" id="kt_datepicker_9" value="<?php echo $infoBirthday; ?>"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Place of Birth</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <input type="text" id="ii_placeofbirth" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Place of Birth" value="<?php echo $infoPlaceOfBirth; ?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Contact Number</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <div class="input-group input-group-solid mb-5">
+                                                                    <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
+                                                                    <input class="form-control form-control-lg form-control-solid fw-bolder" id="kt_inputmask_3" inputmode="text" placeholder="___-____-___" value="<?php echo $contactnumber; ?>">
                                                                 </div>
-                                                                <div class="col-lg-6 fv-row fv-plugins-icon-container">
-                                                                    <input type="text" name="lname" class="form-control form-control-lg form-control-solid" placeholder="Last name" value="Smith">
-                                                                    <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Address</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <textarea id="ii_address" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Address"><?php echo $infoAddress; ?></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="card-footer d-flex justify-content-end py-6 px-9">
-                                                    <button type="reset" class="btn btn-light btn-active-light-primary me-2">Discard</button>
-                                                    <button type="submit" class="btn btn-primary" id="kt_account_profile_details_submit">Save Changes</button>
+                                                    <button type="submit" class="btn btn-primary" data-ii-updateprofile-modal-action="update" data-passaccess="updateprofile">Save Changes</button>
                                                 </div>
                                                 <input type="hidden">
                                             </form>
@@ -302,6 +377,7 @@ try {
                         </div>
                     </div>
                 </div>
+                <?php include './authsetting.php'; ?>
             </div>
         </div>
     </div>
@@ -314,6 +390,10 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
+    <script src="../../assets/plugins/custom/daterangepicker/daterangepicker.min.js"></script>
+    <script src="../../assets/plugins/custom/daterangepicker/flatpicker.min.js"></script>
+    <script src="../../assets/plugins/custom/inputmask/inputmask.min.js"></script>
+    <script type="module" src="../../app/js/main.userprofileScript.js"></script>
 </body>
 
 </html>

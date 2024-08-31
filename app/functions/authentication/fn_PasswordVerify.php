@@ -9,14 +9,14 @@
     $date = date("Y-m-d");
     $todaysDate = date("Y-m-d H:i:s");
 
-    $user_email = $_POST['user_email'];
-    $user_password = $_POST['user_password'];
-
+    $usercode = $_SESSION['session_usercode'];
+    $ii_password = $_POST['ii_password'];
+    
     try {
         $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
-        $select_user = $conn->query("SELECT * FROM appsysusers WHERE user_email = '$user_email'");
+        $select_user = $conn->query("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
         $rselect_user = $select_user->fetchall(PDO::FETCH_ASSOC);
 
         if (count($rselect_user)) {
@@ -26,33 +26,13 @@
                 echo json_encode($response);
             } else {
 
-                $usercode = $rselect_user[0]["PK_appsysUsers"];
                 $userpass = $rselect_user[0]["user_password"];
-                $userdisabled = $rselect_user[0]["isDisabled"];
-                $useradmin = $rselect_user[0]["isAdmin"];
-                $usercustomer = $rselect_user[0]["isCustomer"];
-                $userbranchmanager = $rselect_user[0]["isBranchManager"];
-                $usercreditinvestigator = $rselect_user[0]["isCreditInvestigator"];
-                $usercreditcoordinator = $rselect_user[0]["isCreditCoordinator"];
-                $usercashier = $rselect_user[0]["isCashier"];
-                
+
                 $decpt_userpass = secureToken::tokendecrypt($userpass);
 
-                if ($decpt_userpass === $user_password) {
+                if ($decpt_userpass === $ii_password) {
                     
-                    $_SESSION['session_usercode'] = $usercode;
-    
-                    $_SESSION['isLoggedIn'] = 1;
-                    $_SESSION['isDisabled'] = $userdisabled;
-
-                    $_SESSION['isAdmin'] = $useradmin;
-                    $_SESSION['isCustomer'] = $usercustomer;
-                    $_SESSION['isBranchManager'] = $userbranchmanager;
-                    $_SESSION['isCreditInvestigator'] = $usercreditinvestigator;
-                    $_SESSION['isCreditCoordinator'] = $usercreditcoordinator;
-                    $_SESSION['isCashier'] = $usercashier;
-
-                    $response = array('status' => 200, 'message' => "Authentication Success");
+                    $response = array('status' => 200, 'access' => 1);
                     echo json_encode($response);
                     
                 } else {

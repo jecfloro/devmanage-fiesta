@@ -24,11 +24,9 @@ try {
 
     if ($cuserprofile > 0) {
 
-        $fullname = $ruserprofile["userFullName"];
+        $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
         $email = $ruserprofile["user_email"];
-
     }
-    
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -236,7 +234,7 @@ try {
                         <div class="container-fluid">
                             <div class="row g-xl-12">
                                 <div class="col-xxl-12">
-                                    
+
                                 </div>
                             </div>
                         </div>
