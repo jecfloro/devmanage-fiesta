@@ -13,15 +13,21 @@ class ComposerStaticInit81682517fdb20078d87017f991bdcfb0
     );
 
     public static $prefixLengthsPsr4 = array (
+        'V' => 
+        array (
+            'Vectorface\\' => 11,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Sonata\\GoogleAuthenticator\\' => 27,
         ),
         'P' => 
         array (
             'PhpOption\\' => 10,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
         array (
@@ -30,14 +36,28 @@ class ComposerStaticInit81682517fdb20078d87017f991bdcfb0
         'G' => 
         array (
             'GrahamCampbell\\ResultType\\' => 26,
+            'Google\\Authenticator\\' => 21,
+        ),
+        'E' => 
+        array (
+            'Endroid\\QrCode\\' => 15,
         ),
         'D' => 
         array (
             'Dotenv\\' => 7,
+            'DASPRiD\\Enum\\' => 13,
+        ),
+        'B' => 
+        array (
+            'BaconQrCode\\' => 12,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Vectorface\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vectorface/googleauthenticator/src',
+        ),
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
@@ -50,9 +70,17 @@ class ComposerStaticInit81682517fdb20078d87017f991bdcfb0
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
+        'Sonata\\GoogleAuthenticator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sonata-project/google-authenticator/src',
+        ),
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'M1\\Env\\' => 
         array (
@@ -62,9 +90,25 @@ class ComposerStaticInit81682517fdb20078d87017f991bdcfb0
         array (
             0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
         ),
+        'Google\\Authenticator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sonata-project/google-authenticator/src',
+        ),
+        'Endroid\\QrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qr-code/src',
+        ),
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'DASPRiD\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dasprid/enum/src',
+        ),
+        'BaconQrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
     );
 

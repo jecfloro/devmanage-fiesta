@@ -6,7 +6,7 @@ import { sweetAlertSuccess, sweetAlertError } from "./main.SweetAlert.js";
 // Focus Input
 $("#user_email").focus();
 
-$("#authBtnLogin_submit").click(function(e) {
+$("#authBtnLogin_submit").click(function (e) {
 
     e.preventDefault();
 
@@ -41,10 +41,10 @@ $("#authBtnLogin_submit").click(function(e) {
             user_password: user_password
         },
         cache: false,
-        success: function(response) {
+        success: function (response) {
             var status = JSON.parse(response);
             if (status.status == 200) {
-                location.reload(); 
+                location.reload();
             }
             if (status.status == 401) {
                 sweetAlertError(status.message);
@@ -53,9 +53,108 @@ $("#authBtnLogin_submit").click(function(e) {
                 sweetAlertError(status.message);
             }
         },
-        error: function(response) {
+        error: function (response) {
             sweetAlertError("Server Error, Please contact administrator!");
         }
     })
+
+});
+
+$("#authBtnVerify_submit").click(function (e) {
+
+    e.preventDefault();
+
+    var code_verify = $("#code_verify").val().trim();
+
+    if (code_verify == "") {
+        sweetAlertError("Authentication Code is empty!");
+        return;
+    }
+
+    $.ajax({
+        url: '../../app/functions/authentication/fn_verifyAuthentication.php',
+        type: 'POST',
+        data: {
+            code: code_verify
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
+
+});
+
+$("#authBtnRegister_submit").click(function (e) {
+
+    e.preventDefault();
+
+    var user_email = $("#user_email").val().trim();
+
+    if (user_email == "") {
+        sweetAlertError("Email is empty!");
+        return;
+    }
+
+    if (!user_email.match(emailFormat)) {
+        sweetAlertError("Email format must be user@gmail.com!");
+        return;
+    }
+
+    $.ajax({
+        url: '../../app/functions/authentication/fn_register.php',
+        type: 'POST',
+        data: {
+            user_email: user_email
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            $("#authBtnRegister_submit").prop( "disabled", true );
+            if (status.status == 200) {
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+                $("#authBtnRegister_submit").prop( "disabled", false );
+            } else {
+                sweetAlertSuccess("Please check email for account activation!");
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+                $("#authBtnRegister_submit").prop( "disabled", false );
+            }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 404) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
+
+    sweetAlertSuccess("Please check email for account activation!");
+    setTimeout(() => {
+        location.href = "/";
+    }, 2000);
+    $("#authBtnRegister_submit").prop( "disabled", false );
 
 });

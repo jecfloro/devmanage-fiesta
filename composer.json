@@ -2,6 +2,10 @@
 
     "require": {
         "m1/env": "^2.2",
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "^5.6",
+        "sonata-project/google-authenticator": "^2.3",
+        "vectorface/googleauthenticator": "^3.2",
+        "bacon/bacon-qr-code": "^3.0",
+        "phpmailer/phpmailer": "^6.9"
     }
 }

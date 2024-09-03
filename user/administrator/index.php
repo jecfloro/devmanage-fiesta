@@ -1,9 +1,9 @@
 <?php
 
 include '../../app/connection/MYSQLSERVER.php';
+include '../../app/sessions/AuthSession.php';
 include '../../app/sessions/AdministratorSession.php';
 require '../../app/setting/AESCLASS.php';
-
 
 date_default_timezone_set("Asia/Manila");
 $year_start = date("Y");
@@ -82,7 +82,7 @@ try {
     </script>
     <div class="d-flex flex-column flex-root">
         <div class="page d-flex flex-row flex-column-fluid">
-            <div id="kt_aside" class="aside aside-default  aside-hoverable " data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
+            <div id="kt_aside" class="aside aside-default aside-hoverable " data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
                 <div class="aside-logo flex-column-auto px-10 pt-9 pb-5" id="kt_aside_logo">
                     <a href="/">
                         <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="60px" class="max-h-50px logo-default theme-light-show" />
@@ -199,6 +199,23 @@ try {
                                         </div>
                                     </div>
                                 </div>
+                                <div class="d-flex align-items-center ms-2 ms-lg-3 user_profile">
+                                    <div class="border rounded p-3 bg-light fw-bolder">
+                                        <div class="d-flex flex-column">
+                                            <div class="fw-bold d-flex align-items-center fs-7">
+                                                <?php
+
+                                                if ($fullname != "") {
+                                                    echo $fullname;
+                                                } else {
+                                                    echo "PROFILE NOT SET";
+                                                }
+
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -225,7 +242,7 @@ try {
                         <div class="container-fluid">
                             <div class="row g-xl-12">
                                 <div class="col-xxl-12">
-                                    
+
                                 </div>
                             </div>
                         </div>

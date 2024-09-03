@@ -1,9 +1,9 @@
 <?php
 
 include '../../app/connection/MYSQLSERVER.php';
+include '../../app/sessions/AuthSession.php';
 include '../../app/sessions/AdministratorSession.php';
 require '../../app/setting/AESCLASS.php';
-
 
 date_default_timezone_set("Asia/Manila");
 $year_start = date("Y");
@@ -38,7 +38,9 @@ try {
         $infoAddress = secureToken::tokendecrypt($ruserprofile["userAddress"]);
         $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
         $email = $ruserprofile["user_email"];
+        $infosecret = $ruserprofile["user_secret"];
     }
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -212,6 +214,23 @@ try {
                                         </div>
                                     </div>
                                 </div>
+                                <div class="d-flex align-items-center ms-2 ms-lg-3 user_profile">
+                                    <div class="border rounded p-3 bg-light fw-bolder">
+                                        <div class="d-flex flex-column">
+                                            <div class="fw-bold d-flex align-items-center fs-7">
+                                                <?php
+
+                                                if ($fullname != "") {
+                                                    echo $fullname;
+                                                } else {
+                                                    echo "PROFILE NOT SET";
+                                                }
+
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -280,8 +299,12 @@ try {
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                                                 <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Gender" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_gender">
                                                                     <option></option>
-                                                                    <option value="0" <?php if ($infoGender == 0) { echo "selected"; } ?>>Male</option>
-                                                                    <option value="1" <?php if ($infoGender == 1) { echo "selected"; } ?>>Female</option>
+                                                                    <option value="0" <?php if ($infoGender == 0) {
+                                                                                            echo "selected";
+                                                                                        } ?>>Male</option>
+                                                                    <option value="1" <?php if ($infoGender == 1) {
+                                                                                            echo "selected";
+                                                                                        } ?>>Female</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -292,10 +315,18 @@ try {
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                                                 <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Civil Status" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_civilstatus">
                                                                     <option></option>
-                                                                    <option value="SINGLE" <?php if ($infoCivilStatus == "SINGLE") { echo "selected"; } ?>>Single</option>
-                                                                    <option value="MARRIED" <?php if ($infoCivilStatus == "MARRIED") { echo "selected"; } ?>>Married</option>
-                                                                    <option value="DIVORCED" <?php if ($infoCivilStatus == "DIVORCED") { echo "selected"; } ?>>Divorced</option>
-                                                                    <option value="WIDOWED" <?php if ($infoCivilStatus == "WIDOWED") { echo "selected"; } ?>>Widowed</option>
+                                                                    <option value="SINGLE" <?php if ($infoCivilStatus == "SINGLE") {
+                                                                                                echo "selected";
+                                                                                            } ?>>Single</option>
+                                                                    <option value="MARRIED" <?php if ($infoCivilStatus == "MARRIED") {
+                                                                                                echo "selected";
+                                                                                            } ?>>Married</option>
+                                                                    <option value="DIVORCED" <?php if ($infoCivilStatus == "DIVORCED") {
+                                                                                                    echo "selected";
+                                                                                                } ?>>Divorced</option>
+                                                                    <option value="WIDOWED" <?php if ($infoCivilStatus == "WIDOWED") {
+                                                                                                echo "selected";
+                                                                                            } ?>>Widowed</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -320,7 +351,7 @@ try {
                                                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Birthdate</label>
                                                         <div class="col-lg-8">
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Brithdate" id="kt_datepicker_9" value="<?php echo $infoBirthday; ?>"/>
+                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Brithdate" id="kt_datepicker_9" value="<?php echo $infoBirthday; ?>" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -340,7 +371,7 @@ try {
                                                                     <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
                                                                     <input class="form-control form-control-lg form-control-solid fw-bolder" id="kt_inputmask_3" inputmode="text" placeholder="___-____-___" value="<?php echo $contactnumber; ?>">
                                                                 </div>
-                                                                
+
                                                             </div>
                                                         </div>
                                                     </div>

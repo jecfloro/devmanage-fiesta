@@ -1,6 +1,7 @@
 <?php
 
 include '../../app/connection/SQLSERVER.php';
+include '../../app/sessions/AuthSession.php';
 include '../../app/sessions/AdministratorSession.php';
 require '../../app/setting/AESCLASS.php';
 

@@ -1,6 +1,7 @@
 <?php
 
 include '../../app/connection/MYSQLSERVER.php';
+include '../../app/sessions/AuthSession.php';
 include '../../app/sessions/AdministratorSession.php';
 require '../../app/setting/AESCLASS.php';
 
@@ -23,7 +24,6 @@ try {
     $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
 
     if ($cuserprofile > 0) {
-
         $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
         $email = $ruserprofile["user_email"];
     }
@@ -197,6 +197,23 @@ try {
                                             <a href="../signout.php" class="menu-link px-5">
                                                 Sign Out
                                             </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center ms-2 ms-lg-3 user_profile">
+                                    <div class="border rounded p-3 bg-light fw-bolder">
+                                        <div class="d-flex flex-column">
+                                            <div class="fw-bold d-flex align-items-center fs-7">
+                                                <?php
+
+                                                if ($fullname != "") {
+                                                    echo $fullname;
+                                                } else {
+                                                    echo "PROFILE NOT SET";
+                                                }
+
+                                                ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

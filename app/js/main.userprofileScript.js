@@ -13,10 +13,10 @@ $("[data-ii-updateprofile-modal-action='update']").click(function (e) {
     var ii_firstname = $("#ii_firstname").val().trim();
     var ii_middlename = $("#ii_middlename").val().trim();
     var ii_nickname = $("#ii_nickname").val().trim();
-    
+
     var select_gender = $("#select_gender").val();
     var select_civilstatus = $("#select_civilstatus").val();
-    
+
     var ii_nationality = $("#ii_nationality").val().trim();
     var ii_age = $("#ii_age").val().trim();
     var ii_birthdate = $("#kt_datepicker_9").val().trim();
@@ -133,7 +133,7 @@ $("[data-ii-updateprofile-modal-action='update']").click(function (e) {
     } else {
 
         $.ajax({
-            url: '../../app/functions/user-management/fn_updateuserprofile.php',
+            url: '../../app/functions/user-management/fn_updateUserProfile.php',
             type: 'POST',
             data: {
                 ii_lastname: ii_lastname,
@@ -175,7 +175,7 @@ $("[data-ii-updateprofile-modal-action='update']").click(function (e) {
 
 });
 
-$("[data-ii-userpassword-modal-action='submit']").click(function(e) {
+$("[data-ii-userpassword-modal-action='submit']").click(function (e) {
 
     e.preventDefault();
 
@@ -210,6 +210,10 @@ $("[data-ii-userpassword-modal-action='submit']").click(function(e) {
                     $("[data-ii-updateprofile-modal-action='update']").click();
                 }
 
+                if (ii_accesspassword == "enableauth") {
+                    $("[data-ii-googleauth-modal-action='submit']").click();
+                }
+
             }
             if (status.status == 401) {
                 $("#ii_password").val("");
@@ -229,3 +233,178 @@ $("[data-ii-userpassword-modal-action='submit']").click(function(e) {
 
 });
 
+$("#setting_resetpassword").click(function (e) {
+
+    e.preventDefault();
+
+    $("#setting_reset").addClass("d-none");
+    $("#setting_password").removeClass("d-none");
+
+});
+
+$("#setting_password_cancel").click(function (e) {
+
+    e.preventDefault();
+
+    $("#setting_reset").removeClass("d-none");
+    $("#setting_password").addClass("d-none");
+
+});
+
+$("[data-ii-resetpassword-modal-action='update']").click(function (e) {
+
+    var currentpassword = $("#currentpassword").val().trim();
+    var newpassword = $("#newpassword").val().trim();
+    var confirmpassword = $("#confirmpassword").val().trim();
+
+    if (currentpassword == "") {
+        sweetAlertError("Current Password is required!");
+        return;
+    }
+
+    if (newpassword == "") {
+        sweetAlertError("New Password is required!");
+        return;
+    }
+
+    if (confirmpassword == "") {
+        sweetAlertError("Confirm Password is required!");
+        return;
+    }
+
+    if (newpassword !== confirmpassword) {
+        sweetAlertError("Passwords do not match!");
+        return;
+    }
+
+    if (!currentpassword.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Current Password!");
+        return;
+    }
+
+    if (!newpassword.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on New Password!");
+        return;
+    }
+
+    if (!confirmpassword.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Confirm Password!");
+        return;
+    }
+
+    $.ajax({
+        url: '../../app/functions/user-management/fn_updatePassword.php',
+        type: 'POST',
+        data: {
+            currentpassword: currentpassword,
+            newpassword: newpassword
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                $("#setting_reset").removeClass("d-none");
+                $("#setting_password").addClass("d-none");
+
+                $("#currentpassword").val("");
+                $("#newpassword").val("");
+                $("#confirmpassword").val("");
+
+                sweetAlertSuccess(status.message);
+            }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
+});
+
+$("[data-ii-googleauth-modal-action='enable']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var googleAuthenticationCode = $("#googleAuthenticationCode").val().trim();
+
+    if (googleAuthenticationCode == "") {
+        sweetAlertError("6-Digit Code is required!");
+        return;
+    }
+
+    $.ajax({
+        url: '../../app/functions/user-management/fn_enableAuthentication.php',
+        type: 'POST',
+        data: {
+            code: googleAuthenticationCode
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
+
+});
+
+$("[data-ii-googleauth-modal-action='disable']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var googleAuthenticationCode = $("#googleAuthenticationCode").val().trim();
+
+    if (googleAuthenticationCode == "") {
+        sweetAlertError("6-Digit Code is required!");
+        return;
+    }
+
+    $.ajax({
+        url: '../../app/functions/user-management/fn_disableAuthentication.php',
+        type: 'POST',
+        data: {
+            code: googleAuthenticationCode
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
+
+});

@@ -40,20 +40,27 @@
 
                 if ($decpt_userpass === $user_password) {
                     
-                    $_SESSION['session_usercode'] = $usercode;
+                    if ($rselect_user[0]["isActivated"] == 0) {
+                        $response = array('status' => 401, 'message' => "Please check your email to actiate your account!");
+                        echo json_encode($response);
+                    } else {
+
+                        $_SESSION['session_usercode'] = $usercode;
     
-                    $_SESSION['isLoggedIn'] = 1;
-                    $_SESSION['isDisabled'] = $userdisabled;
+                        $_SESSION['isLoggedIn'] = 1;
+                        $_SESSION['isDisabled'] = $userdisabled;
 
-                    $_SESSION['isAdmin'] = $useradmin;
-                    $_SESSION['isCustomer'] = $usercustomer;
-                    $_SESSION['isBranchManager'] = $userbranchmanager;
-                    $_SESSION['isCreditInvestigator'] = $usercreditinvestigator;
-                    $_SESSION['isCreditCoordinator'] = $usercreditcoordinator;
-                    $_SESSION['isCashier'] = $usercashier;
+                        $_SESSION['isAdmin'] = $useradmin;
+                        $_SESSION['isCustomer'] = $usercustomer;
+                        $_SESSION['isBranchManager'] = $userbranchmanager;
+                        $_SESSION['isCreditInvestigator'] = $usercreditinvestigator;
+                        $_SESSION['isCreditCoordinator'] = $usercreditcoordinator;
+                        $_SESSION['isCashier'] = $usercashier;
+                        
+                        $response = array('status' => 200, 'message' => "Authentication Success");
+                        echo json_encode($response);
+                    }
 
-                    $response = array('status' => 200, 'message' => "Authentication Success");
-                    echo json_encode($response);
                     
                 } else {
                     $response = array('status' => 401, 'message' => "Authentication Failed");

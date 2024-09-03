@@ -1,6 +1,6 @@
 <?php
 
-    include '../connection/SQLSERVER.php';
+    include '../connection/MYSQLSERVER.php';
 
     if ($_SESSION['isLoggedIn'] == 0 && $_SESSION['isDisabled'] == 1 && $_SESSION['isAdmin'] == 0) {
         header("Location: /");

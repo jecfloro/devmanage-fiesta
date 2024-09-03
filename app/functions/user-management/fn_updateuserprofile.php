@@ -36,7 +36,6 @@
             $ii_fullname = $ii_lastname.", ".$ii_firstname." ".$ii_middlename;
         }
 
-        $ii_userpass = secureToken::tokenencrypt("12345678");
         $ii_lastnameencrypt = secureToken::tokenencrypt($ii_lastname);
         $ii_firstnameencrypt = secureToken::tokenencrypt($ii_firstname);
         $ii_middlenameencrypt = secureToken::tokenencrypt($ii_middlename);
@@ -49,7 +48,6 @@
         $ii_addressencrypt = secureToken::tokenencrypt($ii_address);
 
         $update = $conn->prepare("UPDATE appsysusers SET 
-            user_password = '$ii_userpass', 
             userLastname = '$ii_lastnameencrypt', 
             userFirstName = '$ii_firstnameencrypt', 
             userMiddleName = '$ii_middlenameencrypt', 

@@ -1,6 +1,7 @@
 <?php
 
 include '../../app/connection/MYSQLSERVER.php';
+include '../../app/sessions/AuthSession.php';
 include '../../app/sessions/AdministratorSession.php';
 require '../../app/setting/AESCLASS.php';
 
@@ -30,7 +31,6 @@ try {
     $user = $conn->prepare("SELECT * FROM appsysusers");
     $user->execute();
     $cuser = $user->rowCount();
-
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -204,6 +204,23 @@ try {
                                         </div>
                                     </div>
                                 </div>
+                                <div class="d-flex align-items-center ms-2 ms-lg-3 user_profile">
+                                    <div class="border rounded p-3 bg-light fw-bolder">
+                                        <div class="d-flex flex-column">
+                                            <div class="fw-bold d-flex align-items-center fs-7">
+                                                <?php
+
+                                                if ($fullname != "") {
+                                                    echo $fullname;
+                                                } else {
+                                                    echo "PROFILE NOT SET";
+                                                }
+
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -275,7 +292,7 @@ try {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <button type="button" class="btn btn-primary d-flex align-items-center ps-5" data-bs-toggle="modal" data-bs-target="#modal_AddUser">
+                                                        <button type="button" class="btn btn-primary d-flex align-items-center ps-5" data-bs-toggle="modal" data-bs-target="#addUserModal">
                                                             <i class="ki-duotone ki-plus fs-2"></i>
                                                             <span>Add User</span>
                                                         </button>
@@ -286,70 +303,6 @@ try {
                                                             </i>
                                                             <span>Refresh</span>
                                                         </a>
-                                                    </div>
-                                                    <div class="modal fade" id="modal_PasswordAccess" tabindex="-1" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered mw-650px">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header" id="modal_hrPasswordAccessHeaderDelete">
-                                                                    <h2 class="fw-bold">Password Authentication Entry</h2>
-                                                                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
-                                                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-body px-5 my-7">
-                                                                    <div>
-                                                                        <div class="d-flex flex-column scroll-y px-5 px-lg-10" id="modal_hrPasswordAccess" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal_hrPasswordAccessHeaderDelete" data-kt-scroll-wrappers="#modal_hrPasswordAccess" data-kt-scroll-offset="300px">
-                                                                            <div class="fv-row mb-0" hidden>
-                                                                                <label class="fw-semibold fs-6 mb-2">Access</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_accesspassword" placeholder="Access Password" readonly />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0" hidden>
-                                                                                <label class="fw-semibold fs-6 mb-2">Confirmation</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="text" class="form-control" id="ii_accessconfirmation" placeholder="Access Confirmation" readonly />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="fv-row mb-0">
-                                                                                <label class="fw-semibold fs-6 mb-2">Password</label>
-                                                                                <div class="input-group mb-5">
-                                                                                    <span class="input-group-text">
-                                                                                        <i class="ki-duotone ki-check-circle text-primary fs-3">
-                                                                                            <span class="path1"></span>
-                                                                                            <span class="path2"></span>
-                                                                                        </i>
-                                                                                    </span>
-                                                                                    <input type="password" class="form-control" id="ii_password" placeholder="Password" aria-label="Password" aria-describedby="ii_password" />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="text-center pt-10">
-                                                                            <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal">
-                                                                                Discard
-                                                                            </button>
-                                                                            <button type="submit" class="btn btn-primary" data-ii-userpassword-modal-action="submit">
-                                                                                <span class="indicator-label">
-                                                                                    Submit
-                                                                                </span>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -390,19 +343,19 @@ try {
                                                                             <span class="badge bg-secondary text-dark rounded">Administrator</span>
                                                                         <?php } ?>
                                                                         <?php if ($ruser["isCustomer"] == 1) { ?>
-                                                                            <span class="bg-secondary text-dark">Customer</span>
+                                                                            <span class="badge bg-secondary text-dark">Customer</span>
                                                                         <?php } ?>
                                                                         <?php if ($ruser["isBranchManager"] == 1) { ?>
-                                                                            <span class="bg-secondary text-dark">Branch Manager</span>
+                                                                            <span class="badge bg-secondary text-dark">Branch Manager</span>
                                                                         <?php } ?>
                                                                         <?php if ($ruser["isCreditInvestigator"] == 1) { ?>
-                                                                            <span class="bg-secondary text-dark">Credit Investigator</span>
+                                                                            <span class="badge bg-secondary text-dark">Credit Investigator</span>
                                                                         <?php } ?>
                                                                         <?php if ($ruser["isCreditCoordinator"] == 1) { ?>
-                                                                            <span class="bg-secondary text-dark">Credit Coordinator</span>
+                                                                            <span class="badge bg-secondary text-dark">Credit Coordinator</span>
                                                                         <?php } ?>
                                                                         <?php if ($ruser["isCashier"] == 1) { ?>
-                                                                            <span class="bg-secondary text-dark">Credit Coordinator</span>
+                                                                            <span class="badge bg-secondary text-dark">Credit Coordinator</span>
                                                                         <?php } ?>
                                                                     </td>
                                                                     <td>
@@ -470,6 +423,44 @@ try {
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" tabindex="-1" id="addUserModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header" id="modal_accessHeader">
+                        <h2 class="fw-bold mt-3">Add User</h2>
+                        <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row g-5">
+                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                <input type="text" id="ii_emailaddress" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Email Address">
+                            </div>
+                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Account Type" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_usertype">
+                                    <option></option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Cashier">Cashier</option>
+                                    <option value="Credit Coordinator">Credit Coordinator</option>
+                                    <option value="Credit Investigator">Credit Investigator</option>
+                                    <option value="Branch Manager">Branch Manager</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-ii-usermngadd-modal-action="submit" data-passaccess="adduser">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <?php include './authsetting.php'; ?>
     </div>
     </div>
     </div>

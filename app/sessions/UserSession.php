@@ -3,7 +3,13 @@
     include '../connection/MYSQLSERVER.php';
 
     if ($_SESSION['isLoggedIn'] == 1 && $_SESSION['isDisabled'] == 0 && $_SESSION['isAdmin'] == 1) {
+
         header("Location: ../../user/administrator/");
+        
+    } else if ($_SESSION['isLoggedIn'] == 1 && $_SESSION['isDisabled'] == 0 && $_SESSION['isCustomer'] == 1) {
+
+        header("Location: ../../user/customer/");
+        
     } else {
 
         $_SESSION['session_usercode'] = 0;
