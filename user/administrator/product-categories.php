@@ -26,6 +26,10 @@ try {
         $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
         $email = $ruserprofile["user_email"];
     }
+
+    $categories = $conn->prepare("SELECT * FROM msc_categories");
+    $categories->execute();
+    $ccategories = $categories->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -278,83 +282,24 @@ try {
                                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_productCategory">
                                                 <thead>
                                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                                        <th></th>
-                                                        <th>Product</th>
-                                                        <th>Email</th>
-                                                        <th>Role</th>
-                                                        <th>User Type</th>
-                                                        <th>Activation Status</th>
+                                                        <th>Category</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-gray-600 fw-semibold">
-                                                    <?php if ($cuser > 0) { ?>
-                                                        <?php while ($ruser = $user->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                    <?php if ($ccategories > 0) { ?>
+                                                        <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
                                                             <tr>
-                                                                <td>
-                                                                    <?php if ($ruser["userFullName"] != "") { ?>
-                                                                        <?php echo secureToken::tokendecrypt($ruserprofile["userFullName"]); ?>
-                                                                    <?php } else { ?>
-                                                                        PROFILE NOT SET
-                                                                    <?php } ?>
-                                                                </td>
-                                                                <td><?php echo $ruser["user_email"]; ?></td>
-                                                                <td>
-                                                                    <?php if ($ruser["isAdmin"] == 1) { ?>
-                                                                        <i class="ki-duotone ki-key fs-2x text-primary">
-                                                                            <span class="path1"></span>
-                                                                            <span class="path2"></span>
-                                                                        </i>
-                                                                    <?php } ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php if ($ruser["isAdmin"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark rounded">Administrator</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isCustomer"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Customer</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isBranchManager"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Branch Manager</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isCreditInvestigator"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Credit Investigator</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isCreditCoordinator"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Credit Coordinator</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isCashier"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Credit Coordinator</span>
-                                                                    <?php } ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php if ($ruser["isActivated"] == 0) { ?>
-                                                                        <i class="ki-duotone ki-sms fs-2x text-primary">
-                                                                            <span class="path1"></span>
-                                                                            <span class="path2"></span>
-                                                                        </i>
-                                                                    <?php } else { ?>
-                                                                        <span class="badge bg-darkgreen">Activated</span>
-                                                                    <?php } ?>
-                                                                </td>
+                                                                <td><?php echo $rcategories["description"]; ?></td>
                                                                 <td class="text-end datainput">
                                                                     <div class="d-flex justify-content-end gap-2">
-                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-edit-action="edit">
+                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rcategories["PK_mscCategories"]; ?>" data-ii-input-edit-action="edit">
                                                                             <i class="ki-duotone ki-notepad-edit fs-2x">
                                                                                 <span class="path1"></span>
                                                                                 <span class="path2"></span>
                                                                             </i>
                                                                         </div>
-                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-lock-action="lock">
-                                                                            <i class="ki-duotone ki-lock-2 fs-2x">
-                                                                                <span class="path1"></span>
-                                                                                <span class="path2"></span>
-                                                                                <span class="path3"></span>
-                                                                                <span class="path4"></span>
-                                                                                <span class="path5"></span>
-                                                                            </i>
-                                                                        </div>
-                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-delete-action="delete">
+                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rcategories["PK_mscCategories"]; ?>" data-ii-input-delete-action="delete">
                                                                             <i class="ki-duotone ki-trash fs-2x">
                                                                                 <span class="path1"></span>
                                                                                 <span class="path2"></span>
@@ -411,6 +356,59 @@ try {
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-primary" data-ii-categoryadd-modal-action="submit" data-passaccess="addcategory">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" tabindex="-1" id="editCategoryModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" id="modal_accessHeader">
+                                <h2 class="fw-bold mt-3">Edit Category</h2>
+                                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row g-5">
+                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                        <input type="text" id="ii_categoryidedit" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Category" hidden>
+                                        <input type="text" id="ii_categoryedit" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Category">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-ii-categoryedit-modal-action="submit" data-passaccess="editcategory">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" tabindex="-1" id="deleteCategoryModal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header" id="modal_accessHeader">
+                                <h2 class="fw-bold mt-3">Delete Category</h2>
+                                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                </div>
+                            </div>
+                            
+                            <div class="modal-body">
+                                <div class="row g-5">
+                                    <div class="col-xl-12 fv-row fv-plugins-icon-container text-center">
+                                        <input type="text" id="ii_categoryiddelete" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Category" hidden>
+                                        <p>All products assigned to this category will tagged as "Unassigned"</p>
+                                        <p class="fw-bolder text-danger mb-n3">Confirm Delete?</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-ii-categorydelete-modal-action="submit" data-passaccess="deletecategory">Delete</button>
                             </div>
                         </div>
                     </div>

@@ -40,9 +40,6 @@ var KTUsersList = function () {
 
             initUserTable();
             handleSearchDatatable();
-            handleFilterDatatable();
-            handleResetDatatable();
-
         }
     }
 }();

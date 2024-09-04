@@ -11,7 +11,8 @@ $year_end = date("Y") + 1;
 $date = date("Y-m-d");
 $todaysDate = date("Y-m-d H:i:s");
 
-$ii_category = strtoupper($_POST['ii_category']);
+$ii_categoryidedit = $_POST['ii_categoryidedit'];
+$ii_categoryedit = strtoupper($_POST['ii_categoryedit']);
 
 try {
     $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
@@ -23,12 +24,12 @@ try {
 
     if ($cselect_category == 0) {
 
-        $insert = $conn->prepare("INSERT INTO `msc_categories` (`description`) VALUES ('$ii_category')");
-        $insert->execute();
-        $cinsert = $insert->rowCount();
+        $update = $conn->prepare("UPDATE `msc_categories` SET `description` = '$ii_categoryedit' WHERE PK_mscCategories = '$ii_categoryidedit'");
+        $update->execute();
+        $cupdate = $update->rowCount();
         
-        if ($cinsert > 0) {
-            $response = array('status' => 200, 'message' => "Category Added!");
+        if ($cupdate > 0) {
+            $response = array('status' => 200, 'message' => "Category Updated!");
             echo json_encode($response);
         } else {
             $response = array('status' => 500, 'message' => "Server Error, Please contact administrator!");

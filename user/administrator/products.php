@@ -26,6 +26,10 @@ try {
         $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
         $email = $ruserprofile["user_email"];
     }
+
+    $categories = $conn->prepare("SELECT * FROM msc_categories");
+    $categories->execute();
+    $ccategories = $categories->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -308,6 +312,13 @@ try {
                                                 <div class="col-xl-12 mt-5">
                                                     <p class="fw-bolder text-gray-600">Price</p>
                                                     <div class="row g-sm-3 g-xl-0">
+                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5">
+                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Price Scheme" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_category">
+                                                                <option>Regular Price</option>
+                                                                <option>Sale Price</option>
+                                                                <option>Repo Price</option>
+                                                            </select>
+                                                        </div>
                                                         <div class="col-xl-12 col-lg-6 col-md-6 col-sm-6">
                                                             <div class="input-group input-group-solid mb-5">
                                                                 <span class="input-group-text fw-bolder" id="basic-addon1">₱</span>
@@ -324,8 +335,14 @@ try {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer">
-
+                                        <div class="card-footer d-flex justify-content-center align-items-center btn btn-light bg-darkgreen p-3">
+                                            <div class="d-flex align-items-center gap-2 p-3">
+                                                <i class="ki-duotone ki-arrows-loop text-dark fs-2">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <span>Reset Filters</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -340,9 +357,9 @@ try {
                                             <div class="card-toolbar">
                                                 <!-- Search -->
                                                 <div class="d-flex justify-content-end gap-3 flex-wrap">
-                                                    <button type="button" class="btn btn-primary d-flex align-items-center ps-5" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                                                    <button type="button" class="btn btn-primary d-flex align-items-center ps-5" data-bs-toggle="modal" data-bs-target="#addProductModal">
                                                         <i class="ki-duotone ki-plus fs-2"></i>
-                                                        <span>Add User</span>
+                                                        <span>Add Product</span>
                                                     </button>
                                                     <a href="" class="btn btn-secondary d-flex align-items-center">
                                                         <i class="ki-duotone ki-arrow-circle-right fs-2">
@@ -468,6 +485,109 @@ try {
                         </div>
                     </div>
                 </div>
+                <!-- Modal -->
+                <div class="modal fade" tabindex="-1" id="addProductModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header" id="modal_accessHeader">
+                                <h2 class="fw-bold mt-3">Add Product</h2>
+                                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row g-5">
+                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                        <p class="fw-bolder text-muted">General Information</p>
+                                        <div class="">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="chkbxReturnable">
+                                                <label class="form-check-label fw-bolder text-dark" for="chkbxReturnable">
+                                                    Returnable Product
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productname" class="fw-bolder">Product Name</label>
+                                            <input type="text" id="ii_productname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Product Name">
+                                        </div>
+                                        <div class="row g-3 mt-5">
+                                            <div class="col-xl-6">
+                                                <div class="">
+                                                    <label for="ii_productsku" class="fw-bolder">Product SKU</label>
+                                                    <input type="text" id="ii_productsku" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="XXX-XXX-XX">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="">
+                                                    <label for="ii_productcategory" class="fw-bolder">Product Category</label>
+                                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Category" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_productcategory">
+                                                        <option></option>
+                                                        <?php if ($ccategories > 0) { ?>
+                                                            <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                                <option value="<?php echo $rcategories["PK_mscCategories"]; ?>"><?php echo $rcategories["description"]; ?></option>
+                                                            <?php } ?>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productdescription" class="fw-bolder">Product Description</label>
+                                            <textarea name="" id="ii_productdescription" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Product Description"></textarea>
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productdetails" class="fw-bolder">Product Details</label>
+                                            <div class="ii_productdetailscontainer">
+                                                <!-- <div class="row mb-5 g-3 pd_item" data-count="pditemCount">
+                                                    <div class="col-xl-6">
+                                                        <input type="text" id="ii_productname1" class="form-control form-control-lg form-control-solid fw-bolder ii_productname1" placeholder="Description Title">
+                                                    </div>
+                                                    <div class="col-xl-6 d-flex gap-3 dataInput">
+                                                        <input type="text" id="ii_productname2" class="form-control form-control-lg form-control-solid fw-bolder ii_productname2" placeholder="Details">
+                                                        <div class="d-flex justify-content-end align-items-center" data-input-delete="delete" data-del="pditemCount">
+                                                            <span class="btn btn-light">
+                                                                delete
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                            <div class="d-flex justify-content-end">
+                                                <button class="w-100 btn btn-light" data-add-product-details="add">Add</button>
+                                            </div>
+                                        </div>
+                                        <p class="fw-bolder text-muted mt-5">Quantity &amp; Reorder</p>
+                                        <div class="mt-5">
+                                            <label for="ii_totalquantity" class="fw-bolder">Total Quantity</label>
+                                            <input type="number" min="0" max="9999" id="ii_totalquantity" class="form-control form-control-lg form-control-solid fw-bolder" value="0">
+                                        </div>
+                                        <p class="fw-bolder text-muted mt-5">Pricing</p>
+                                        <div class="mt-5">
+                                            <label for="ii_productname" class="fw-bolder">Regular Price</label>
+                                            <input type="text" id="ii_regularprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productname" class="fw-bolder">Sale Price</label>
+                                            <input type="text" id="ii_regularprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productname" class="fw-bolder">Repo Price</label>
+                                            <input type="text" id="ii_regularprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-ii-categoryadd-modal-action="submit" data-passaccess="addcategory">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
             </div>
         </div>
     </div>
@@ -481,6 +601,7 @@ try {
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
     <script src="../../assets/js/datatables/tb-products.js"></script>
+    <script type="module" src="../../app/js/main.product.js"></script>
 </body>
 
 </html>

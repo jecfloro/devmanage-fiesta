@@ -80,7 +80,7 @@
                                     <div class="text-muted fw-semibold fs-5 mb-5 mt-5">Enter the verification code from Google Authenticator</div>
                                 </div>
                                 <div class="fv-row mb-10">
-                                    <input class="form-control form-control-lg form-control-solid" maxlength="6" type="text" name="code_verify" id="code_verify" autocomplete="off" placeholder="Enter 6-Digit Code" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')"/>
+                                    <input class="form-control form-control-lg form-control-solid" maxlength="6" type="text" name="code_verify" id="code_verify" autocomplete="off" placeholder="Enter 6-Digit Code" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" autofocus/>
                                 </div>
                                 <div class="text-center">
                                     <button class="btn btn-lg btn-darkgreen w-100 mb-5" id="authBtnVerify_submit">

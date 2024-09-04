@@ -63,15 +63,26 @@ INSERT INTO `appsysusers` (`PK_appsysUsers`, `user_email`, `user_password`, `use
 	(1, 'administrator@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', '230704', 'qkIR62zAoY', 'bPXOrCk0jW3EdsoDBKpuGzHt8iRq2y', 'RMZDIUD2N3S6SDML', b'1', b'1', NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bk9ydjNYeS9zWVM1R3k0VVU2am5ZZz09', 'TXdnVFlYbUVWYnBZdVk2aHRKTHlaZz09', 'SHd5SDEvcm5ybFVEWS9oVXk5d2srZz09', 'dzFZbWtFNDd6STFjS1A3L0pOc3NUZz09', 0, 'NTdYalptTFptVEFQbWcvd1AwaDFadz09', 'Vm40eENxcHpDNWlHY294QndTdEVxdz09', 25, '1999-05-11', 'QjFENitrTzdoY1ROREpyWWxMNGM3dz09', 'RlBQVGdqSG1PYUpXRzRSaXlpaTVqQT09', 'bDByTTlvSE1FU3lxTkxZejhERnV0WW1Nd3FrT1FYbk91dEwrNUtoOVF3eWxHR2V3cGJrYmtwdTQ4eHZreDNDWQ==', 'enVKT2doWjRJZW5RVVZxR2xPWGt6czRVV01SZkQ0cjJWZ0RvaCtpd3Avaz0='),
 	(23, 'jec.floro@gmail.com', 'V28rbitVZnRNU0hPb3l1M1VCTWFzUT09', NULL, 'jFCoBrTieH', 'wGkZDBKWCbXySc8fsNrRJ4Pvox0tuF', '27YTCBXKX7A3G72J', NULL, b'1', NULL, NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
--- Dumping structure for table devmanage-fiesta.msccategories
-CREATE TABLE IF NOT EXISTS `msccategories` (
+-- Dumping structure for table devmanage-fiesta.msc_categories
+CREATE TABLE IF NOT EXISTS `msc_categories` (
   `PK_mscCategories` int NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`PK_mscCategories`),
   UNIQUE KEY `description` (`description`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.msccategories: ~0 rows (approximately)
+-- Dumping data for table devmanage-fiesta.msc_categories: ~10 rows (approximately)
+INSERT INTO `msc_categories` (`PK_mscCategories`, `description`) VALUES
+	(12, 'AIR CONDITIONER'),
+	(8, 'FREEZER'),
+	(5, 'LAPTOP'),
+	(3, 'MICROWAVE OVEN'),
+	(9, 'MOTORCYCLE'),
+	(4, 'SMARTPHONE'),
+	(6, 'SOFA'),
+	(7, 'SPEAKERS'),
+	(10, 'STOVE'),
+	(1, 'TELEVISION');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

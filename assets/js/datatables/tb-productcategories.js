@@ -18,7 +18,7 @@ var KTUsersList = function () {
             "pageLength": 10,
             "lengthChange": true,
             'columnDefs': [
-                { orderable: false, targets: 5 }
+                { orderable: false, targets: 1 }
             ]
         });
     }
@@ -40,8 +40,6 @@ var KTUsersList = function () {
 
             initUserTable();
             handleSearchDatatable();
-            handleFilterDatatable();
-            handleResetDatatable();
 
         }
     }

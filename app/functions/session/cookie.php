@@ -20,7 +20,6 @@ $date = date("Y-m-d");
 $todaysDate = date("Y-m-d H:i:s");
 
 $usercode = $_SESSION['session_usercode'];
-$code = $_POST['code'];
 
 try {
     $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
@@ -33,16 +32,7 @@ try {
 
         $usersecret = $rselect_user[0]["user_secret"];
 
-        if ($generateSecret->checkCode($usersecret, $code)) {
-            
-            setcookie("PHPSESSCOOKIE", $usersecret, time() + 43200, "/");
-            $response = array('status' => 200, 'message' => "Authentication Success!");
-            echo json_encode($response);
-
-        } else {
-            $response = array('status' => 401, 'message' => "Authentication Failed!");
-            echo json_encode($response);
-        }
+        setcookie("PHPSESSCOOKIE", $usersecret, time() - 86400, "/");
 
     }
 
