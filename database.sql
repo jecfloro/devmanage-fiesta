@@ -69,20 +69,90 @@ CREATE TABLE IF NOT EXISTS `msc_categories` (
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`PK_mscCategories`),
   UNIQUE KEY `description` (`description`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.msc_categories: ~10 rows (approximately)
+-- Dumping data for table devmanage-fiesta.msc_categories: ~11 rows (approximately)
 INSERT INTO `msc_categories` (`PK_mscCategories`, `description`) VALUES
-	(12, 'AIR CONDITIONER'),
-	(8, 'FREEZER'),
-	(5, 'LAPTOP'),
-	(3, 'MICROWAVE OVEN'),
-	(9, 'MOTORCYCLE'),
-	(4, 'SMARTPHONE'),
-	(6, 'SOFA'),
-	(7, 'SPEAKERS'),
-	(10, 'STOVE'),
-	(1, 'TELEVISION');
+	(16, 'aVlWRjNvNzFJRlRmY1FncjE4V1Z6QT09'),
+	(23, 'd2xCb3hBYTN4dWY2OTRIRG1SaTlCUT09'),
+	(22, 'eEF5MkkrOGhDZjkxRTYreWFLVjJqQT09'),
+	(21, 'ejNXUmM1a210bUFFcE1zRWVUZEE5UT09'),
+	(20, 'eVAwWVE4UUw1eWRrUXRTdzBPem5CUT09'),
+	(18, 'K0YyR2FyOTI0V3NHSEd1TjJqcWd3Zz09'),
+	(19, 'N1B1b2xwNnAwa3NRaUpmTlRvamVqUT09'),
+	(15, 'RCtZOHIwcEU2VWwvOWo0OGJpT01Hdz09'),
+	(17, 'RUlKOEFod0hYN1M0QjBFdCt4aFFmQT09'),
+	(13, 'RWl3Rm5RSVpaYW1EOE02M0U2ZlRYZz09'),
+	(14, 'ZEp3MmRNNEFuZGFXbU5HNDZzWWsxUT09');
+
+-- Dumping structure for table devmanage-fiesta.msc_details
+CREATE TABLE IF NOT EXISTS `msc_details` (
+  `PK_mscDetails` int NOT NULL AUTO_INCREMENT,
+  `order` int DEFAULT NULL,
+  `detailsId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`PK_mscDetails`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table devmanage-fiesta.msc_details: ~0 rows (approximately)
+INSERT INTO `msc_details` (`PK_mscDetails`, `order`, `detailsId`, `title`, `description`) VALUES
+	(2, 1, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Refrigerator Type', 'Top Freezer, Two Door'),
+	(3, 2, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Capacity', '12.7 cu.ft.'),
+	(4, 3, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'CSPF Rating', '377'),
+	(5, 4, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Door Material', 'PCM'),
+	(6, 5, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Door Finish', 'Nature Beige'),
+	(7, 6, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Handle Type', 'Horizontal Packet'),
+	(8, 7, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Package Weight', '66.0 kg'),
+	(9, 8, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Unit Weight', '60.0 kg'),
+	(10, 9, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Unit Dimension (WxHxD)', '600 x 1720 x 710 mm'),
+	(11, 10, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Warranty', '2 Years on Parts and Labor | 10 Years on Compressor'),
+	(12, 1, 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 'Refrigerator Type', 'Bottom Freezer, Two Door'),
+	(13, 2, 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 'Capacity', '14.8 cu.ft. / 420 liters'),
+	(14, 3, 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 'CSPF Rating', '479'),
+	(15, 4, 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 'Rated Power Input', '83 W'),
+	(16, 5, 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 'Color', 'Glossy Silver Steel'),
+	(17, 6, 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 'Gross Weight', '74.0 kg'),
+	(18, 8, 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 'Net Weight', '67.0 kg'),
+	(19, 9, 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 'Unit Dimension (WxHxD)', '686 x 1790 x 695 mm'),
+	(20, 10, 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 'Warranty', '1 Year on Parts and Labor | 12 Years on Compressor'),
+	(21, 1, 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 'Refrigerator Type', 'Side by Side'),
+	(22, 2, 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 'Gross Capacity', '24.7 cu.ft.'),
+	(23, 3, 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 'Net Capacity', '22.9 cu.ft.'),
+	(24, 4, 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 'Color', 'Gentle Silver Matt'),
+	(25, 5, 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 'Package Weight', '108.0 kg'),
+	(26, 6, 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 'Net Weight', '101.0 kg'),
+	(27, 7, 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 'Package Dimension (WxHxD)', '974 x 1909 x 776 mm'),
+	(28, 8, 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 'Net Dimension (WxHxD)', '912 x 1780 x 716 mm'),
+	(29, 9, 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 'Warranty', '1 Year on Parts and Labor | 20 Years on Compressor');
+
+-- Dumping structure for table devmanage-fiesta.msc_products
+CREATE TABLE IF NOT EXISTS `msc_products` (
+  `PK_mscProducts` int NOT NULL AUTO_INCREMENT,
+  `productName` varchar(255) DEFAULT NULL,
+  `productSKU` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `FK_mscCategories` int DEFAULT NULL COMMENT 'TABLE MSCCATEGORIES',
+  `productDescription` longtext,
+  `FK_detailsId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'TABLE MSCPRODUCTS',
+  `quantity` int DEFAULT NULL,
+  `regularPrice` decimal(10,2) DEFAULT '0.00',
+  `salePrice` decimal(10,2) DEFAULT '0.00',
+  `repoPrice` decimal(10,2) DEFAULT '0.00',
+  `stockMinimum` int DEFAULT NULL,
+  `stockMaximum` int DEFAULT NULL,
+  `isRegular` bit(1) DEFAULT NULL,
+  `isSale` bit(1) DEFAULT NULL,
+  `isRepo` bit(1) DEFAULT NULL,
+  `productStatus` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`PK_mscProducts`),
+  UNIQUE KEY `productName` (`productName`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table devmanage-fiesta.msc_products: ~3 rows (approximately)
+INSERT INTO `msc_products` (`PK_mscProducts`, `productName`, `productSKU`, `FK_mscCategories`, `productDescription`, `FK_detailsId`, `quantity`, `regularPrice`, `salePrice`, `repoPrice`, `stockMinimum`, `stockMaximum`, `isRegular`, `isSale`, `isRepo`, `productStatus`) VALUES
+	(21, 'MndPek9kSXkyK0t4aG9ucU1ad3Bxdz09', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', 23, 'STF5cS90VElsNjUreURNSEhHY1RzYzFnV0JMekhqLzVyc2c1VktDNVRMTGFFdkRHNHh1aThGVzhPKzlrc3lIRXdpZEkvMEl1RnpkTkt6QmFrVldjYlFEcW9QREIxQkFvT0ZZZ0FEcjhIWmtnR0dqR3lxRHNBRXcwSVhnWEhTa014RFFaa1RVbkJIMzh5endhbm85U0tjeXJhN1JQa1Y0dEJTOHcxRG1CODl6aVRSTnYxQTBkNzR3MDVHa05laWtmeFQvdkMzeCtvTWdVamVyR1ZFTFVhQT09', 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 2, 31495.00, 0.00, 0.00, 0, 0, b'1', NULL, NULL, 'Active'),
+	(22, 'QVZTWWcwVy9BeE56M2I4b2Z0eitiNW83RjRaVGlMdnVqYUFVWXpHdWc5az0=', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', 23, 'b0pkZisxTFNVejJoZDFiK2NZdXVkNlE3NWM2K1AzSk9JcWgxcStDWDIwVG1FT3hucjUwRTU2NVBZb0NueVJhQkRIbUVIR1Y2d3RxVXJsS2RsNmYxamZHMExrb3hkS2lrQ0tia3ZZMWlFdFg3dUpGUGtNOFhoWnBiTGt1U1FHTXBacHhEaUFCaXR0bG5KNXgxYXRnK1J1ZW8yVHdOZkZHeTMxZnhBcU1yUWQvY3BiUXFaYWlFeVpuUzJCVWc4WW5mWllxam4ybUpyRmV6bk1uYjk2QS9BK2xhdGlxUGhMRzZSU3dJTDQ3OEpvZW1lRkdRY1hNSHh5bHUrNzRORFFXbDBuSVVWRG5lUVpNK1FYV1pJVWtBVnVSa3BIdmptd2pmRXgzWlpzQ3FlQjRFWXg0bVNwMm1lZmlRamdnbE1GenF0Z1NZQUptMU9TWXZTVzhTMFhyTzZtSzAxVCtZU29vQVBzaFRXY1dOVGRzPQ==', 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 5, 42699.00, 0.00, 0.00, 0, 0, b'1', NULL, NULL, 'Inactive'),
+	(25, 'VmhsU2V6aE8vRXM3ZjVxdGIrbnNBSGJwUEZ3OFVvVEd2OHR4S21PWmt0ND0=', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', 23, 'ZmtIUHdDOWp3dW1rTk1iaEFLekFKYmJLQVFNeTNCcGxINE9OcjZBaW1CY3dSOGowTjFnWjFIaFcrV2VFMkFKQUFoTStGN1A4UXQvQVNaMkFDbmtsTDFvVWluOGZ5RnFpL2JFZ3hwcXkvNEhubmlIejByRjdBK3BQand4UVdNVHNOUktSbjhiakJ0eVhnOGJrZEc3R05DVTI5TnMrK3cxWU5VL1JTUDI2K0RINS9vRW5FbC8zV21wcXI1enJTUG5Rdkh5S3gwY3k5dE5IanhtNEFHVkpWNTlWUUJzZWQzUEQrVEdLNU8wbG9weURLdFFkczg4MUgzT0prUVFVZzJuZllvaDg0T3k5eExwUlkzeTdTdzloY284QWxIeW9hMVRwcm94aXJwWUYza2trbFB3Mzc0QnBLK2o4a1RtNDFyTWZGWE9halRLQU5wdmk5VXNKVitleTdBPT0=', 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 2, 56376.00, 0.00, 0.00, 0, 0, b'1', NULL, NULL, 'Draft');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
