@@ -23,7 +23,7 @@ try {
     $rcategory = $category->fetchall(PDO::FETCH_ASSOC);
 
     if ($rcategory > 0) {
-        $response = array('status' => 200, 'category' => $rcategory[0]["description"]);
+        $response = array('status' => 200, 'category' => secureToken::tokendecrypt($rcategory[0]["description"]));
         echo json_encode($response);
     } else {
         $response = array('status' => 500, 'message' => "System Error, Please contact administrator!");

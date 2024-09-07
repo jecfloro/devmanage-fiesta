@@ -23,7 +23,9 @@ try {
 
     if ($cselect_category == 0) {
 
-        $insert = $conn->prepare("INSERT INTO `msc_categories` (`description`) VALUES ('$ii_category')");
+        $categoryEncrypt = secureToken::tokenencrypt($ii_category);
+
+        $insert = $conn->prepare("INSERT INTO `msc_categories` (`description`) VALUES ('$categoryEncrypt')");
         $insert->execute();
         $cinsert = $insert->rowCount();
         

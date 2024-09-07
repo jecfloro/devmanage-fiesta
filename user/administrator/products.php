@@ -30,6 +30,14 @@ try {
     $categories = $conn->prepare("SELECT * FROM msc_categories");
     $categories->execute();
     $ccategories = $categories->rowCount();
+
+    $categoriesfilter = $conn->prepare("SELECT * FROM msc_categories");
+    $categoriesfilter->execute();
+    $ccategoriesfilter = $categoriesfilter->rowCount();
+
+    $product = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories");
+    $product->execute();
+    $cproduct = $product->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -290,7 +298,7 @@ try {
                                                     <p class="fw-bolder text-gray-600">Stock Alert</p>
                                                     <div class="row g-3">
                                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Stock Status" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_stock">
+                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Stock Status" data-allow-clear="false" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_stock">
                                                                 <option>All Stock</option>
                                                                 <option>Low</option>
                                                                 <option>High</option>
@@ -303,8 +311,13 @@ try {
                                                     <p class="fw-bolder text-gray-600">Category</p>
                                                     <div class="row g-3">
                                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Category" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_category">
+                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Category" data-allow-clear="false" data-kt-user-table-filter="usertype" data-hide-search="true" data-kt-product-table-filter="category">
                                                                 <option>All Category</option>
+                                                                <?php if ($ccategories > 0) { ?>
+                                                                    <?php while ($rcategoriesfilter = $categoriesfilter->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                                        <option value="<?php echo $rcategoriesfilter["PK_mscCategories"]; ?>"><?php echo secureToken::tokendecrypt($rcategoriesfilter["description"]); ?></option>
+                                                                    <?php } ?>
+                                                                <?php } ?>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -312,23 +325,16 @@ try {
                                                 <div class="col-xl-12 mt-5">
                                                     <p class="fw-bolder text-gray-600">Price</p>
                                                     <div class="row g-sm-3 g-xl-0">
-                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-5">
-                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Price Scheme" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_category">
-                                                                <option>Regular Price</option>
-                                                                <option>Sale Price</option>
-                                                                <option>Repo Price</option>
-                                                            </select>
-                                                        </div>
                                                         <div class="col-xl-12 col-lg-6 col-md-6 col-sm-6">
                                                             <div class="input-group input-group-solid mb-5">
                                                                 <span class="input-group-text fw-bolder" id="basic-addon1">₱</span>
-                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Minimum Price" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')">
+                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Minimum Price" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" data-kt-product-table-filter="min">
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12 col-lg-6 col-md-6 col-sm-6">
                                                             <div class="input-group input-group-solid mb-5">
                                                                 <span class="input-group-text fw-bolder" id="basic-addon1">₱</span>
-                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Maximum Price" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')">
+                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Maximum Price" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" data-kt-product-table-filter="max">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -375,92 +381,29 @@ try {
                                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_product">
                                                 <thead>
                                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                                        <th>Fullname</th>
-                                                        <th>Email</th>
-                                                        <th>Role</th>
-                                                        <th>User Type</th>
-                                                        <th>Activation Status</th>
+                                                        <th>Product Name</th>
+                                                        <th>Category</th>
+                                                        <th>Stock</th>
+                                                        <th>Price</th>
+                                                        <th>Status</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-gray-600 fw-semibold">
-                                                    <?php if ($cuser > 0) { ?>
-                                                        <?php while ($ruser = $user->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                    <?php if ($cproduct > 0) { ?>
+                                                        <?php while ($rproduct = $product->fetch(PDO::FETCH_ASSOC)) { ?>
                                                             <tr>
                                                                 <td>
-                                                                    <?php if ($ruser["userFullName"] != "") { ?>
-                                                                        <?php echo secureToken::tokendecrypt($ruserprofile["userFullName"]); ?>
-                                                                    <?php } else { ?>
-                                                                        PROFILE NOT SET
-                                                                    <?php } ?>
-                                                                </td>
-                                                                <td><?php echo $ruser["user_email"]; ?></td>
-                                                                <td>
-                                                                    <?php if ($ruser["isAdmin"] == 1) { ?>
-                                                                        <i class="ki-duotone ki-key fs-2x text-primary">
-                                                                            <span class="path1"></span>
-                                                                            <span class="path2"></span>
-                                                                        </i>
-                                                                    <?php } ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php if ($ruser["isAdmin"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark rounded">Administrator</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isCustomer"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Customer</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isBranchManager"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Branch Manager</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isCreditInvestigator"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Credit Investigator</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isCreditCoordinator"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Credit Coordinator</span>
-                                                                    <?php } ?>
-                                                                    <?php if ($ruser["isCashier"] == 1) { ?>
-                                                                        <span class="badge bg-secondary text-dark">Credit Coordinator</span>
-                                                                    <?php } ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php if ($ruser["isActivated"] == 0) { ?>
-                                                                        <i class="ki-duotone ki-sms fs-2x text-primary">
-                                                                            <span class="path1"></span>
-                                                                            <span class="path2"></span>
-                                                                        </i>
-                                                                    <?php } else { ?>
-                                                                        <span class="badge bg-darkgreen">Activated</span>
-                                                                    <?php } ?>
-                                                                </td>
-                                                                <td class="text-end datainput">
-                                                                    <div class="d-flex justify-content-end gap-2">
-                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-edit-action="edit">
-                                                                            <i class="ki-duotone ki-notepad-edit fs-2x">
-                                                                                <span class="path1"></span>
-                                                                                <span class="path2"></span>
-                                                                            </i>
-                                                                        </div>
-                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-lock-action="lock">
-                                                                            <i class="ki-duotone ki-lock-2 fs-2x">
-                                                                                <span class="path1"></span>
-                                                                                <span class="path2"></span>
-                                                                                <span class="path3"></span>
-                                                                                <span class="path4"></span>
-                                                                                <span class="path5"></span>
-                                                                            </i>
-                                                                        </div>
-                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-delete-action="delete">
-                                                                            <i class="ki-duotone ki-trash fs-2x">
-                                                                                <span class="path1"></span>
-                                                                                <span class="path2"></span>
-                                                                                <span class="path3"></span>
-                                                                                <span class="path4"></span>
-                                                                                <span class="path5"></span>
-                                                                            </i>
-                                                                        </div>
+                                                                    <div class="">
+                                                                        <div class="fw-bolder text-primary"><?php echo secureToken::tokendecrypt($rproduct["productName"]); ?></div>
+                                                                        <span class="fs-6 text-muted"><?php echo secureToken::tokendecrypt($rproduct["productSKU"]); ?></span>
                                                                     </div>
                                                                 </td>
+                                                                <td><?php echo secureToken::tokendecrypt($rproduct["description"]); ?></td>
+                                                                <td><?php echo $rproduct["quantity"]; ?></td>
+                                                                <td><?php echo $rproduct["regularPrice"]; ?></td>
+                                                                <td><span><?php echo $rproduct["productStatus"]; ?></span></td>
+                                                                <td></td>
                                                             </tr>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -509,24 +452,24 @@ try {
                                             </div>
                                         </div>
                                         <div class="mt-5">
-                                            <label for="ii_productname" class="fw-bolder">Product Name</label>
+                                            <label for="ii_productname" class="fw-bolder required">Product Name</label>
                                             <input type="text" id="ii_productname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Product Name">
                                         </div>
                                         <div class="row g-3 mt-5">
                                             <div class="col-xl-6">
                                                 <div class="">
-                                                    <label for="ii_productsku" class="fw-bolder">Product SKU</label>
+                                                    <label for="ii_productsku" class="fw-bolder required">Product SKU</label>
                                                     <input type="text" id="ii_productsku" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="XXX-XXX-XX">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="">
-                                                    <label for="ii_productcategory" class="fw-bolder">Product Category</label>
+                                                    <label for="ii_productcategory" class="fw-bolder required">Product Category</label>
                                                     <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Category" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_productcategory">
                                                         <option></option>
                                                         <?php if ($ccategories > 0) { ?>
                                                             <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
-                                                                <option value="<?php echo $rcategories["PK_mscCategories"]; ?>"><?php echo $rcategories["description"]; ?></option>
+                                                                <option value="<?php echo $rcategories["PK_mscCategories"]; ?>"><?php echo secureToken::tokendecrypt($rcategories["description"]); ?></option>
                                                             <?php } ?>
                                                         <?php } ?>
                                                     </select>
@@ -534,25 +477,12 @@ try {
                                             </div>
                                         </div>
                                         <div class="mt-5">
-                                            <label for="ii_productdescription" class="fw-bolder">Product Description</label>
+                                            <label for="ii_productdescription" class="fw-bolder required">Product Description</label>
                                             <textarea name="" id="ii_productdescription" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Product Description"></textarea>
                                         </div>
                                         <div class="mt-5">
-                                            <label for="ii_productdetails" class="fw-bolder">Product Details</label>
+                                            <label for="ii_productdetails" class="fw-bolder required">Product Details</label>
                                             <div class="ii_productdetailscontainer">
-                                                <!-- <div class="row mb-5 g-3 pd_item" data-count="pditemCount">
-                                                    <div class="col-xl-6">
-                                                        <input type="text" id="ii_productname1" class="form-control form-control-lg form-control-solid fw-bolder ii_productname1" placeholder="Description Title">
-                                                    </div>
-                                                    <div class="col-xl-6 d-flex gap-3 dataInput">
-                                                        <input type="text" id="ii_productname2" class="form-control form-control-lg form-control-solid fw-bolder ii_productname2" placeholder="Details">
-                                                        <div class="d-flex justify-content-end align-items-center" data-input-delete="delete" data-del="pditemCount">
-                                                            <span class="btn btn-light">
-                                                                delete
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                             <div class="d-flex justify-content-end">
                                                 <button class="w-100 btn btn-light" data-add-product-details="add">Add</button>
@@ -563,18 +493,65 @@ try {
                                             <label for="ii_totalquantity" class="fw-bolder">Total Quantity</label>
                                             <input type="number" min="0" max="9999" id="ii_totalquantity" class="form-control form-control-lg form-control-solid fw-bolder" value="0">
                                         </div>
+                                        <div class="row g-3">
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_minstock" class="fw-bolder">Minimum Stock</label>
+                                                    <input type="number" min="0" max="99999" id="ii_minstock" class="form-control form-control-lg form-control-solid fw-bolder" value="0">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_maxstock" class="fw-bolder">Maximum Stock</label>
+                                                    <input type="number" min="0" max="99999" id="ii_maxstock" class="form-control form-control-lg form-control-solid fw-bolder" value="0">
+                                                </div>
+                                            </div>
+                                        </div>
                                         <p class="fw-bolder text-muted mt-5">Pricing</p>
-                                        <div class="mt-5">
-                                            <label for="ii_productname" class="fw-bolder">Regular Price</label>
-                                            <input type="text" id="ii_regularprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                        <div class="row g-3">
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_regularprice" class="fw-bolder required">Regular Price</label>
+                                                    <input type="text" id="ii_regularprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_saleprice" class="fw-bolder">Sale Price</label>
+                                                    <input type="text" id="ii_saleprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_repoprice" class="fw-bolder">Repo Price</label>
+                                                    <input type="text" id="ii_repoprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mt-5">
-                                            <label for="ii_productname" class="fw-bolder">Sale Price</label>
-                                            <input type="text" id="ii_regularprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
-                                        </div>
-                                        <div class="mt-5">
-                                            <label for="ii_productname" class="fw-bolder">Repo Price</label>
-                                            <input type="text" id="ii_regularprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                        <p class="fw-bolder text-muted mt-5">Product Status</p>
+                                        <div class="row g-3 mt-5">
+                                            <div class="col-xl-6">
+                                                <div class="">
+                                                    <label for="ii_productsetting" class="fw-bolder required">Product Setting</label>
+                                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Product Setting" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_productsetting">
+                                                        <option value=""></option>
+                                                        <option value="Regular">Regular</option>
+                                                        <option value="Sale">Sale</option>
+                                                        <option value="Repo">Repo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="">
+                                                    <label for="ii_productstatus" class="fw-bolder required">Product Status</label>
+                                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Product Status" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_productstatus">
+                                                        <option value=""></option>
+                                                        <option value="Active">Active</option>
+                                                        <option value="Inactive">Inactive</option>
+                                                        <option value="Draft">Draft</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -582,12 +559,13 @@ try {
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-ii-categoryadd-modal-action="submit" data-passaccess="addcategory">Save changes</button>
+                                <button type="button" class="btn btn-primary" data-ii-productadd-modal-action="submit" data-passaccess="addproduct">Save</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Modal -->
+                <?php include './authsetting.php'; ?>
             </div>
         </div>
     </div>

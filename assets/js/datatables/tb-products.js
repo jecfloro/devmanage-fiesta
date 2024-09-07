@@ -31,6 +31,42 @@ var KTUsersList = function () {
         });
     }
 
+    var handleMinMaxSearch = () => {
+
+        const ii_minpriceinput = document.querySelector('[data-kt-product-table-filter="min"]');
+        const ii_maxpriceinput = document.querySelector('[data-kt-product-table-filter="max"]');
+        ii_minpriceinput.addEventListener('keyup', function (e) {
+            datatable.draw();
+        });
+        ii_maxpriceinput.addEventListener('keyup', function (e) {
+            datatable.draw();
+        });
+
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            var min = parseInt(ii_minpriceinput.value, 10);
+            var max = parseInt(ii_maxpriceinput.value, 10);
+            var age = parseFloat(data[3]) || 0; // use data for the age column
+        
+            if (
+                (isNaN(min) && isNaN(max)) ||
+                (isNaN(min) && age <= max) ||
+                (min <= age && isNaN(max)) ||
+                (min <= age && age <= max)
+            ) {
+                return true;
+            }
+            return false;
+        });
+
+    }
+
+    var handleCategorySearch = () => {
+
+        const ii_cateogry = document.querySelector('[data-kt-product-table-filter="category"]');
+        
+
+    }
+
     return {
         // Public functions  
         init: function () {
@@ -40,6 +76,8 @@ var KTUsersList = function () {
 
             initUserTable();
             handleSearchDatatable();
+            handleMinMaxSearch();
+            handleCategorySearch();
         }
     }
 }();

@@ -33,7 +33,7 @@ $("[data-ii-categoryadd-modal-action='submit']").click(function (e) {
     } else {
 
         $.ajax({
-            url: '../../app/functions/products/fn_AddCategory.php',
+            url: '../../app/functions/products/fn_addCategory.php',
             type: 'POST',
             data: {
                 ii_category: ii_category
@@ -110,8 +110,12 @@ $("[data-ii-userpassword-modal-action='submit']").click(function (e) {
                     $("[data-ii-categorydelete-modal-action='submit']").click();
                 }
 
+                if (ii_accesspassword == "addproduct") {
+                    $("[data-ii-productadd-modal-action='submit']").click();
+                }
+
             }
-            if (status.status == 409) {
+            if (status.status == 401) {
                 $("#ii_password").val("");
                 sweetAlertError(status.message);
             }
@@ -352,6 +356,171 @@ $(document).on('click', ".dataInput [data-input-delete='delete']",function (e) {
 
     $("[data-count='" + datadel + "']").remove();
 
+
 });
 
+$("[data-ii-productadd-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var chkbxReturnable;
+    var ii_productname = $("#ii_productname").val().trim();
+    var ii_productsku = $("#ii_productsku").val().trim();
+    var ii_productcategory = $("#ii_productcategory").val();
+    var ii_productdescription = $("#ii_productdescription").val().trim();
+    var ii_totalquantity = $("#ii_totalquantity").val().trim();
+    var ii_minstock = $("#ii_minstock").val().trim();
+    var ii_maxstock = $("#ii_maxstock").val().trim();
+    var ii_regularprice = $("#ii_regularprice").val().trim();
+    var ii_saleprice = $("#ii_saleprice").val().trim();
+    var ii_repoprice = $("#ii_repoprice").val().trim();
+    var ii_productsetting = $("#ii_productsetting").val();
+    var ii_productstatus = $("#ii_productstatus").val();
+
+    if ($("#chkbxReturnable").is(":checked")) {
+        chkbxReturnable = 1;
+    } else {
+        chkbxReturnable = 0;
+    }
+
+    let proddetailslen = $(".pd_item").length;
+    
+    let errorCount = 0;
+
+    var arrdetails = [];
+
+    if (proddetailslen > 0) {
+
+        
+        for (var i = 0; i < proddetailslen; i++) {
+
+            var input1 = $("#"+ $(".pd_item")[i]["children"][0]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
+            var input2 = $("#"+ $(".pd_item")[i]["children"][1]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
+
+            if (input1 == "" || input2 == "") {
+                errorCount++;
+                break;
+            }
+
+            arrdetails.push({"input1": input1, "input2": input2});
+            
+        }
+
+    }
+
+    if (errorCount > 0) {
+        sweetAlertError("Please check empty fields on Product Details!");
+        return;
+    }
+
+    if (ii_productname == "") {
+        sweetAlertError("Product Name is required!");
+        return;
+    }
+
+    if (ii_productsku == "") {
+        sweetAlertError("Product SKU is required!");
+        return;
+    }
+
+    if (ii_productcategory == "") {
+        sweetAlertError("Product Category is required!");
+        return;
+    }
+
+    if (ii_productsetting == "") {
+        sweetAlertError("Product Setting is required!");
+        return;
+    }
+
+    if (ii_productstatus == "") {
+        sweetAlertError("Product Status is required!");
+        return;
+    }
+
+    if (ii_productdescription == "") {
+        sweetAlertError("Product Description is required!");
+        return;
+    }
+
+    if (ii_regularprice == "0.00" || ii_regularprice == "") {
+        sweetAlertError("Regular Price is required!");
+        return;
+    }
+
+    if (!ii_productname.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Product Name!");
+        return;
+    }
+
+    if (!ii_productsku.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Product SKU!");
+        return;
+    }
+
+    if (!ii_productdescription.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Product Description!");
+        return;
+    }
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#addProductModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_addProduct.php',
+            type: 'POST',
+            data: {
+                chkbxReturnable: chkbxReturnable,
+                ii_productname: ii_productname,
+                ii_productsku: ii_productsku,
+                ii_productcategory: ii_productcategory,
+                ii_productdescription: ii_productdescription,
+                ii_totalquantity: ii_totalquantity,
+                ii_minstock: ii_minstock,
+                ii_maxstock: ii_maxstock,
+                ii_regularprice: ii_regularprice,
+                ii_saleprice: ii_saleprice,
+                ii_repoprice: ii_repoprice,
+                arrdetails: arrdetails,
+                ii_productsetting: ii_productsetting,
+                ii_productstatus: ii_productstatus
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 401) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
 
