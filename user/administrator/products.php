@@ -38,6 +38,18 @@ try {
     $product = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories");
     $product->execute();
     $cproduct = $product->rowCount();
+
+    $productactive = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories WHERE productStatus = 'Active'");
+    $productactive->execute();
+    $cproductactive = $productactive->rowCount();
+
+    $productinactive = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories WHERE productStatus = 'Inactive'");
+    $productinactive->execute();
+    $cproductinactive = $productinactive->rowCount();
+
+    $productdraft = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories WHERE productStatus = 'Draft'");
+    $productdraft->execute();
+    $cproductdraft = $productdraft->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -269,27 +281,27 @@ try {
                                                     <p class="fw-bolder text-gray-600">Product Status</p>
                                                     <div class="row g-3">
                                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder">
+                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder" data-kt-product-table-filter="all">
                                                                 <span>All</span>
-                                                                <span class="badge badge-light-dark">0</span>
+                                                                <span class="badge badge-light-dark"><?php echo $cproduct ?></span>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder">
+                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder" data-kt-product-table-filter="active">
                                                                 <span>Active</span>
-                                                                <span class="badge badge-light-dark">0</span>
+                                                                <span class="badge badge-light-dark"><?php echo $cproductactive ?></span>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder">
+                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder" data-kt-product-table-filter="inactive">
                                                                 <span>Inactive</span>
-                                                                <span class="badge badge-light-dark">0</span>
+                                                                <span class="badge badge-light-dark"><?php echo $cproductinactive ?></span>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder">
+                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder" data-kt-product-table-filter="draft">
                                                                 <span>Draft</span>
-                                                                <span class="badge badge-light-dark">0</span>
+                                                                <span class="badge badge-light-dark"><?php echo $cproductdraft ?></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -315,7 +327,7 @@ try {
                                                                 <option>All Category</option>
                                                                 <?php if ($ccategories > 0) { ?>
                                                                     <?php while ($rcategoriesfilter = $categoriesfilter->fetch(PDO::FETCH_ASSOC)) { ?>
-                                                                        <option value="<?php echo $rcategoriesfilter["PK_mscCategories"]; ?>"><?php echo secureToken::tokendecrypt($rcategoriesfilter["description"]); ?></option>
+                                                                        <option value="<?php echo secureToken::tokendecrypt($rcategoriesfilter["description"]); ?>"><?php echo secureToken::tokendecrypt($rcategoriesfilter["description"]); ?></option>
                                                                     <?php } ?>
                                                                 <?php } ?>
                                                             </select>
@@ -381,12 +393,12 @@ try {
                                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_product">
                                                 <thead>
                                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                                        <th>Product Name</th>
-                                                        <th>Category</th>
-                                                        <th>Stock</th>
-                                                        <th>Price</th>
-                                                        <th>Status</th>
-                                                        <th></th>
+                                                        <th class="w-20">Product Name</th>
+                                                        <th class="w-20">Category</th>
+                                                        <th class="w-20">Stock</th>
+                                                        <th class="w-20">Price</th>
+                                                        <th class="w-20">Status</th>
+                                                        <th class=""></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-gray-600 fw-semibold">
@@ -403,7 +415,18 @@ try {
                                                                 <td><?php echo $rproduct["quantity"]; ?></td>
                                                                 <td><?php echo $rproduct["regularPrice"]; ?></td>
                                                                 <td><span><?php echo $rproduct["productStatus"]; ?></span></td>
-                                                                <td></td>
+                                                                <td class="text-end datainput">
+                                                                    <div class="d-flex justify-content-end gap-2">
+                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rproduct["PK_mscProducts"]; ?>" data-ii-input-action="view">
+                                                                            <i class="ki-duotone ki-dots-square fs-2x">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                                <span class="path3"></span>
+                                                                                <span class="path4"></span>
+                                                                            </i>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
                                                             </tr>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -566,6 +589,101 @@ try {
                 </div>
                 <!-- Modal -->
                 <?php include './authsetting.php'; ?>
+                <!-- Drawer -->
+                <button id="kt_drawer_trigger" class="btn btn-primary" hidden>Toggle basic drawer</button>
+                <div id="kt_drawer_advanced" class="bg-white drawer drawer-end" data-kt-drawer="true" data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_trigger" data-kt-drawer-close="#kt_drawer_advanced_close" data-kt-drawer-name="docs" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'100%', 'md': '500px', 'lg': '900px'}" data-kt-drawer-direction="end">
+                    <div class="card rounded-0 w-100">
+                        <div class="card-header pe-5 d-flex justify-content-between align-items-center">
+                            <div class="card-toolbar">
+                                <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" id="kt_drawer_advanced_close">
+                                    <i class="ki-duotone ki-exit-right fs-2x">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </div>
+                            </div>
+                            <div class="card-title">
+                                <div class="d-flex me-3 gap-3">
+                                    <button class="btn btn-light btn-sm">Edit</button>
+                                    <button class="btn btn-light btn-sm">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body hover-scroll-overlay-y">
+                            <div class="productTitle">
+                                <div class="d-flex flex-column gap-1">
+                                    <span class="h1 fw-bolder">Product 1</span>
+                                    <span class="h5 text-muted">SKU: ADSS-SDA-123 <span class="text-muted opacity-50">|</span> REFRIGERATORS</span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 mt-5 flex-wrap">
+                                <button class="btn btn-primary btn-sm">General Information</button>
+                                <button class="btn btn-light btn-sm">Purchase History</button>
+                                <button class="btn btn-light btn-sm">Notes</button>
+                            </div>
+                            <div class="row mt-5 g-3">
+                                <div class="col-xl-7">
+                                    <img alt="Product Image" src="../../assets/media/images/output.png" width="100%" class="mh-600px theme-light-show rounded" />
+                                </div>
+                                <div class="col-xl-5">
+                                    <div class="card card-body border">
+                                        <span class="h3 fw-bolder">Stock</span>
+                                        <div class="card bg-light p-3 mt-3">
+                                            <div class="card-header d-flex justify-content-center align-items-center">
+                                                <div class="d-flex justify-content-center flex-column align-items-center">
+                                                    <span>Quantity at Hand</span>
+                                                    <h1>0</h1>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row g-3">
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="text-muted">Mimimum Stock</span>
+                                                            <span class="fw-bolder">0</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="text-muted">Maximum Stock</span>
+                                                            <span class="fw-bolder">0</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="h3 fw-bolder mt-5">Details</span>
+                                        <div class="card bg-light p-3 mt-3">
+                                            <div class="card-body">
+                                                <div class="row g-3">
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="text-muted">Category</span>
+                                                            <span class="fw-bolder">Refrigerators</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="text-muted">Setting</span>
+                                                            <span class="fw-bolder">Regular</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="text-muted">Status</span>
+                                                            <span class="fw-bolder">Active</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Drawer -->
             </div>
         </div>
     </div>

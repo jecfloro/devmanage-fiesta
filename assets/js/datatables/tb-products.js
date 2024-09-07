@@ -63,7 +63,45 @@ var KTUsersList = function () {
     var handleCategorySearch = () => {
 
         const ii_cateogry = document.querySelector('[data-kt-product-table-filter="category"]');
-        
+
+        $("[data-kt-product-table-filter='category']").change(function(e) {
+            console.log(this.value);
+
+            if (this.value == "All Category") {
+                datatable.search('').draw();
+            } else {
+                datatable.search(e.target.value).draw();
+            }
+
+        })
+    }
+
+    var handleStatusFilter = () => {
+
+        const ii_all = document.querySelector('[data-kt-product-table-filter="all"]');
+        const ii_active = document.querySelector('[data-kt-product-table-filter="active"]');
+        const ii_inactive = document.querySelector('[data-kt-product-table-filter="inactive"]');
+        const ii_draft = document.querySelector('[data-kt-product-table-filter="draft"]');
+
+        ii_all.addEventListener('click', function (e) {
+            datatable.column(4).search("", true, false).draw();
+        });
+
+        ii_active.addEventListener('click', function (e) {
+            datatable.column(4).search('^Active$', true, false).draw();
+        });
+
+        ii_inactive.addEventListener('click', function (e) {
+            datatable.column(4).search('^Inactive$', true, false).draw();
+        });
+
+        ii_draft.addEventListener('click', function (e) {
+            datatable.column(4).search('^Draft$', true, false).draw();
+        });
+
+        // $("[data-kt-product-table-filter='all']").click(function(e) {
+        //     console.log(1);
+        // })
 
     }
 
@@ -78,6 +116,7 @@ var KTUsersList = function () {
             handleSearchDatatable();
             handleMinMaxSearch();
             handleCategorySearch();
+            handleStatusFilter();
         }
     }
 }();
