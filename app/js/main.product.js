@@ -524,3 +524,10 @@ $("[data-ii-productadd-modal-action='submit']").click(function (e) {
 
 });
 
+$(".datainput [data-ii-input-action='view']").click(function (e) {
+
+    e.preventDefault();
+
+    $("#kt_drawer_trigger").click();
+
+});
