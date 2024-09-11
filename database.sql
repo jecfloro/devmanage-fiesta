@@ -93,9 +93,9 @@ CREATE TABLE IF NOT EXISTS `msc_details` (
   `title` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`PK_mscDetails`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.msc_details: ~28 rows (approximately)
+-- Dumping data for table devmanage-fiesta.msc_details: ~32 rows (approximately)
 INSERT INTO `msc_details` (`PK_mscDetails`, `order`, `detailsId`, `title`, `description`) VALUES
 	(2, 1, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Refrigerator Type', 'Top Freezer, Two Door'),
 	(3, 2, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Capacity', '12.7 cu.ft.'),
@@ -150,14 +150,14 @@ CREATE TABLE IF NOT EXISTS `msc_products` (
   `productStatus` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`PK_mscProducts`),
   UNIQUE KEY `productName` (`productName`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table devmanage-fiesta.msc_products: ~4 rows (approximately)
 INSERT INTO `msc_products` (`PK_mscProducts`, `productName`, `productSKU`, `FK_mscCategories`, `productDescription`, `FK_detailsId`, `quantity`, `regularPrice`, `salePrice`, `repoPrice`, `stockMinimum`, `stockMaximum`, `isRegular`, `isSale`, `isRepo`, `productStatus`) VALUES
 	(21, 'MndPek9kSXkyK0t4aG9ucU1ad3Bxdz09', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', 23, 'STF5cS90VElsNjUreURNSEhHY1RzYzFnV0JMekhqLzVyc2c1VktDNVRMTGFFdkRHNHh1aThGVzhPKzlrc3lIRXdpZEkvMEl1RnpkTkt6QmFrVldjYlFEcW9QREIxQkFvT0ZZZ0FEcjhIWmtnR0dqR3lxRHNBRXcwSVhnWEhTa014RFFaa1RVbkJIMzh5endhbm85U0tjeXJhN1JQa1Y0dEJTOHcxRG1CODl6aVRSTnYxQTBkNzR3MDVHa05laWtmeFQvdkMzeCtvTWdVamVyR1ZFTFVhQT09', 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 2, 31495.00, 0.00, 0.00, 0, 0, b'1', NULL, NULL, 'Active'),
 	(22, 'QVZTWWcwVy9BeE56M2I4b2Z0eitiNW83RjRaVGlMdnVqYUFVWXpHdWc5az0=', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', 23, 'b0pkZisxTFNVejJoZDFiK2NZdXVkNlE3NWM2K1AzSk9JcWgxcStDWDIwVG1FT3hucjUwRTU2NVBZb0NueVJhQkRIbUVIR1Y2d3RxVXJsS2RsNmYxamZHMExrb3hkS2lrQ0tia3ZZMWlFdFg3dUpGUGtNOFhoWnBiTGt1U1FHTXBacHhEaUFCaXR0bG5KNXgxYXRnK1J1ZW8yVHdOZkZHeTMxZnhBcU1yUWQvY3BiUXFaYWlFeVpuUzJCVWc4WW5mWllxam4ybUpyRmV6bk1uYjk2QS9BK2xhdGlxUGhMRzZSU3dJTDQ3OEpvZW1lRkdRY1hNSHh5bHUrNzRORFFXbDBuSVVWRG5lUVpNK1FYV1pJVWtBVnVSa3BIdmptd2pmRXgzWlpzQ3FlQjRFWXg0bVNwMm1lZmlRamdnbE1GenF0Z1NZQUptMU9TWXZTVzhTMFhyTzZtSzAxVCtZU29vQVBzaFRXY1dOVGRzPQ==', 'ejZIS3N2emdmcUdzdzdjTnNnVmtFUT09', 5, 42699.00, 0.00, 0.00, 0, 0, b'1', NULL, NULL, 'Inactive'),
 	(25, 'VmhsU2V6aE8vRXM3ZjVxdGIrbnNBSGJwUEZ3OFVvVEd2OHR4S21PWmt0ND0=', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', 23, 'ZmtIUHdDOWp3dW1rTk1iaEFLekFKYmJLQVFNeTNCcGxINE9OcjZBaW1CY3dSOGowTjFnWjFIaFcrV2VFMkFKQUFoTStGN1A4UXQvQVNaMkFDbmtsTDFvVWluOGZ5RnFpL2JFZ3hwcXkvNEhubmlIejByRjdBK3BQand4UVdNVHNOUktSbjhiakJ0eVhnOGJrZEc3R05DVTI5TnMrK3cxWU5VL1JTUDI2K0RINS9vRW5FbC8zV21wcXI1enJTUG5Rdkh5S3gwY3k5dE5IanhtNEFHVkpWNTlWUUJzZWQzUEQrVEdLNU8wbG9weURLdFFkczg4MUgzT0prUVFVZzJuZllvaDg0T3k5eExwUlkzeTdTdzloY284QWxIeW9hMVRwcm94aXJwWUYza2trbFB3Mzc0QnBLK2o4a1RtNDFyTWZGWE9halRLQU5wdmk5VXNKVitleTdBPT0=', 'Qlowc3NWb1R4TGxYT2RBRFZOQlBhZz09', 2, 56376.00, 0.00, 0.00, 0, 0, b'1', NULL, NULL, 'Draft'),
-	(26, 'cC9ld0hFWk1JV1hJc09kN3BYZmJ4aHdUM3MyMWNyYTFDTkZ6MWZVTGozOD0=', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', 20, 'UzFNQ3pMZ2JENUVHMm9rbzgxdWRRbUhtVVZ2U2dDenNvU0owVi9kcDBxaWhBd1N5YmtoZUhMZ0ZKYVM4TjN4M0Z1U0xKbzJNZ2xORjc1TFJHZERVSktTNDJYekRJdUdnVnVqdnhNZW5pTXpWa2NXYXUwaGI3RDJtZEtIeXNSNHhKQkFmc09rdE1YaUxmSGF4NlZqaGJnPT0=', 'NC8waENyWjhOaDdCN3U4NUdzWS9NZz09', 0, 23900.00, 0.00, 0.00, 0, 0, b'1', NULL, NULL, 'Active');
+	(26, 'cC9ld0hFWk1JV1hJc09kN3BYZmJ4aHdUM3MyMWNyYTFDTkZ6MWZVTGozOD0=', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', 20, 'UzFNQ3pMZ2JENUVHMm9rbzgxdWRRbUhtVVZ2U2dDenNvU0owVi9kcDBxaWhBd1N5YmtoZUhMZ0ZKYVM4TjN4M0Z1U0xKbzJNZ2xORjc1TFJHZERVSktTNDJYekRJdUdnVnVqdnhNZW5pTXpWa2NXYXUwaGI3RDJtZEtIeXNSNHhKQkFmc09rdE1YaUxmSGF4NlZqaGJnPT0=', 'NC8waENyWjhOaDdCN3U4NUdzWS9NZz09', 3, 23900.00, 0.00, 0.00, 0, 0, b'1', NULL, NULL, 'Active');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

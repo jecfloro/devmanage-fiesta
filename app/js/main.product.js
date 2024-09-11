@@ -528,6 +528,73 @@ $(".datainput [data-ii-input-action='view']").click(function (e) {
 
     e.preventDefault();
 
+    var ProductID = this.getAttribute("data-ii-val");
+
+    $.ajax({
+        url: '../../app/functions/products/fn_searchProduct.php',
+        type: 'POST',
+        data: {
+            ProductID: ProductID
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                
+                $("#ii_valProductName").text(status.productname);
+                $("#ii_valSKU").text(status.productsku);
+                $("#ii_valCategory").text(status.productcategory);
+
+                var ol = status.productdescription;
+
+                ol = ol.replace(/(?:\r\n|\r|\n)/g, "<br>");
+
+                $("#ii_valDescription").html(ol);
+
+                $("#ii_valStatusContainer").empty();
+
+                for (let aa = 0; aa < status.productdetails.length; aa++) {
+
+                    if(aa % 2 == 0) {
+                        $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center bg-light p-3'><span class='fw-bolder'>"+ status.productdetails[aa]["title"] +"</span><span class=''>"+ status.productdetails[aa]["description"] +"</span></div>");
+                    } else {
+                        $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center p-3'><span class='fw-bolder'>"+ status.productdetails[aa]["title"] +"</span><span class=''>"+ status.productdetails[aa]["description"] +"</span></div>");
+                    }
+
+
+                }
+
+                $("#ii_valStock").text(status.productquantity);
+                $("#ii_valMinStock").text(status.productstockminimum);
+                $("#ii_valMaxStock").text(status.productstockmaximum);
+
+                $("#ii_valCategoryStatus").text(status.productcategory);
+
+                if (status.productisregular == 1) {
+                    $("#ii_valSettingStatus").text("Regular");
+                }
+
+                if (status.productisrepo == 1) {
+                    $("#ii_valSettingStatus").text("Repo");
+                }
+
+                if (status.productissale == 1) {
+                    $("#ii_valSettingStatus").text("Sale");
+                }
+
+                $("#ii_valStatus").text(status.productstatus);
+
+                $("#ii_valRegularPrice").text(status.productregularprice);
+                $("#ii_valRepoPrice").text(status.productrepoprice);
+                $("#ii_valSalePrice").text(status.productsaleprice);
+
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
+    
     $("#kt_drawer_trigger").click();
 
 });

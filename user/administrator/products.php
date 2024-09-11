@@ -306,7 +306,7 @@ try {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-xl-12 mt-5">
+                                                <!-- <div class="col-xl-12 mt-5">
                                                     <p class="fw-bolder text-gray-600">Stock Alert</p>
                                                     <div class="row g-3">
                                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -318,7 +318,7 @@ try {
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-xl-12 mt-5">
                                                     <p class="fw-bolder text-gray-600">Category</p>
                                                     <div class="row g-3">
@@ -612,8 +612,8 @@ try {
                         <div class="card-body hover-scroll-overlay-y">
                             <div class="productTitle">
                                 <div class="d-flex flex-column gap-1">
-                                    <span class="h1 fw-bolder">Product 1</span>
-                                    <span class="h5 text-muted">SKU: ADSS-SDA-123 <span class="text-muted opacity-50">|</span> REFRIGERATORS</span>
+                                    <span class="h1 fw-bolder" id="ii_valProductName"></span>
+                                    <span class="h5 text-muted"><span id="ii_valSKU"></span> <span class="text-muted opacity-50">|</span> <span id="ii_valCategory"></span></span>
                                 </div>
                             </div>
                             <div class="d-flex gap-3 mt-5 flex-wrap">
@@ -623,7 +623,38 @@ try {
                             </div>
                             <div class="row mt-5 g-3">
                                 <div class="col-xl-7">
-                                    <img alt="Product Image" src="../../assets/media/images/output.png" width="100%" class="mh-600px theme-light-show rounded" />
+                                    <div class="row g-3">
+                                        <div class="col-xl-12">
+                                            <img alt="Product Image" src="../../assets/media/images/output.png" width="100%" class="mh-600px theme-light-show rounded" />
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <span class="h3 fw-bolder mt-5">Description</span>
+                                            <p class="mt-3" id="ii_valDescription"></p>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <span class="h3 fw-bolder mt-5">Status</span>
+                                            <div class="mt-3" id="ii_valStatusContainer">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12">
+                                            <span class="h3 fw-bolder mt-5">Price Information</span>
+                                            <div class="mt-3" id="ii_valPriceContainer">
+                                                <div class="d-flex justify-content-between align-items-center bg-light p-3">
+                                                     <span class="fw-bolder">Regular Price</span>
+                                                     <span id="ii_valRegularPrice"></span>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center p-3">
+                                                     <span class="fw-bolder">Repo Price</span>
+                                                     <span id="ii_valRepoPrice"></span>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center bg-light p-3">
+                                                     <span class="fw-bolder">Sale Price</span>
+                                                     <span id="ii_valSalePrice"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-xl-5">
                                     <div class="card card-body border">
@@ -632,7 +663,7 @@ try {
                                             <div class="card-header d-flex justify-content-center align-items-center">
                                                 <div class="d-flex justify-content-center flex-column align-items-center">
                                                     <span>Quantity at Hand</span>
-                                                    <h1>0</h1>
+                                                    <h1 id="ii_valStock"></h1>
                                                 </div>
                                             </div>
                                             <div class="card-body">
@@ -640,38 +671,38 @@ try {
                                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                                         <div class="d-flex flex-column">
                                                             <span class="text-muted">Mimimum Stock</span>
-                                                            <span class="fw-bolder">0</span>
+                                                            <span class="fw-bolder" id="ii_valMinStock"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                                         <div class="d-flex flex-column">
                                                             <span class="text-muted">Maximum Stock</span>
-                                                            <span class="fw-bolder">0</span>
+                                                            <span class="fw-bolder" id="ii_valMaxStock"></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <span class="h3 fw-bolder mt-5">Details</span>
+                                        <span class="h3 fw-bolder mt-5">Status</span>
                                         <div class="card bg-light p-3 mt-3">
                                             <div class="card-body">
                                                 <div class="row g-3">
-                                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                                         <div class="d-flex flex-column">
                                                             <span class="text-muted">Category</span>
-                                                            <span class="fw-bolder">Refrigerators</span>
+                                                            <span class="fw-bolder" id="ii_valCategoryStatus"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                                         <div class="d-flex flex-column">
                                                             <span class="text-muted">Setting</span>
-                                                            <span class="fw-bolder">Regular</span>
+                                                            <span class="fw-bolder" id="ii_valSettingStatus"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                                         <div class="d-flex flex-column">
                                                             <span class="text-muted">Status</span>
-                                                            <span class="fw-bolder">Active</span>
+                                                            <span class="fw-bolder" id="ii_valStatus"></span>
                                                         </div>
                                                     </div>
                                                 </div>
