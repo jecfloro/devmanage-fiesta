@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `appsysusers` (
 -- Dumping data for table devmanage-fiesta.appsysusers: ~2 rows (approximately)
 INSERT INTO `appsysusers` (`PK_appsysUsers`, `user_email`, `user_password`, `user_empId`, `user_recoveryCode`, `user_activationCode`, `user_secret`, `isSecret`, `isActivated`, `isDisabled`, `isDeactivated`, `isAdmin`, `isCustomer`, `isBranchManager`, `isCreditInvestigator`, `isCreditCoordinator`, `isCashier`, `FK_geolocation`, `FK_mscinfoChildrens`, `FK_mscinfoRelatives`, `FK_mscinfoNeighbors`, `userLastname`, `userFirstName`, `userMiddleName`, `userNickName`, `userGender`, `userCivilStatus`, `userNationality`, `userAge`, `userDateofBirth`, `userPlaceofBirth`, `userContactNumber`, `userAddress`, `userFullName`) VALUES
 	(1, 'administrator@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', '230704', 'qkIR62zAoY', 'bPXOrCk0jW3EdsoDBKpuGzHt8iRq2y', 'RMZDIUD2N3S6SDML', b'1', b'1', NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'bk9ydjNYeS9zWVM1R3k0VVU2am5ZZz09', 'TXdnVFlYbUVWYnBZdVk2aHRKTHlaZz09', 'SHd5SDEvcm5ybFVEWS9oVXk5d2srZz09', 'dzFZbWtFNDd6STFjS1A3L0pOc3NUZz09', 0, 'NTdYalptTFptVEFQbWcvd1AwaDFadz09', 'Vm40eENxcHpDNWlHY294QndTdEVxdz09', 25, '1999-05-11', 'QjFENitrTzdoY1ROREpyWWxMNGM3dz09', 'RlBQVGdqSG1PYUpXRzRSaXlpaTVqQT09', 'bDByTTlvSE1FU3lxTkxZejhERnV0WW1Nd3FrT1FYbk91dEwrNUtoOVF3eWxHR2V3cGJrYmtwdTQ4eHZreDNDWQ==', 'enVKT2doWjRJZW5RVVZxR2xPWGt6czRVV01SZkQ0cjJWZ0RvaCtpd3Avaz0='),
-	(23, 'jec.floro@gmail.com', 'V28rbitVZnRNU0hPb3l1M1VCTWFzUT09', NULL, 'jFCoBrTieH', 'wGkZDBKWCbXySc8fsNrRJ4Pvox0tuF', '27YTCBXKX7A3G72J', NULL, b'1', NULL, NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+	(24, 'jec.floro@gmail.com', 'TzJUUVhzaFdqR0p6K3F6SE53L3FPdz09', NULL, 'ynAPLw04lT', '8uPRGasS9ZzFAq5IUmCjQ7btKg60B1', 'IQVCR7QBOUZ3ZHYM', NULL, b'1', NULL, NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- Dumping structure for table devmanage-fiesta.msc_categories
 CREATE TABLE IF NOT EXISTS `msc_categories` (
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `msc_details` (
   PRIMARY KEY (`PK_mscDetails`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.msc_details: ~32 rows (approximately)
+-- Dumping data for table devmanage-fiesta.msc_details: ~28 rows (approximately)
 INSERT INTO `msc_details` (`PK_mscDetails`, `order`, `detailsId`, `title`, `description`) VALUES
 	(2, 1, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Refrigerator Type', 'Top Freezer, Two Door'),
 	(3, 2, 'bFowQ1VhT1JIQldaWCt5NnBtandtdz09', 'Capacity', '12.7 cu.ft.'),
