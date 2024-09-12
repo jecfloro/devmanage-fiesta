@@ -1,0 +1,6 @@
+@media (min-width: 992px) {
+    .aside-default-enabled.aside-fixed .wrapper {
+        transition: padding-left 0.3s ease;
+        padding-left: 40px !important;
+    }
+}
