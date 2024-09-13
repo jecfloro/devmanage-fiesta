@@ -23,7 +23,7 @@ try {
 
     if ($cselect_category == 0) {
 
-        $categoryEncrypt = secureToken::tokenencrypt($ii_category);
+        $categoryEncrypt = $ii_category;
 
         $insert = $conn->prepare("INSERT INTO `msc_categories` (`description`) VALUES ('$categoryEncrypt')");
         $insert->execute();

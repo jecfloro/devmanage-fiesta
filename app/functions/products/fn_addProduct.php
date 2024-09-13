@@ -29,10 +29,10 @@ $ii_productstatus = $_POST['ii_productstatus'];
 try {
     $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $ii_productnameencrypt = secureToken::tokenencrypt($ii_productname);
-    $ii_productskuencrypt = secureToken::tokenencrypt($ii_productsku);
-    $ii_productdescriptionencrypt = secureToken::tokenencrypt($ii_productdescription);
+    
+    $ii_productnameencrypt = $ii_productname;
+    $ii_productskuencrypt = $ii_productsku;
+    $ii_productdescriptionencrypt = $ii_productdescription;
 
     $select_product = $conn->query("SELECT * FROM `msc_products` WHERE `productName` = '$ii_productnameencrypt'");
     $select_product->execute();
@@ -42,7 +42,7 @@ try {
 
         $randomId = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 1, 6);
 
-        $ii_detailsencrypt = secureToken::tokenencrypt($randomId);
+        $ii_detailsencrypt = $randomId;
 
         if ($ii_productsetting == "Regular") {
             $isSetting = "isRegular";

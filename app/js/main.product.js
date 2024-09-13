@@ -325,6 +325,58 @@ $('#ii_regularprice').on('keyup', function () {
 
 });
 
+$('#ii_saleprice').on('keyup', function () {
+
+    var price = $(this).val().replace(/[^\d]/g, '');
+    var pre, dec;
+    var delimiter = '.';
+
+    var result = price;
+
+    if (price.length > 3 && price.charAt(0) == '0') {
+        price = price.substr(1);
+    }
+
+    if (price.length > 2) {
+        pre = price.slice(0, -2);
+        dec = price.substr((price.length - 2), 2);
+        result = pre + delimiter + dec;
+    }
+
+    $(this).val('').val(result);
+
+    if (this.value == "") {
+        $("#ii_saleprice").val("0.00");
+    }
+
+});
+
+$('#ii_repoprice').on('keyup', function () {
+
+    var price = $(this).val().replace(/[^\d]/g, '');
+    var pre, dec;
+    var delimiter = '.';
+
+    var result = price;
+
+    if (price.length > 3 && price.charAt(0) == '0') {
+        price = price.substr(1);
+    }
+
+    if (price.length > 2) {
+        pre = price.slice(0, -2);
+        dec = price.substr((price.length - 2), 2);
+        result = pre + delimiter + dec;
+    }
+
+    $(this).val('').val(result);
+
+    if (this.value == "") {
+        $("#ii_repoprice").val("0.00");
+    }
+
+});
+
 $("[data-add-product-details='add']").click(function (e) {
 
     e.preventDefault();

@@ -24,19 +24,19 @@ try {
 
     if ($cuserprofile > 0) {
 
-        $infoLastname = secureToken::tokendecrypt($ruserprofile["userLastname"]);
-        $infoFirstName = secureToken::tokendecrypt($ruserprofile["userFirstName"]);
-        $infoMiddleName = secureToken::tokendecrypt($ruserprofile["userMiddleName"]);
-        $infoNickName = secureToken::tokendecrypt($ruserprofile["userNickName"]);
+        $infoLastname = $ruserprofile["userLastname"];
+        $infoFirstName = $ruserprofile["userFirstName"];
+        $infoMiddleName = $ruserprofile["userMiddleName"];
+        $infoNickName = $ruserprofile["userNickName"];
         $infoGender = $ruserprofile["userGender"];
-        $infoCivilStatus = secureToken::tokendecrypt($ruserprofile["userCivilStatus"]);
-        $infoNationality = secureToken::tokendecrypt($ruserprofile["userNationality"]);
+        $infoCivilStatus = $ruserprofile["userCivilStatus"];
+        $infoNationality = $ruserprofile["userNationality"];
         $infoAge = $ruserprofile["userAge"];
         $infoBirthday = $ruserprofile["userDateofBirth"];
-        $infoPlaceOfBirth = secureToken::tokendecrypt($ruserprofile["userPlaceofBirth"]);
-        $contactnumber = secureToken::tokendecrypt($ruserprofile["userContactNumber"]);
-        $infoAddress = secureToken::tokendecrypt($ruserprofile["userAddress"]);
-        $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
+        $infoPlaceOfBirth = $ruserprofile["userPlaceofBirth"];
+        $contactnumber = $ruserprofile["userContactNumber"];
+        $infoAddress = $ruserprofile["userAddress"];
+        $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
         $infosecret = $ruserprofile["user_secret"];
     }

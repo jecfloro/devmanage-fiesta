@@ -24,13 +24,14 @@ try {
     $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
 
     if ($cuserprofile > 0) {
-        $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
+        $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
     }
 
     $user = $conn->prepare("SELECT * FROM appsysusers");
     $user->execute();
     $cuser = $user->rowCount();
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -324,7 +325,7 @@ try {
                                                                 <tr>
                                                                     <td>
                                                                         <?php if ($ruser["userFullName"] != "") { ?>
-                                                                            <?php echo secureToken::tokendecrypt($ruserprofile["userFullName"]); ?>
+                                                                            <?php echo $ruserprofile["userFullName"]; ?>
                                                                         <?php } else { ?>
                                                                             PROFILE NOT SET
                                                                         <?php } ?>

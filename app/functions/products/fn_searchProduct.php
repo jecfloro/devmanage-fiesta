@@ -24,11 +24,11 @@ try {
 
     if ($cproduct > 0) {
 
-        $productname = secureToken::tokendecrypt($rproduct[0]["productName"]);
-        $productsku = secureToken::tokendecrypt($rproduct[0]["productSKU"]);
-        $productdescription = secureToken::tokendecrypt($rproduct[0]["productDescription"]);
+        $productname = $rproduct[0]["productName"];
+        $productsku = $rproduct[0]["productSKU"];
+        $productdescription = $rproduct[0]["productDescription"];
         $productdetailsid = $rproduct[0]["FK_detailsId"];
-        $productcategory = secureToken::tokendecrypt($rproduct[0]["description"]);
+        $productcategory = $rproduct[0]["description"];
         
         $productquantity = $rproduct[0]["quantity"];
         $productregularprice = $rproduct[0]["regularPrice"];

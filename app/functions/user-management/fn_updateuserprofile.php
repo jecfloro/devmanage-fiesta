@@ -36,31 +36,20 @@
             $ii_fullname = $ii_lastname.", ".$ii_firstname." ".$ii_middlename;
         }
 
-        $ii_lastnameencrypt = secureToken::tokenencrypt($ii_lastname);
-        $ii_firstnameencrypt = secureToken::tokenencrypt($ii_firstname);
-        $ii_middlenameencrypt = secureToken::tokenencrypt($ii_middlename);
-        $ii_nicknameencrypt = secureToken::tokenencrypt($ii_nickname);
-        $ii_fullnameencrypt = secureToken::tokenencrypt($ii_fullname);
-        $ii_civilstatusencrypt = secureToken::tokenencrypt($select_civilstatus);
-        $ii_nationalityencrypt = secureToken::tokenencrypt($ii_nationality);
-        $ii_placeofbirthencrypt = secureToken::tokenencrypt($ii_placeofbirth);
-        $ii_contactnumberencrypt = secureToken::tokenencrypt($ii_contactnumber);
-        $ii_addressencrypt = secureToken::tokenencrypt($ii_address);
-
         $update = $conn->prepare("UPDATE appsysusers SET 
-            userLastname = '$ii_lastnameencrypt', 
-            userFirstName = '$ii_firstnameencrypt', 
-            userMiddleName = '$ii_middlenameencrypt', 
-            userNickName = '$ii_nicknameencrypt', 
+            userLastname = '$ii_lastname', 
+            userFirstName = '$ii_firstname', 
+            userMiddleName = '$ii_middlename', 
+            userNickName = '$ii_nickname', 
             userGender = '$select_gender', 
-            userCivilStatus = '$ii_civilstatusencrypt', 
-            userNationality = '$ii_nationalityencrypt', 
+            userCivilStatus = '$select_civilstatus', 
+            userNationality = '$ii_nationality', 
             userAge = '$ii_age', 
             userDateofBirth = '$ii_birthdate', 
-            userPlaceofBirth = '$ii_placeofbirthencrypt', 
-            userContactNumber = '$ii_contactnumberencrypt', 
-            userAddress = '$ii_addressencrypt', 
-            userFullName = '$ii_fullnameencrypt' 
+            userPlaceofBirth = '$ii_placeofbirth', 
+            userContactNumber = '$ii_contactnumber', 
+            userAddress = '$ii_address', 
+            userFullName = '$ii_fullname' 
             WHERE PK_appsysUsers = '$usercode'");
         $update->execute();
         $cupdate = $update->rowCount();

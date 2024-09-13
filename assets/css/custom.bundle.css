@@ -74,6 +74,46 @@ body {
   background-color: #ffffff !important;
 }
 
+.card-hover:hover {
+  transform: translate(0px, -10px);
+  transition: 0.5s;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .product-list {
+    width: 100% !important;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .product-list {
+    width: 49% !important;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .product-list {
+    width: 32% !important;
+  }
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .product-list {
+    width: 32% !important;
+  }
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+  .product-list {
+    width: 24% !important;
+  }
+}
+
 @keyframes spin {
   from {
       transform:rotate(0deg);

@@ -23,7 +23,7 @@ try {
     $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
 
     if ($cuserprofile > 0) {
-        $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
+        $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
     }
 
@@ -290,7 +290,7 @@ try {
                                                     <?php if ($ccategories > 0) { ?>
                                                         <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
                                                             <tr>
-                                                                <td><?php echo secureToken::tokendecrypt($rcategories["description"]); ?></td>
+                                                                <td><?php echo $rcategories["description"]; ?></td>
                                                                 <td class="text-end datainput">
                                                                     <div class="d-flex justify-content-end gap-2">
                                                                         <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rcategories["PK_mscCategories"]; ?>" data-ii-input-edit-action="edit">

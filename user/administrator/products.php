@@ -23,7 +23,7 @@ try {
     $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
 
     if ($cuserprofile > 0) {
-        $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
+        $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
     }
 
@@ -81,7 +81,8 @@ try {
     </script>
 </head>
 
-<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled user-select-none">
+<body id="kt_body"
+    class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled user-select-none">
     <script>
         var defaultThemeMode = "light";
         var themeMode;
@@ -106,13 +107,20 @@ try {
     </script>
     <div class="d-flex flex-column flex-root">
         <div class="page d-flex flex-row flex-column-fluid">
-            <div id="kt_aside" class="aside aside-default aside-hoverable " data-kt-drawer="true" data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
+            <div id="kt_aside" class="aside aside-default aside-hoverable " data-kt-drawer="true"
+                data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}"
+                data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}"
+                data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_toggle">
                 <div class="aside-logo flex-column-auto px-10 pt-9 pb-5" id="kt_aside_logo">
                     <a href="/">
-                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="60px" class="max-h-50px logo-default theme-light-show" />
-                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="60px" class="max-h-50px logo-default theme-dark-show" />
-                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px" class="max-h-50px logo-minimize theme-light-show" />
-                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px" class="max-h-50px logo-minimize theme-dark-show" />
+                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="60px"
+                            class="max-h-50px logo-default theme-light-show" />
+                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="60px"
+                            class="max-h-50px logo-default theme-dark-show" />
+                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px"
+                            class="max-h-50px logo-minimize theme-light-show" />
+                        <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px"
+                            class="max-h-50px logo-minimize theme-dark-show" />
                     </a>
                 </div>
                 <div class="aside-menu flex-column-fluid ps-3 pe-1">
@@ -125,50 +133,80 @@ try {
                 </div>
             </div>
             <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-                <div id="kt_header" class="header " data-kt-sticky="true" data-kt-sticky-name="header" data-kt-sticky-offset="{default: '200px', lg: '300px'}">
+                <div id="kt_header" class="header " data-kt-sticky="true" data-kt-sticky-name="header"
+                    data-kt-sticky-offset="{default: '200px', lg: '300px'}">
                     <div class=" container-fluid  d-flex align-items-stretch justify-content-between">
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                             <div class="d-flex align-items-center d-lg-none">
                                 <div class="btn btn-icon btn-active-color-primary ms-n2 me-1 " id="kt_aside_toggle">
-                                    <i class="ki-duotone ki-abstract-14 fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="ki-duotone ki-abstract-14 fs-1"><span class="path1"></span><span
+                                            class="path2"></span></i>
                                 </div>
                             </div>
                             <a href="/" class="d-lg-none">
-                                <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px" class="mh-40px theme-light-show" />
-                                <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px" class="mh-40px theme-dark-show" />
+                                <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px"
+                                    class="mh-40px theme-light-show" />
+                                <img alt="Logo" src="../../assets/media/logos/FIESTAAPPL_LOGO.png" width="40px"
+                                    class="mh-40px theme-dark-show" />
                             </a>
-                            <div class="btn btn-icon w-auto ps-0 btn-active-color-primary d-none d-lg-inline-flex me-2 me-lg-5 " data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="aside-minimize">
-                                <i class="ki-duotone ki-black-left-line fs-1 rotate-180"><span class="path1"></span><span class="path2"></span></i>
+                            <div class="btn btn-icon w-auto ps-0 btn-active-color-primary d-none d-lg-inline-flex me-2 me-lg-5 "
+                                data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body"
+                                data-kt-toggle-name="aside-minimize">
+                                <i class="ki-duotone ki-black-left-line fs-1 rotate-180"><span
+                                        class="path1"></span><span class="path2"></span></i>
                             </div>
                         </div>
                         <div class="d-flex align-items-stretch justify-content-end flex-lg-grow-1">
                             <div class="d-flex align-items-stretch flex-shrink-0">
                                 <div class="d-flex align-items-center ms-1 ms-lg-2">
-                                    <a href="#" class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                                        <i class="ki-duotone ki-night-day theme-light-show fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span></i> <i class="ki-duotone ki-moon theme-dark-show fs-1"><span class="path1"></span><span class="path2"></span></i></a>
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-gray-500 menu-active-bg menu-state-color fw-semibold py-4 fs-base w-150px" data-kt-menu="true" data-kt-element="theme-mode-menu">
+                                    <a href="#"
+                                        class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px"
+                                        data-kt-menu-trigger="{default:'click', lg: 'hover'}"
+                                        data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                                        <i class="ki-duotone ki-night-day theme-light-show fs-1"><span
+                                                class="path1"></span><span class="path2"></span><span
+                                                class="path3"></span><span class="path4"></span><span
+                                                class="path5"></span><span class="path6"></span><span
+                                                class="path7"></span><span class="path8"></span><span
+                                                class="path9"></span><span class="path10"></span></i> <i
+                                            class="ki-duotone ki-moon theme-dark-show fs-1"><span
+                                                class="path1"></span><span class="path2"></span></i></a>
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-gray-500 menu-active-bg menu-state-color fw-semibold py-4 fs-base w-150px"
+                                        data-kt-menu="true" data-kt-element="theme-mode-menu">
                                         <div class="menu-item px-3 my-0">
-                                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="light">
+                                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
+                                                data-kt-value="light">
                                                 <span class="menu-icon" data-kt-element="icon">
-                                                    <i class="ki-duotone ki-night-day fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span></i> </span>
+                                                    <i class="ki-duotone ki-night-day fs-2"><span
+                                                            class="path1"></span><span class="path2"></span><span
+                                                            class="path3"></span><span class="path4"></span><span
+                                                            class="path5"></span><span class="path6"></span><span
+                                                            class="path7"></span><span class="path8"></span><span
+                                                            class="path9"></span><span class="path10"></span></i>
+                                                </span>
                                                 <span class="menu-title">
                                                     Light
                                                 </span>
                                             </a>
                                         </div>
                                         <div class="menu-item px-3 my-0">
-                                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="dark">
+                                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
+                                                data-kt-value="dark">
                                                 <span class="menu-icon" data-kt-element="icon">
-                                                    <i class="ki-duotone ki-moon fs-2"><span class="path1"></span><span class="path2"></span></i> </span>
+                                                    <i class="ki-duotone ki-moon fs-2"><span class="path1"></span><span
+                                                            class="path2"></span></i> </span>
                                                 <span class="menu-title">
                                                     Dark
                                                 </span>
                                             </a>
                                         </div>
                                         <div class="menu-item px-3 my-0">
-                                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="system">
+                                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
+                                                data-kt-value="system">
                                                 <span class="menu-icon" data-kt-element="icon">
-                                                    <i class="ki-duotone ki-screen fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i> </span>
+                                                    <i class="ki-duotone ki-screen fs-2"><span
+                                                            class="path1"></span><span class="path2"></span><span
+                                                            class="path3"></span><span class="path4"></span></i> </span>
                                                 <span class="menu-title">
                                                     System
                                                 </span>
@@ -177,10 +215,13 @@ try {
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center ms-2 ms-lg-3" id="kt_header_user_menu_toggle">
-                                    <div class="cursor-pointer symbol symbol-35px symbol-lg-35px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                                    <div class="cursor-pointer symbol symbol-35px symbol-lg-35px"
+                                        data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                        data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
                                         <img alt="Pic" src="../../assets/media/avatars/user-avatar.png" />
                                     </div>
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px"
+                                        data-kt-menu="true">
                                         <div class="menu-item px-3">
                                             <div class="menu-content d-flex align-items-center px-3">
                                                 <div class="symbol symbol-50px me-5">
@@ -281,27 +322,35 @@ try {
                                                     <p class="fw-bolder text-gray-600">Product Status</p>
                                                     <div class="row g-3">
                                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder" data-kt-product-table-filter="all">
+                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder"
+                                                                data-kt-product-table-filter="all">
                                                                 <span>All</span>
-                                                                <span class="badge badge-light-dark"><?php echo $cproduct ?></span>
+                                                                <span
+                                                                    class="badge badge-light-dark"><?php echo $cproduct ?></span>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder" data-kt-product-table-filter="active">
+                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder"
+                                                                data-kt-product-table-filter="active">
                                                                 <span>Active</span>
-                                                                <span class="badge badge-light-dark"><?php echo $cproductactive ?></span>
+                                                                <span
+                                                                    class="badge badge-light-dark"><?php echo $cproductactive ?></span>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder" data-kt-product-table-filter="inactive">
+                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder"
+                                                                data-kt-product-table-filter="inactive">
                                                                 <span>Inactive</span>
-                                                                <span class="badge badge-light-dark"><?php echo $cproductinactive ?></span>
+                                                                <span
+                                                                    class="badge badge-light-dark"><?php echo $cproductinactive ?></span>
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder" data-kt-product-table-filter="draft">
+                                                            <div class="border bg-hover-light rounded p-3 d-flex justify-content-between align-items-center fw-bolder"
+                                                                data-kt-product-table-filter="draft">
                                                                 <span>Draft</span>
-                                                                <span class="badge badge-light-dark"><?php echo $cproductdraft ?></span>
+                                                                <span
+                                                                    class="badge badge-light-dark"><?php echo $cproductdraft ?></span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -323,11 +372,20 @@ try {
                                                     <p class="fw-bolder text-gray-600">Category</p>
                                                     <div class="row g-3">
                                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Category" data-allow-clear="false" data-kt-user-table-filter="usertype" data-hide-search="true" data-kt-product-table-filter="category">
+                                                            <select class="form-select form-select-solid fw-bolder"
+                                                                data-kt-select2="true"
+                                                                data-placeholder="Select Category"
+                                                                data-allow-clear="false"
+                                                                data-kt-user-table-filter="usertype"
+                                                                data-hide-search="true"
+                                                                data-kt-product-table-filter="category">
                                                                 <option>All Category</option>
                                                                 <?php if ($ccategories > 0) { ?>
                                                                     <?php while ($rcategoriesfilter = $categoriesfilter->fetch(PDO::FETCH_ASSOC)) { ?>
-                                                                        <option value="<?php echo secureToken::tokendecrypt($rcategoriesfilter["description"]); ?>"><?php echo secureToken::tokendecrypt($rcategoriesfilter["description"]); ?></option>
+                                                                        <option
+                                                                            value="<?php echo $rcategoriesfilter["description"]; ?>">
+                                                                            <?php echo $rcategoriesfilter["description"]; ?>
+                                                                        </option>
                                                                     <?php } ?>
                                                                 <?php } ?>
                                                             </select>
@@ -339,21 +397,32 @@ try {
                                                     <div class="row g-sm-3 g-xl-0">
                                                         <div class="col-xl-12 col-lg-6 col-md-6 col-sm-6">
                                                             <div class="input-group input-group-solid mb-5">
-                                                                <span class="input-group-text fw-bolder" id="basic-addon1">₱</span>
-                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Minimum Price" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" data-kt-product-table-filter="min">
+                                                                <span class="input-group-text fw-bolder"
+                                                                    id="basic-addon1">₱</span>
+                                                                <input
+                                                                    class="form-control form-control-lg form-control-solid fw-bolder"
+                                                                    placeholder="Minimum Price" inputmode="numeric"
+                                                                    oninput="this.value = this.value.replace(/\D+/g, '')"
+                                                                    data-kt-product-table-filter="min">
                                                             </div>
                                                         </div>
                                                         <div class="col-xl-12 col-lg-6 col-md-6 col-sm-6">
                                                             <div class="input-group input-group-solid mb-5">
-                                                                <span class="input-group-text fw-bolder" id="basic-addon1">₱</span>
-                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Maximum Price" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" data-kt-product-table-filter="max">
+                                                                <span class="input-group-text fw-bolder"
+                                                                    id="basic-addon1">₱</span>
+                                                                <input
+                                                                    class="form-control form-control-lg form-control-solid fw-bolder"
+                                                                    placeholder="Maximum Price" inputmode="numeric"
+                                                                    oninput="this.value = this.value.replace(/\D+/g, '')"
+                                                                    data-kt-product-table-filter="max">
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer d-flex justify-content-center align-items-center btn btn-light bg-darkgreen p-3">
+                                        <div
+                                            class="card-footer d-flex justify-content-center align-items-center btn btn-light bg-darkgreen p-3">
                                             <div class="d-flex align-items-center gap-2 p-3">
                                                 <i class="ki-duotone ki-arrows-loop text-dark fs-2">
                                                     <span class="path1"></span>
@@ -369,13 +438,19 @@ try {
                                         <div class="card-header border-0 pt-6">
                                             <div class="card-title">
                                                 <div class="d-flex align-items-center position-relative my-1">
-                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-product-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search Product" />
+                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span
+                                                            class="path1"></span><span class="path2"></span></i> <input
+                                                        type="text" data-kt-product-table-filter="search"
+                                                        class="form-control form-control-solid w-250px ps-13"
+                                                        placeholder="Search Product" />
                                                 </div>
                                             </div>
                                             <div class="card-toolbar">
                                                 <!-- Search -->
                                                 <div class="d-flex justify-content-end gap-3 flex-wrap">
-                                                    <button type="button" class="btn btn-primary d-flex align-items-center ps-5" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                                                    <button type="button"
+                                                        class="btn btn-primary d-flex align-items-center ps-5"
+                                                        data-bs-toggle="modal" data-bs-target="#addProductModal">
                                                         <i class="ki-duotone ki-plus fs-2"></i>
                                                         <span>Add Product</span>
                                                     </button>
@@ -390,7 +465,8 @@ try {
                                             </div>
                                         </div>
                                         <div class="card-body py-4">
-                                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_product">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5"
+                                                id="tb_product">
                                                 <thead>
                                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                                                         <th class="w-20">Product Name</th>
@@ -407,17 +483,23 @@ try {
                                                             <tr>
                                                                 <td>
                                                                     <div class="">
-                                                                        <div class="fw-bolder text-primary"><?php echo secureToken::tokendecrypt($rproduct["productName"]); ?></div>
-                                                                        <span class="fs-6 text-muted"><?php echo secureToken::tokendecrypt($rproduct["productSKU"]); ?></span>
+                                                                        <div class="fw-bolder text-primary">
+                                                                            <?php echo $rproduct["productName"]; ?>
+                                                                        </div>
+                                                                        <span
+                                                                            class="fs-6 text-muted"><?php echo $rproduct["productSKU"]; ?></span>
                                                                     </div>
                                                                 </td>
-                                                                <td><?php echo secureToken::tokendecrypt($rproduct["description"]); ?></td>
+                                                                <td><?php echo $rproduct["description"]; ?>
+                                                                </td>
                                                                 <td><?php echo $rproduct["quantity"]; ?></td>
                                                                 <td><?php echo $rproduct["regularPrice"]; ?></td>
                                                                 <td><span><?php echo $rproduct["productStatus"]; ?></span></td>
                                                                 <td class="text-end datainput">
                                                                     <div class="d-flex justify-content-end gap-2">
-                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rproduct["PK_mscProducts"]; ?>" data-ii-input-action="view">
+                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3"
+                                                                            data-ii-val="<?php echo $rproduct["PK_mscProducts"]; ?>"
+                                                                            data-ii-input-action="view">
                                                                             <i class="ki-duotone ki-dots-square fs-2x">
                                                                                 <span class="path1"></span>
                                                                                 <span class="path2"></span>
@@ -458,7 +540,8 @@ try {
                             <div class="modal-header" id="modal_accessHeader">
                                 <h2 class="fw-bold mt-3">Add Product</h2>
                                 <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
-                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+                                            class="path2"></span></i>
                                 </div>
                             </div>
 
@@ -468,31 +551,44 @@ try {
                                         <p class="fw-bolder text-muted">General Information</p>
                                         <div class="">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="chkbxReturnable">
-                                                <label class="form-check-label fw-bolder text-dark" for="chkbxReturnable">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="chkbxReturnable">
+                                                <label class="form-check-label fw-bolder text-dark"
+                                                    for="chkbxReturnable">
                                                     Returnable Product
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="mt-5">
                                             <label for="ii_productname" class="fw-bolder required">Product Name</label>
-                                            <input type="text" id="ii_productname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Product Name">
+                                            <input type="text" id="ii_productname"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Name">
                                         </div>
                                         <div class="row g-3 mt-5">
                                             <div class="col-xl-6">
                                                 <div class="">
-                                                    <label for="ii_productsku" class="fw-bolder required">Product SKU</label>
-                                                    <input type="text" id="ii_productsku" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="XXX-XXX-XX">
+                                                    <label for="ii_productsku" class="fw-bolder required">Product
+                                                        SKU</label>
+                                                    <input type="text" id="ii_productsku"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        placeholder="XXX-XXX-XX">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="">
-                                                    <label for="ii_productcategory" class="fw-bolder required">Product Category</label>
-                                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Category" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_productcategory">
+                                                    <label for="ii_productcategory" class="fw-bolder required">Product
+                                                        Category</label>
+                                                    <select class="form-select form-select-solid fw-bolder"
+                                                        data-kt-select2="true" data-placeholder="Select Category"
+                                                        data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                        data-hide-search="true" id="ii_productcategory">
                                                         <option></option>
                                                         <?php if ($ccategories > 0) { ?>
                                                             <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
-                                                                <option value="<?php echo $rcategories["PK_mscCategories"]; ?>"><?php echo secureToken::tokendecrypt($rcategories["description"]); ?></option>
+                                                                <option value="<?php echo $rcategories["PK_mscCategories"]; ?>">
+                                                                    <?php echo $rcategories["description"]; ?>
+                                                                </option>
                                                             <?php } ?>
                                                         <?php } ?>
                                                     </select>
@@ -500,33 +596,44 @@ try {
                                             </div>
                                         </div>
                                         <div class="mt-5">
-                                            <label for="ii_productdescription" class="fw-bolder required">Product Description</label>
-                                            <textarea name="" id="ii_productdescription" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Product Description"></textarea>
+                                            <label for="ii_productdescription" class="fw-bolder required">Product
+                                                Description</label>
+                                            <textarea name="" id="ii_productdescription"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Description"></textarea>
                                         </div>
                                         <div class="mt-5">
-                                            <label for="ii_productdetails" class="fw-bolder required">Product Details</label>
+                                            <label for="ii_productdetails" class="fw-bolder required">Product
+                                                Details</label>
                                             <div class="ii_productdetailscontainer">
                                             </div>
                                             <div class="d-flex justify-content-end">
-                                                <button class="w-100 btn btn-light" data-add-product-details="add">Add</button>
+                                                <button class="w-100 btn btn-light"
+                                                    data-add-product-details="add">Add</button>
                                             </div>
                                         </div>
                                         <p class="fw-bolder text-muted mt-5">Quantity &amp; Reorder</p>
                                         <div class="mt-5">
                                             <label for="ii_totalquantity" class="fw-bolder">Total Quantity</label>
-                                            <input type="number" min="0" max="9999" id="ii_totalquantity" class="form-control form-control-lg form-control-solid fw-bolder" value="0">
+                                            <input type="number" min="0" max="9999" id="ii_totalquantity"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                value="0">
                                         </div>
                                         <div class="row g-3">
                                             <div class="col-xl-6">
                                                 <div class="mt-5">
                                                     <label for="ii_minstock" class="fw-bolder">Minimum Stock</label>
-                                                    <input type="number" min="0" max="99999" id="ii_minstock" class="form-control form-control-lg form-control-solid fw-bolder" value="0">
+                                                    <input type="number" min="0" max="99999" id="ii_minstock"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        value="0">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="mt-5">
                                                     <label for="ii_maxstock" class="fw-bolder">Maximum Stock</label>
-                                                    <input type="number" min="0" max="99999" id="ii_maxstock" class="form-control form-control-lg form-control-solid fw-bolder" value="0">
+                                                    <input type="number" min="0" max="99999" id="ii_maxstock"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        value="0">
                                                 </div>
                                             </div>
                                         </div>
@@ -534,20 +641,27 @@ try {
                                         <div class="row g-3">
                                             <div class="col-xl-6">
                                                 <div class="mt-5">
-                                                    <label for="ii_regularprice" class="fw-bolder required">Regular Price</label>
-                                                    <input type="text" id="ii_regularprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                                    <label for="ii_regularprice" class="fw-bolder required">Regular
+                                                        Price</label>
+                                                    <input type="text" id="ii_regularprice"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        placeholder="0.00" value="0.00">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="mt-5">
                                                     <label for="ii_saleprice" class="fw-bolder">Sale Price</label>
-                                                    <input type="text" id="ii_saleprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                                    <input type="text" id="ii_saleprice"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        placeholder="0.00" value="0.00">
                                                 </div>
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="mt-5">
                                                     <label for="ii_repoprice" class="fw-bolder">Repo Price</label>
-                                                    <input type="text" id="ii_repoprice" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="0.00" value="0.00">
+                                                    <input type="text" id="ii_repoprice"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        placeholder="0.00" value="0.00">
                                                 </div>
                                             </div>
                                         </div>
@@ -555,8 +669,12 @@ try {
                                         <div class="row g-3 mt-5">
                                             <div class="col-xl-6">
                                                 <div class="">
-                                                    <label for="ii_productsetting" class="fw-bolder required">Product Setting</label>
-                                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Product Setting" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_productsetting">
+                                                    <label for="ii_productsetting" class="fw-bolder required">Product
+                                                        Setting</label>
+                                                    <select class="form-select form-select-solid fw-bolder"
+                                                        data-kt-select2="true" data-placeholder="Select Product Setting"
+                                                        data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                        data-hide-search="true" id="ii_productsetting">
                                                         <option value=""></option>
                                                         <option value="Regular">Regular</option>
                                                         <option value="Sale">Sale</option>
@@ -566,8 +684,12 @@ try {
                                             </div>
                                             <div class="col-xl-6">
                                                 <div class="">
-                                                    <label for="ii_productstatus" class="fw-bolder required">Product Status</label>
-                                                    <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Product Status" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_productstatus">
+                                                    <label for="ii_productstatus" class="fw-bolder required">Product
+                                                        Status</label>
+                                                    <select class="form-select form-select-solid fw-bolder"
+                                                        data-kt-select2="true" data-placeholder="Select Product Status"
+                                                        data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                        data-hide-search="true" id="ii_productstatus">
                                                         <option value=""></option>
                                                         <option value="Active">Active</option>
                                                         <option value="Inactive">Inactive</option>
@@ -582,7 +704,8 @@ try {
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-ii-productadd-modal-action="submit" data-passaccess="addproduct">Save</button>
+                                <button type="button" class="btn btn-primary" data-ii-productadd-modal-action="submit"
+                                    data-passaccess="addproduct">Save</button>
                             </div>
                         </div>
                     </div>
@@ -591,11 +714,16 @@ try {
                 <?php include './authsetting.php'; ?>
                 <!-- Drawer -->
                 <button id="kt_drawer_trigger" class="btn btn-primary" hidden>Toggle basic drawer</button>
-                <div id="kt_drawer_advanced" class="bg-white drawer drawer-end" data-kt-drawer="true" data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_trigger" data-kt-drawer-close="#kt_drawer_advanced_close" data-kt-drawer-name="docs" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'100%', 'md': '500px', 'lg': '900px'}" data-kt-drawer-direction="end">
+                <div id="kt_drawer_advanced" class="bg-white drawer drawer-end" data-kt-drawer="true"
+                    data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_trigger"
+                    data-kt-drawer-close="#kt_drawer_advanced_close" data-kt-drawer-name="docs"
+                    data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'100%', 'md': '500px', 'lg': '900px'}"
+                    data-kt-drawer-direction="end">
                     <div class="card rounded-0 w-100">
                         <div class="card-header pe-5 d-flex justify-content-between align-items-center">
                             <div class="card-toolbar">
-                                <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" id="kt_drawer_advanced_close">
+                                <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3"
+                                    id="kt_drawer_advanced_close">
                                     <i class="ki-duotone ki-exit-right fs-2x">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
@@ -613,7 +741,9 @@ try {
                             <div class="productTitle">
                                 <div class="d-flex flex-column gap-1">
                                     <span class="h1 fw-bolder" id="ii_valProductName"></span>
-                                    <span class="h5 text-muted"><span id="ii_valSKU"></span> <span class="text-muted opacity-50">|</span> <span id="ii_valCategory"></span></span>
+                                    <span class="h5 text-muted"><span id="ii_valSKU"></span> <span
+                                            class="text-muted opacity-50">|</span> <span
+                                            id="ii_valCategory"></span></span>
                                 </div>
                             </div>
                             <div class="d-flex gap-3 mt-5 flex-wrap">
@@ -625,7 +755,8 @@ try {
                                 <div class="col-xl-7">
                                     <div class="row g-3">
                                         <div class="col-xl-12">
-                                            <img alt="Product Image" src="../../assets/media/images/output.png" width="100%" class="mh-600px theme-light-show rounded" />
+                                            <img alt="Product Image" src="../../assets/media/images/output.png"
+                                                width="100%" class="mh-600px theme-light-show rounded" />
                                         </div>
                                         <div class="col-xl-12">
                                             <span class="h3 fw-bolder mt-5">Description</span>
@@ -634,23 +765,25 @@ try {
                                         <div class="col-xl-12">
                                             <span class="h3 fw-bolder mt-5">Status</span>
                                             <div class="mt-3" id="ii_valStatusContainer">
-                                                
+
                                             </div>
                                         </div>
                                         <div class="col-xl-12">
                                             <span class="h3 fw-bolder mt-5">Price Information</span>
                                             <div class="mt-3" id="ii_valPriceContainer">
-                                                <div class="d-flex justify-content-between align-items-center bg-light p-3">
-                                                     <span class="fw-bolder">Regular Price</span>
-                                                     <span id="ii_valRegularPrice"></span>
+                                                <div
+                                                    class="d-flex justify-content-between align-items-center bg-light p-3">
+                                                    <span class="fw-bolder">Regular Price</span>
+                                                    <span id="ii_valRegularPrice"></span>
                                                 </div>
                                                 <div class="d-flex justify-content-between align-items-center p-3">
-                                                     <span class="fw-bolder">Repo Price</span>
-                                                     <span id="ii_valRepoPrice"></span>
+                                                    <span class="fw-bolder">Repo Price</span>
+                                                    <span id="ii_valRepoPrice"></span>
                                                 </div>
-                                                <div class="d-flex justify-content-between align-items-center bg-light p-3">
-                                                     <span class="fw-bolder">Sale Price</span>
-                                                     <span id="ii_valSalePrice"></span>
+                                                <div
+                                                    class="d-flex justify-content-between align-items-center bg-light p-3">
+                                                    <span class="fw-bolder">Sale Price</span>
+                                                    <span id="ii_valSalePrice"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -661,7 +794,8 @@ try {
                                         <span class="h3 fw-bolder">Stock</span>
                                         <div class="card bg-light p-3 mt-3">
                                             <div class="card-header d-flex justify-content-center align-items-center">
-                                                <div class="d-flex justify-content-center flex-column align-items-center">
+                                                <div
+                                                    class="d-flex justify-content-center flex-column align-items-center">
                                                     <span>Quantity at Hand</span>
                                                     <h1 id="ii_valStock"></h1>
                                                 </div>

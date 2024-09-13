@@ -29,7 +29,7 @@ try {
     $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
 
     if ($cuserprofile > 0) {
-        $fullname = secureToken::tokendecrypt($ruserprofile["userFullName"]);
+        $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
         $infosecret = $ruserprofile["user_secret"];
         $isSecret = $ruserprofile["isSecret"];
