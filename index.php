@@ -137,7 +137,7 @@ try {
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item">
-                                        Home
+                                        <a href="/" class="text-dark">Home</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         Appliances
@@ -195,7 +195,7 @@ try {
                                                 <div class="row g-3">
                                                     <button id="kt_block_ui_1_button" class="btn btn-primary d-none">Block</button>
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Category" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" data-kt-product-table-filter="category" id="ii_category">
+                                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Category" data-allow-clear="false" data-kt-user-table-filter="usertype" data-hide-search="true" data-kt-product-table-filter="category" id="ii_category">
                                                             <option>All Category</option>
                                                             <?php if ($ccategories > 0) { ?>
                                                                 <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
@@ -210,7 +210,7 @@ try {
                                                 <p class="fw-bolder text-gray-600">Products View</p>
                                                 <div class="row g-3">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select View" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" data-kt-product-table-filter="category" id="ii_product">
+                                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select View" data-allow-clear="false" data-kt-user-table-filter="usertype" data-hide-search="true" data-kt-product-table-filter="category" id="ii_product">
                                                             <option>All Products</option>
                                                             <option>Regular</option>
                                                             <option>Sale</option>

@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `appsysusers` (
   PRIMARY KEY (`PK_appsysUsers`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table devmanage-fiesta.appsysusers: ~2 rows (approximately)
+-- Dumping data for table devmanage-fiesta.appsysusers: ~3 rows (approximately)
 INSERT INTO `appsysusers` (`PK_appsysUsers`, `user_email`, `user_password`, `user_empId`, `user_recoveryCode`, `user_activationCode`, `user_secret`, `isSecret`, `isActivated`, `isDisabled`, `isDeactivated`, `isAdmin`, `isCustomer`, `isBranchManager`, `isCreditInvestigator`, `isCreditCoordinator`, `isCashier`, `FK_geolocation`, `FK_mscinfoChildrens`, `FK_mscinfoRelatives`, `FK_mscinfoNeighbors`, `userLastname`, `userFirstName`, `userMiddleName`, `userNickName`, `userGender`, `userCivilStatus`, `userNationality`, `userAge`, `userDateofBirth`, `userPlaceofBirth`, `userContactNumber`, `userAddress`, `userFullName`) VALUES
 	(1, 'administrator@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', '230704', 'qkIR62zAoY', 'bPXOrCk0jW3EdsoDBKpuGzHt8iRq2y', 'RMZDIUD2N3S6SDML', b'1', b'1', NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'FLORO', 'JECO', 'ESCOTO', 'COCO', 0, 'SINGLE', 'FILIPINO', 25, '1999-05-11', 'TAGUM CITY', '938-9206-940', 'DNSC COMPOUND, NEW VISAYAS, PANABO CITY', 'FLORO, JECO ESCOTO'),
 	(24, 'jec.floro@gmail.com', 'TzJUUVhzaFdqR0p6K3F6SE53L3FPdz09', NULL, 'ynAPLw04lT', '8uPRGasS9ZzFAq5IUmCjQ7btKg60B1', 'IQVCR7QBOUZ3ZHYM', NULL, b'1', NULL, NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `msc_details` (
   PRIMARY KEY (`PK_mscDetails`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.msc_details: ~28 rows (approximately)
+-- Dumping data for table devmanage-fiesta.msc_details: ~11 rows (approximately)
 INSERT INTO `msc_details` (`PK_mscDetails`, `order`, `detailsId`, `title`, `description`) VALUES
 	(34, 1, 'T1y9Aj', 'Refrigerator Type', 'Bottom Freezer, Two Door'),
 	(35, 2, 'T1y9Aj', 'Capacity', '14.8 cu.ft. / 420 liters'),
@@ -130,12 +130,13 @@ CREATE TABLE IF NOT EXISTS `msc_products` (
   `productStatus` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`PK_mscProducts`),
   UNIQUE KEY `productName` (`productName`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.msc_products: ~2 rows (approximately)
+-- Dumping data for table devmanage-fiesta.msc_products: ~3 rows (approximately)
 INSERT INTO `msc_products` (`PK_mscProducts`, `productName`, `productSKU`, `FK_mscCategories`, `productDescription`, `FK_detailsId`, `quantity`, `regularPrice`, `salePrice`, `repoPrice`, `stockMinimum`, `stockMaximum`, `isRegular`, `isSale`, `isRepo`, `productStatus`) VALUES
 	(27, 'Panasonic NRBX471CPSP', '000000000', 25, 'Prime Fresh\nAg Clean\nAI Econavi with 4 Sensors\nInverter Compressor\nElectrostatic Touch Control Panel\nFresh Safe\nDoor Pockets\nHeight Adjustable Shelves\nTempered Glass Shelves\nLED Light\nPower Control\nTwist Ice Tray\nQuick Freezing\nQuick Ice Making\nR600a Refrigerant', 'T1y9Aj', 10, 42699.00, 40699.00, 38699.00, 0, 0, b'1', NULL, NULL, 'Active'),
-	(28, 'Fujidenzo RDD60S', '000000000', 25, 'Direct Cool\nManual Defrost\nEnergy Efficient Compressor\nR600a Refrigerant\nClean Back Design\nSpace Saver\nBig Freezer Space\nStainless Look\nReversible Door\nAdjustable Wire Shelves\nHardtop Design', 'p5Ww89', 5, 11900.00, 9900.00, 7900.00, 0, 0, b'1', NULL, NULL, 'Active');
+	(28, 'Fujidenzo RDD60S', '000000000', 25, 'Direct Cool\nManual Defrost\nEnergy Efficient Compressor\nR600a Refrigerant\nClean Back Design\nSpace Saver\nBig Freezer Space\nStainless Look\nReversible Door\nAdjustable Wire Shelves\nHardtop Design', 'p5Ww89', 5, 11900.00, 9900.00, 7900.00, 0, 0, NULL, b'1', NULL, 'Active'),
+	(30, 'Fujidenzo RDD61S', '000000000', 25, 'Direct Cool\nManual Defrost\nEnergy Efficient Compressor\nR600a Refrigerant\nClean Back Design\nSpace Saver\nBig Freezer Space\nStainless Look\nReversible Door\nAdjustable Wire Shelves\nHardtop Design', 'p5Ww89', 5, 8000.00, 7000.00, 4900.00, 0, 0, NULL, NULL, b'1', 'Active');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

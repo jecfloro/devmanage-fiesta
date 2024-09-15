@@ -54,7 +54,7 @@ if ($product != "All Products") {
 }
 
 if ($min >= 0 && $max > 0) {
-    $rangequery = " AND regularPrice BETWEEN $min AND $max";
+    $rangequery = " AND regularPrice BETWEEN $min AND $max OR salePrice BETWEEN $min AND $max OR repoPrice BETWEEN $min AND $max";
 }
 
 try {

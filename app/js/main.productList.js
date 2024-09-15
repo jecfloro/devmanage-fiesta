@@ -94,7 +94,7 @@ $("#ii_sorting").change(function (e) {
 
 // Timeout
 
-var time = 2000;
+var time = 1000;
 var timeout;
 
 $("#ii_search").keyup(function (e) {
