@@ -272,7 +272,6 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
-    <script type="module" src="../../app/js/main.customerScript.js"></script>
 </body>
 
 </html>

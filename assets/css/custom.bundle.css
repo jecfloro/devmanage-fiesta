@@ -84,6 +84,7 @@ body {
   .product-list {
     width: 100% !important;
   }
+
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -98,6 +99,8 @@ body {
   .product-list {
     width: 32% !important;
   }
+
+
 }
 
 /* X-Large devices (large desktops, 1200px and up) */
@@ -132,5 +135,13 @@ body {
 @media (max-width: 991px) {
   .user_profile {
       display: none !important;
+  }
+}
+
+@media (max-width: 681px) {
+  .align-items-custom {
+    display: flex !important;
+    align-items: center !important;
+    text-align: center !important;
   }
 }

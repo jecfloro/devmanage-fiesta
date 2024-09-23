@@ -137,10 +137,10 @@ try {
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item">
-                                        <a href="/" class="text-dark">Home</a>
+                                        <a href="/" class="text-primary">HOME</a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        Appliances
+                                        APPLIANCES
                                     </li>
                                 </ul>
                             </div>
@@ -324,6 +324,7 @@ try {
     <script src="../../assets/js/custom/widgets.js"></script>
     <script src="../../assets/js/custom/block/blockui.js"></script>
     <script type="module" src="../../app/js/main.productList.js"></script>
+    <script type="module" src="../../app/js/main.customerScript.js"></script>
 </body>
 
 </html>

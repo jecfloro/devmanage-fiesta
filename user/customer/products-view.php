@@ -16,7 +16,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $usercode = $_SESSION['session_usercode'];
-    
+
     $userprofile = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
     $userprofile->execute();
     $cuserprofile = $userprofile->rowCount();
@@ -26,6 +26,18 @@ try {
         $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
     }
+
+    $categories = $conn->prepare("SELECT * FROM msc_categories");
+    $categories->execute();
+    $ccategories = $categories->rowCount();
+
+    $prodid = $_GET["p"];
+
+    $product = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories WHERE PK_mscProducts = '$prodid'");
+    $product->execute();
+    $cproduct = $product->rowCount();
+    $rproduct = $product->fetch(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -229,7 +241,13 @@ try {
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Customer
+                                        Products
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <?php echo $rproduct["description"]; ?>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <?php echo $rproduct["productName"]; ?>
                                     </li>
                                 </ul>
                             </div>
@@ -240,9 +258,140 @@ try {
                     </div>
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <div class="container-fluid">
-                            <div class="row g-xl-12">
-                                <div class="col-xxl-12">
+                            <div class="row g-xl-12 g-5">
+                                <div class="col-xl-12">
+                                    <div class="d-flex justify-content-center gap-10 flex-wrap">
+                                        <div class="">
+                                            <a class="d-block overlay w-350px h-350px" data-fslightbox="lightbox-basic" href="../../assets/media/images/output.png">
+                                                <!--begin::Image-->
+                                                <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-350px h-350px"
+                                                    style="background-image:url('../../assets/media/images/output.png')">
+                                                </div>
+                                                <!--end::Image-->
 
+                                                <!--begin::Action-->
+                                                <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
+                                                    <i class="bi bi-eye-fill text-white fs-3x"></i>
+                                                </div>
+                                                <!--end::Action-->
+                                            </a>
+                                            <div class="d-flex gap-3 mt-3 overflow-auto overflow-y-hidden">
+                                                <a class="d-block overlay w-100px h-100px" data-fslightbox="lightbox-basic" href="../../assets/media/images/output.png">
+                                                    <!--begin::Image-->
+                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-100px h-100px"
+                                                        style="background-image:url('../../assets/media/images/output.png')">
+                                                    </div>
+                                                    <!--end::Image-->
+
+                                                    <!--begin::Action-->
+                                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
+                                                        <i class="bi bi-eye-fill text-white fs-3x"></i>
+                                                    </div>
+                                                    <!--end::Action-->
+                                                </a>
+                                                <a class="d-block overlay w-100px h-100px" data-fslightbox="lightbox-basic" href="../../assets/media/images/output.png">
+                                                    <!--begin::Image-->
+                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-100px h-100px"
+                                                        style="background-image:url('../../assets/media/images/output.png')">
+                                                    </div>
+                                                    <!--end::Image-->
+
+                                                    <!--begin::Action-->
+                                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
+                                                        <i class="bi bi-eye-fill text-white fs-3x"></i>
+                                                    </div>
+                                                    <!--end::Action-->
+                                                </a>
+                                                <a class="d-block overlay w-100px h-100px" data-fslightbox="lightbox-basic" href="../../assets/media/images/output.png">
+                                                    <!--begin::Image-->
+                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-100px h-100px"
+                                                        style="background-image:url('../../assets/media/images/output.png')">
+                                                    </div>
+                                                    <!--end::Image-->
+
+                                                    <!--begin::Action-->
+                                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
+                                                        <i class="bi bi-eye-fill text-white fs-3x"></i>
+                                                    </div>
+                                                    <!--end::Action-->
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-xl-start align-items-custom">
+                                            <h1 class="fw-bolder fs-2x"><?php echo $rproduct["productName"]; ?></h1>
+                                            <span>Availability: <?php echo $rproduct["quantity"]; ?> in stock</span>
+                                            <div class="mt-5">
+                                                <?php if ($rproduct["isRegular"] == 1) { ?>
+                                                    <h2>₱ <?php echo $rproduct["regularPrice"]; ?></h2>
+                                                <?php } ?>
+                                                <?php if ($rproduct["isSale"] == 1) { ?>
+                                                    <div class="d-flex gap-5">
+                                                        <h2>₱ <?php echo $rproduct["salePrice"]; ?></h2>
+                                                        <h2 class="text-muted text-decoration-line-through">₱ <?php echo $rproduct["regularPrice"]; ?></h2>
+                                                    </div>
+                                                <?php } ?>
+                                                <?php if ($rproduct["isRepo"] == 1) { ?>
+                                                    <div class="d-flex gap-5">
+                                                        <h2>₱ <?php echo $rproduct["repoPrice"]; ?></h2>
+                                                        <h2 class="text-muted text-decoration-line-through">₱ <?php echo $rproduct["regularPrice"]; ?></h2>
+                                                    </div>
+                                                <?php } ?>
+                                                <div class="mt-10">
+                                                    <button class="btn btn-darkgreen">Apply for Installment</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <ul class="nav nav-tabs nav-line-tabs nav-line-tabs-2x mb-5 fs-6">
+                                        <li class="nav-item">
+                                            <a class="nav-link active text-uppercase fw-bolder text-primary" data-bs-toggle="tab" href="#kt_tab_pane_4">Features</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-uppercase fw-bolder text-primary" data-bs-toggle="tab" href="#kt_tab_pane_5">Details</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-uppercase fw-bolder text-primary" data-bs-toggle="tab" href="#kt_tab_pane_6">Review</a>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="kt_tab_pane_4" role="tabpanel">
+                                            <?php echo nl2br($rproduct["productDescription"]); ?>
+                                        </div>
+                                        <div class="tab-pane fade" id="kt_tab_pane_5" role="tabpanel">
+                                            <?php
+
+                                            $productdetailsid = $rproduct["FK_detailsId"];
+
+                                            $productdetails = $conn->prepare("SELECT `order`, `title`, `description` FROM msc_details WHERE detailsId = '$productdetailsid' ORDER BY `order` ASC");
+                                            $productdetails->execute();
+                                            $cproductdetails = $productdetails->rowCount();
+                                            $rproductdetails = $productdetails->fetchall(PDO::FETCH_ASSOC);
+
+                                            ?>
+                                            <?php if ($cproductdetails > 0) { ?>
+                                                <?php for ($i = 0; $i < count($rproductdetails); $i++) { ?>
+
+                                                    <?php if ($i % 2 == 0) { ?>
+                                                        <div class='d-flex justify-content-between align-items-center bg-secondary p-3'><span class='fw-bolder'><?php echo $rproductdetails[$i]["title"]; ?></span><span class=''><?php echo $rproductdetails[$i]["description"]; ?></span></div>
+                                                    <?php } else { ?>
+                                                        <div class='d-flex justify-content-between align-items-center p-3'><span class='fw-bolder'><?php echo $rproductdetails[$i]["title"]; ?></span><span class=''><?php echo $rproductdetails[$i]["description"]; ?></span></div>
+                                                    <?php } ?>
+
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </div>
+                                        <div class="tab-pane fade" id="kt_tab_pane_6" role="tabpanel">
+                                            <div class="d-flex justify-content-center flex-column">
+                                                <h1>Reviews</h1>
+                                                <span>There are no reviews yet.<br>
+                                                    Be the first to review "<span class="text-primary"><?php echo $rproduct["productName"]; ?></span>"<br>
+                                                    You must be <a href="login.php" class="text-primary">logged in</a> to post a review.</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -272,6 +421,7 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
+    <script src="../../assets/plugins/custom/fslightbox/fslightbox.bundle.js"></script>
     <script type="module" src="../../app/js/main.customerScript.js"></script>
 </body>
 

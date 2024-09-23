@@ -16,7 +16,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $usercode = $_SESSION['session_usercode'];
-    
+
     $userprofile = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
     $userprofile->execute();
     $cuserprofile = $userprofile->rowCount();
@@ -26,6 +26,15 @@ try {
         $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
     }
+
+    $categories = $conn->prepare("SELECT * FROM msc_categories");
+    $categories->execute();
+    $ccategories = $categories->rowCount();
+
+    $product = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories");
+    $product->execute();
+    $cproduct = $product->rowCount();
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -229,7 +238,7 @@ try {
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Customer
+                                        Products
                                     </li>
                                 </ul>
                             </div>
@@ -240,9 +249,150 @@ try {
                     </div>
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <div class="container-fluid">
-                            <div class="row g-xl-12">
+                            <div class="row g-5">
                                 <div class="col-xxl-12">
+                                    <div class="card">
+                                        <div class="card-body d-flex justify-content-between flex-wrap">
+                                            <div class="">
+                                                <div data-kt-search-element="div" class="w-250px position-relative mb-5 mb-lg-0" autocomplete="off">
+                                                    <!--begin::Hidden input(Added to disable form autocomplete)-->
+                                                    <input type="hidden">
+                                                    <!--end::Hidden input-->
 
+                                                    <!--begin::Icon-->
+                                                    <i class="ki-duotone ki-magnifier search-icon fs-2 text-gray-500 position-absolute top-50 translate-middle-y ms-5"><span class="path1"></span><span class="path2"></span></i> <!--end::Icon-->
+
+                                                    <!--begin::Input-->
+                                                    <input type="text" class="search-input form-control form-control-solid ps-13" name="search" value="" placeholder="Search Product" data-kt-search-element="input" id="ii_search">
+                                                    <!--end::Input-->
+
+                                                    <!--begin::Spinner-->
+                                                    <span class="search-spinner  position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-5" data-kt-search-element="spinner">
+                                                        <span class="spinner-border h-15px w-15px align-middle text-gray-400"></span>
+                                                    </span>
+                                                    <!--end::Spinner-->
+
+                                                    <!--begin::Reset-->
+                                                    <span class="search-reset  btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-4" data-kt-search-element="clear">
+                                                        <i class="ki-duotone ki-cross fs-2 fs-lg-1 me-0"><span class="path1"></span><span class="path2"></span></i> </span>
+                                                    <!--end::Reset-->
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <select class="form-select form-select-solid fw-bolder w-250px" data-kt-select2="true" data-placeholder="Select Sort" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_sorting">
+                                                    <option value="default">Default Sorting</option>
+                                                    <option value="sortLow">Sort by price: Low to High</option>
+                                                    <option value="sortHigh">Sort by price: High to Low</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="">
+                                                <p class="fw-bolder text-gray-600">Category</p>
+                                                <div class="row g-3">
+                                                    <button id="kt_block_ui_1_button" class="btn btn-primary d-none">Block</button>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Category" data-allow-clear="false" data-kt-user-table-filter="usertype" data-hide-search="true" data-kt-product-table-filter="category" id="ii_category">
+                                                            <option>All Category</option>
+                                                            <?php if ($ccategories > 0) { ?>
+                                                                <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                                    <option value="<?php echo $rcategories["PK_mscCategories"] ?>"><?php echo $rcategories["description"]; ?></option>
+                                                                <?php } ?>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-5">
+                                                <p class="fw-bolder text-gray-600">Products View</p>
+                                                <div class="row g-3">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                        <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select View" data-allow-clear="false" data-kt-user-table-filter="usertype" data-hide-search="true" data-kt-product-table-filter="category" id="ii_product">
+                                                            <option>All Products</option>
+                                                            <option>Regular</option>
+                                                            <option>Sale</option>
+                                                            <option>Repo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-5">
+                                                <p class="fw-bolder text-gray-600">Price</p>
+                                                <div class="row g-sm-3 g-xl-0">
+                                                    <div class="col-xl-12 col-lg-6 col-md-6 col-sm-6">
+                                                        <div class="input-group input-group-solid mb-5">
+                                                            <span class="input-group-text fw-bolder" id="basic-addon1">₱</span>
+                                                            <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Minimum Price" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" data-kt-product-table-filter="min" id="ii_min">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-6 col-md-6 col-sm-6">
+                                                        <div class="input-group input-group-solid mb-5">
+                                                            <span class="input-group-text fw-bolder" id="basic-addon1">₱</span>
+                                                            <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Maximum Price" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')" data-kt-product-table-filter="max" id="ii_max">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-9">
+                                    <div class="card">
+                                        <div class="card-body" id="kt_block_ui_1_target">
+                                            <div class="d-flex flex-wrap gap-3" id="product_container">
+                                                <!-- <?php if ($cproduct > 0) { ?>
+                                                    <?php while ($rproduct = $product->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                        <div class="border p-5 rounded shadow-sm product-list cursor-pointer card-hover">
+                                                            <div class="">
+                                                                <img alt="Product Image" src="../../assets/media/images/product.png"
+                                                                    width="100%" class="mh-auto mw-auto theme-light-show rounded" />
+                                                            </div>
+                                                            <div class="mt-3">
+                                                                <h2><?php echo secureToken::tokendecrypt($rproduct["productName"]); ?></h2>
+                                                                <span><?php echo secureToken::tokendecrypt($rproduct["description"]); ?></span>
+                                                                <?php if ($rproduct["isRegular"]) { ?>
+                                                                    <div class="">
+                                                                        <span class="badge bg-primary text-white">Regular</span>
+                                                                    </div>
+                                                                <?php } ?>
+                                                                <?php if ($rproduct["isSale"]) { ?>
+                                                                    <div class="">
+                                                                        <span class="badge bg-primary text-white">Sale</span>
+                                                                    </div>
+                                                                <?php } ?>
+                                                                <?php if ($rproduct["isRepo"]) { ?>
+                                                                    <div class="">
+                                                                        <span class="badge bg-primary text-white">Repo</span>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            </div>
+                                                            <div class="mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                                                                <?php if ($rproduct["isRegular"]) { ?>
+                                                                    <span class="fs-6 fw-bolder"><?php echo $rproduct["regularPrice"] ?></span>
+                                                                <?php } ?>
+                                                                <?php if ($rproduct["isSale"]) { ?>
+                                                                    <div class="d-flex gap-3">
+                                                                        <span class="fs-6 fw-bolder">₱ <?php echo $rproduct["salePrice"] ?></span>
+                                                                        <span class="text-muted text-decoration-line-through">₱ <?php echo $rproduct["regularPrice"] ?></span>
+                                                                    </div>
+                                                                <?php } ?>
+                                                                <?php if ($rproduct["isRepo"]) { ?>
+                                                                    <div class="d-flex gap-3">
+                                                                        <span class="fs-6 fw-bolder">₱ <?php echo $rproduct["repoPrice"] ?></span>
+                                                                        <span class="text-muted text-decoration-line-through">₱ <?php echo $rproduct["regularPrice"] ?></span>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php } ?>
+                                                <?php } ?> -->
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -272,7 +422,8 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
-    <script type="module" src="../../app/js/main.customerScript.js"></script>
+    <script src="../../assets/js/custom/block/blockui.js"></script>
+    <script type="module" src="../../app/js/main.productList.js"></script>
 </body>
 
 </html>

@@ -61,8 +61,37 @@ CREATE TABLE IF NOT EXISTS `appsysusers` (
 -- Dumping data for table devmanage-fiesta.appsysusers: ~3 rows (approximately)
 INSERT INTO `appsysusers` (`PK_appsysUsers`, `user_email`, `user_password`, `user_empId`, `user_recoveryCode`, `user_activationCode`, `user_secret`, `isSecret`, `isActivated`, `isDisabled`, `isDeactivated`, `isAdmin`, `isCustomer`, `isBranchManager`, `isCreditInvestigator`, `isCreditCoordinator`, `isCashier`, `FK_geolocation`, `FK_mscinfoChildrens`, `FK_mscinfoRelatives`, `FK_mscinfoNeighbors`, `userLastname`, `userFirstName`, `userMiddleName`, `userNickName`, `userGender`, `userCivilStatus`, `userNationality`, `userAge`, `userDateofBirth`, `userPlaceofBirth`, `userContactNumber`, `userAddress`, `userFullName`) VALUES
 	(1, 'administrator@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', '230704', 'qkIR62zAoY', 'bPXOrCk0jW3EdsoDBKpuGzHt8iRq2y', 'RMZDIUD2N3S6SDML', b'1', b'1', NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'FLORO', 'JECO', 'ESCOTO', 'COCO', 0, 'SINGLE', 'FILIPINO', 25, '1999-05-11', 'TAGUM CITY', '938-9206-940', 'DNSC COMPOUND, NEW VISAYAS, PANABO CITY', 'FLORO, JECO ESCOTO'),
-	(24, 'jec.floro@gmail.com', 'TzJUUVhzaFdqR0p6K3F6SE53L3FPdz09', NULL, 'ynAPLw04lT', '8uPRGasS9ZzFAq5IUmCjQ7btKg60B1', 'IQVCR7QBOUZ3ZHYM', NULL, b'1', NULL, NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(24, 'jec.floro@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', NULL, 'ynAPLw04lT', '8uPRGasS9ZzFAq5IUmCjQ7btKg60B1', 'IQVCR7QBOUZ3ZHYM', NULL, b'1', NULL, NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'FLORO', 'JECO', 'ESCOTO', 'COCO', 0, 'SINGLE', 'FILIPINO', 25, '1999-05-11', 'TAGUM CITY', '938-9206-940', 'DNSC COMPOUND, NEW VISAYAS, PANABO CITY', 'FLORO, JECO ESCOTO'),
 	(25, 'hmo.rmci@gmail.com', 'Q2dVVnFWdC81OW1PNHdEYkl0MWQ0QT09', NULL, 'oZsCbziIO9', 'WQhijgapkLdEB4SwqseYNPR2HJxDI8', NULL, NULL, NULL, NULL, NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- Dumping structure for table devmanage-fiesta.appsysusers_homeownership
+CREATE TABLE IF NOT EXISTS `appsysusers_homeownership` (
+  `PK_appsysusers_homeownership` int NOT NULL AUTO_INCREMENT,
+  `FK_appsysUsers` int DEFAULT NULL,
+  PRIMARY KEY (`PK_appsysusers_homeownership`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table devmanage-fiesta.appsysusers_homeownership: ~0 rows (approximately)
+
+-- Dumping structure for table devmanage-fiesta.appsysusers_spouse
+CREATE TABLE IF NOT EXISTS `appsysusers_spouse` (
+  `PK_appsysusers_spouse` int NOT NULL AUTO_INCREMENT,
+  `FK_appsysUsers` int DEFAULT NULL,
+  `lastName` varchar(255) DEFAULT NULL,
+  `firstName` varchar(255) DEFAULT NULL,
+  `middleName` varchar(255) DEFAULT NULL,
+  `nickName` varchar(255) DEFAULT NULL,
+  `gender` int DEFAULT NULL,
+  `civilStatus` varchar(50) DEFAULT NULL,
+  `nationality` varchar(50) DEFAULT NULL,
+  `age` int DEFAULT NULL,
+  `birthdate` date DEFAULT NULL,
+  `placeofBirth` longtext,
+  `contactNumber` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`PK_appsysusers_spouse`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table devmanage-fiesta.appsysusers_spouse: ~0 rows (approximately)
 
 -- Dumping structure for table devmanage-fiesta.msc_categories
 CREATE TABLE IF NOT EXISTS `msc_categories` (

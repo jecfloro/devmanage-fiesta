@@ -44,6 +44,7 @@ var execFilter = () => {
                     } else {
 
                         $("#productlist_container").empty();
+                        $("#product_container").empty();
     
                         for (var i = 0; i < status.productarr.length; i++) {
     
@@ -59,8 +60,19 @@ var execFilter = () => {
                                 var sett = "Repo";
                                 var divv = "<div class='d-flex gap-3'><span class='fs-6 fw-bolder text-dark'>₱ " + status.productarr[i]["productrepoprice"] + "</span><span class='text-muted text-decoration-line-through'>₱ " + status.productarr[i]["productregularprice"] + "</span></div>";
                             }
+
+                            if ($("#productlist_container").length == 1) {
+
+                                $("#productlist_container").append("<a href='product.php?p=" + status.productarr[i]["productid"] + "' class='border p-5 rounded shadow-sm product-list cursor-pointer card-hover'><div class=''><img alt='Product Image' src='../../assets/media/images/product.png' width='100%' class='mh-auto mw-auto rounded' /></div><div class='mt-3'><h2>" + status.productarr[i]["productname"] + "</h2><span></span><div class=''><span class='badge bg-primary text-white'>" + sett + "</span></div></div><div class='mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3'>" + divv + "</div></a>");
+                                
+                            }
+
+                            if ($("#product_container").length == 1) {
+
+                                $("#product_container").append("<a href='products-view.php?p=" + status.productarr[i]["productid"] + "' class='border p-5 rounded shadow-sm product-list cursor-pointer card-hover'><div class=''><img alt='Product Image' src='../../assets/media/images/product.png' width='100%' class='mh-auto mw-auto rounded' /></div><div class='mt-3'><h2>" + status.productarr[i]["productname"] + "</h2><span></span><div class=''><span class='badge bg-primary text-white'>" + sett + "</span></div></div><div class='mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3'>" + divv + "</div></a>");
+                                
+                            }
     
-                            $("#productlist_container").append("<a href='product.php?p=" + status.productarr[i]["productid"] + "' class='border p-5 rounded shadow-sm product-list cursor-pointer card-hover'><div class=''><img alt='Product Image' src='../../assets/media/images/product.png' width='100%' class='mh-auto mw-auto rounded' /></div><div class='mt-3'><h2>" + status.productarr[i]["productname"] + "</h2><span></span><div class=''><span class='badge bg-primary text-white'>" + sett + "</span></div></div><div class='mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3'>" + divv + "</div></a>");
     
                         }
     
@@ -142,6 +154,7 @@ $("#ii_min").keyup(function (e) {
 
 
 });
+
 $("#ii_max").keyup(function (e) {
 
     e.preventDefault();

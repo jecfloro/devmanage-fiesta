@@ -2,15 +2,15 @@
 
     include '../connection/MYSQLSERVER.php';
 
-    if ($_SESSION['isLoggedIn'] == 0 && $_SESSION['isDisabled'] == 1 && $_SESSION['isAdmin'] == NULL) {
+    if ($_SESSION['isLoggedIn'] == 0 && $_SESSION['isDisabled'] == 1 && $_SESSION['isCustomer'] == NULL) {
         header("Location: /");
     }
 
-    if ($_SESSION['isLoggedIn'] == 0 && $_SESSION['isDisabled'] == 0 && $_SESSION['isAdmin'] == NULL) {
+    if ($_SESSION['isLoggedIn'] == 0 && $_SESSION['isDisabled'] == 0 && $_SESSION['isCustomer'] == NULL) {
         header("Location: /");
     }
 
-    if ($_SESSION['isCustomer'] == 1) {
+    if ($_SESSION['isAdmin'] == 1) {
         header("Location: /");
     }
 
