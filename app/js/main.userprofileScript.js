@@ -19,10 +19,10 @@ $("[data-ii-updateprofile-modal-action='update']").click(function (e) {
 
     var ii_nationality = $("#ii_nationality").val().trim();
     var ii_age = $("#ii_age").val().trim();
-    var ii_birthdate = $("#kt_datepicker_9").val().trim();
+    var ii_birthdate = $("#ii_birthdate").val().trim();
 
     var ii_placeofbirth = $("#ii_placeofbirth").val().trim();
-    var ii_contactnumber = $("#kt_inputmask_3").val();
+    var ii_contactnumber = $("#ii_contactnumber").val();
     var ii_address = $("#ii_address").val();
 
     if (ii_lastname == "") {
@@ -408,3 +408,68 @@ $("[data-ii-googleauth-modal-action='disable']").click(function (e) {
     })
 
 });
+
+$('#ii_homeownershipmonthlyamortization').on('keyup', function () {
+
+    var price = $(this).val().replace(/[^\d]/g, '');
+    var pre, dec;
+    var delimiter = '.';
+
+    var result = price;
+
+    if (price.length > 3 && price.charAt(0) == '0') {
+        price = price.substr(1);
+    }
+
+    if (price.length > 2) {
+        pre = price.slice(0, -2);
+        dec = price.substr((price.length - 2), 2);
+        result = pre + delimiter + dec;
+    }
+
+    $(this).val('').val(result);
+
+    if (this.value == "") {
+        $("#ii_homeownershipmonthlyamortization").val("0.00");
+    }
+
+});
+
+$('#ii_homeownershipmonthlyrental').on('keyup', function () {
+
+    var price = $(this).val().replace(/[^\d]/g, '');
+    var pre, dec;
+    var delimiter = '.';
+
+    var result = price;
+
+    if (price.length > 3 && price.charAt(0) == '0') {
+        price = price.substr(1);
+    }
+
+    if (price.length > 2) {
+        pre = price.slice(0, -2);
+        dec = price.substr((price.length - 2), 2);
+        result = pre + delimiter + dec;
+    }
+
+    $(this).val('').val(result);
+
+    if (this.value == "") {
+        $("#ii_homeownershipmonthlyrental").val("0.00");
+    }
+
+});
+
+$("#flexCheckEmployment").change(function(e) {
+
+    e.preventDefault();
+
+    if (this.checked) {
+        $(".blockui-container").empty();
+    } else {
+        $(".blockui-container").append("<div class='blockui-overlay' style='z-index: 1;'></div>");
+    }
+
+
+})

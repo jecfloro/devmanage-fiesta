@@ -351,7 +351,7 @@ try {
                                                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Birthdate</label>
                                                         <div class="col-lg-8">
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Brithdate" id="kt_datepicker_9" value="<?php echo $infoBirthday; ?>" />
+                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Birthdate" id="ii_birthdate" value="<?php echo $infoBirthday; ?>" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -369,7 +369,7 @@ try {
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                                                 <div class="input-group input-group-solid mb-5">
                                                                     <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
-                                                                    <input class="form-control form-control-lg form-control-solid fw-bolder" id="kt_inputmask_3" inputmode="text" placeholder="___-____-___" value="<?php echo $contactnumber; ?>">
+                                                                    <input class="form-control form-control-lg form-control-solid fw-bolder" id="ii_contactnumber" inputmode="text" placeholder="___-____-___" value="<?php echo $contactnumber; ?>">
                                                                 </div>
 
                                                             </div>

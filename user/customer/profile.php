@@ -40,7 +40,6 @@ try {
         $email = $ruserprofile["user_email"];
         $infosecret = $ruserprofile["user_secret"];
     }
-
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -265,14 +264,14 @@ try {
                         <div class="container-fluid">
                             <div class="row g-xl-12">
                                 <div class="col-xxl-12">
-                                    <div class="card mb-5 mb-xl-10">
-                                        <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
+                                    <div class="card mb-5 mb-xl-10" id="kt-container-profile">
+                                        <div class="card-header border-0 cursor-pointer">
                                             <div class="card-title m-0">
                                                 <h3 class="fw-bold m-0">Profile Details</h3>
                                             </div>
                                         </div>
-                                        <div id="kt_account_settings_profile_details" class="collapse show" tabindex="-1" style="outline: none;">
-                                            <form id="kt_account_profile_details_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate">
+                                        <div>
+                                            <div>
                                                 <div class="card-body border-top p-9">
                                                     <div class="row mb-6">
                                                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
@@ -351,7 +350,7 @@ try {
                                                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Birthdate</label>
                                                         <div class="col-lg-8">
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Brithdate" id="kt_datepicker_9" value="<?php echo $infoBirthday; ?>" />
+                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Birthdate" id="ii_birthdate" value="<?php echo $infoBirthday; ?>" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -369,7 +368,7 @@ try {
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                                                 <div class="input-group input-group-solid mb-5">
                                                                     <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
-                                                                    <input class="form-control form-control-lg form-control-solid fw-bolder" id="kt_inputmask_3" inputmode="text" placeholder="___-____-___" value="<?php echo $contactnumber; ?>">
+                                                                    <input class="form-control form-control-lg form-control-solid fw-bolder" id="ii_contactnumber" inputmode="text" placeholder="___-____-___" value="<?php echo $contactnumber; ?>">
                                                                 </div>
 
                                                             </div>
@@ -388,7 +387,269 @@ try {
                                                     <button type="submit" class="btn btn-primary" data-ii-updateprofile-modal-action="update" data-passaccess="updateprofile">Save Changes</button>
                                                 </div>
                                                 <input type="hidden">
-                                            </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-5 mb-xl-10" id="kt-container-spouse">
+                                        <div class="card-header border-0 cursor-pointer">
+                                            <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                <span class="rounded bg-primary pt-1 pe-3 ps-3 pb-1 text-white">1</span>
+                                                <h3 class="fw-bold m-0">Spouse</h3>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="card-body border-top p-9">
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Full Name</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="row g-3">
+                                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_spouselastname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Last Name">
+                                                                </div>
+                                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_spousefirstname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="First Name">
+                                                                </div>
+                                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_spousemiddlename" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Middle Name (Optional)">
+                                                                </div>
+                                                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_spousenickname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Nick Name">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Gender</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Gender" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_spousegender">
+                                                                    <option></option>
+                                                                    <option value="0">Male</option>
+                                                                    <option value="1">Female</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Civil Status</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Civil Status" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_spousecivilstatus">
+                                                                    <option></option>
+                                                                    <option value="SINGLE">Single</option>
+                                                                    <option value="MARRIED">Married</option>
+                                                                    <option value="DIVORCED">Divorced</option>
+                                                                    <option value="WIDOWED">Widowed</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Nationality</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <input type="text" id="ii_spousenationality" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Nationality">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Age</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <input type="number" min="0" max="200" id="ii_spouseage" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Birthdate</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Birthdate" id="ii_spousebirthdate" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Place of Birth</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <input type="text" id="ii_spouseplaceofbirth" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Place of Birth">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Contact Number</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                <div class="input-group input-group-solid mb-5">
+                                                                    <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
+                                                                    <input class="form-control form-control-lg form-control-solid fw-bolder" id="ii_spousecontactnumber" inputmode="text" placeholder="___-____-___">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                                    <button type="submit" class="btn btn-primary" data-ii-updatespouse-modal-action="update" data-passaccess="updatespouse">Save Changes</button>
+                                                </div>
+                                                <input type="hidden">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-5 mb-xl-10" id="kt-container-homeownership">
+                                        <div class="card-header border-0 cursor-pointer">
+                                            <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                <span class="rounded bg-primary pt-1 pe-3 ps-3 pb-1 text-white">2</span>
+                                                <h3 class="fw-bold m-0">Home Ownership</h3>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="card-body border-top p-9">
+                                                    <div class="row mb-6">
+                                                        <div class="col-lg-12">
+                                                            <div class="row g-3 mb-10">
+                                                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <div class="form-check form-check-custom form-check-solid">
+                                                                        <input class="form-check-input" type="radio" value="1" name="ii_homeownershipradio" id="ii_homeownership1" />
+                                                                        <label class="form-check-label" for="ii_homeownership1">
+                                                                            Owned
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <div class="form-check form-check-custom form-check-solid">
+                                                                        <input class="form-check-input" type="radio" value="2" name="ii_homeownershipradio" id="ii_homeownership2" />
+                                                                        <label class="form-check-label" for="ii_homeownership2">
+                                                                            Renting/Boarding
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <div class="form-check form-check-custom form-check-solid">
+                                                                        <input class="form-check-input" type="radio" value="3" name="ii_homeownershipradio" id="ii_homeownership3" />
+                                                                        <label class="form-check-label" for="ii_homeownership3">
+                                                                            Living w/ Parents
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
+                                                                    <div class="form-check form-check-custom form-check-solid">
+                                                                        <input class="form-check-input" type="radio" value="4" name="ii_homeownershipradio" id="ii_homeownership4" />
+                                                                        <label class="form-check-label" for="ii_homeownership4">
+                                                                            Mortgaged
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-6">
+                                                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Monthly Amortization</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_homeownershipmonthlyamortization" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Amortization" value="0.00">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-6">
+                                                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Monthly Rental</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_homeownershipmonthlyrental" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Rental" value="0.00">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-6">
+                                                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Name of Land Lord</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_homeownershiplandlord" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name of Land Lord">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-6">
+                                                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Number of Years of Stay</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="number" min="0" max="200" id="ii_homeownershipyearsstay" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Years of Stay">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-6">
+                                                                <label class="col-lg-4 col-form-label fw-semibold fs-6">PREVIOUS ADDRESS (House No., Street, Brgy, City/Municipality, Province) </label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_homeownershippreviousaddress" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Previous Address">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                                    <button type="submit" class="btn btn-primary" data-ii-updatehomeownership-modal-action="update" data-passaccess="updatehomeownership">Save Changes</button>
+                                                </div>
+                                                <input type="hidden">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-5 mb-xl-10" id="kt-container-employment">
+                                        <div class="card-header border-0 cursor-pointer d-flex align-items-center">
+                                            <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                <span class="rounded bg-primary pt-1 pe-3 ps-3 pb-1 text-white">3</span>
+                                                <h3 class="fw-bold m-0">Employment</h3>
+                                            </div>
+                                            <div class="">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckEmployment" />
+                                                    <label class="form-check-label" for="flexCheckEmployment">
+                                                        Employed
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="blockui">
+                                            <div>
+                                                <div class="card-body border-top p-9">
+                                                    <div class="row mb-6">
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name of Employer or Business</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_employmentemployerbusiness" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name of Employer or Business">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Telephone Number</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_employmentemployerbusiness" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Telephone Number">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Position</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_employmentposition" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Position">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Number of Years Employed</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="number" min="0" max="200" id="ii_employmentyearsemployed" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Years Employed">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer d-flex justify-content-end py-6 px-9 gap-3">
+                                                    <button type="submit" class="btn btn-light" data-add-updateemployment-input-action="add">Add Row</button>
+                                                    <button type="submit" class="btn btn-primary" data-ii-updateemployment-modal-action="update" data-passaccess="updateemployment">Save Changes</button>
+                                                </div>
+                                                <div class="blockui-container">
+                                                    <div class="blockui-overlay" style="z-index: 1;"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
