@@ -40,6 +40,18 @@ try {
         $email = $ruserprofile["user_email"];
         $infosecret = $ruserprofile["user_secret"];
     }
+
+    $spouse = $conn->prepare("SELECT * FROM appsysusers_spouse WHERE FK_appsysUsers = '$usercode'");
+    $spouse->execute();
+    $cspouse = $spouse->rowCount();
+    $rspouse = $spouse->fetch(PDO::FETCH_ASSOC);
+
+    $homeownership = $conn->prepare("SELECT * FROM appsysusers_homeownership WHERE FK_appsysUsers = '$usercode'");
+    $homeownership->execute();
+    $chomeownership = $homeownership->rowCount();
+    $rhomeownership = $homeownership->fetch(PDO::FETCH_ASSOC);
+
+    
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -405,16 +417,16 @@ try {
                                                         <div class="col-lg-8">
                                                             <div class="row g-3">
                                                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
-                                                                    <input type="text" id="ii_spouselastname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Last Name">
+                                                                    <input type="text" id="ii_spouselastname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Last Name" value="<?php echo $rspouse["lastName"] ?>">
                                                                 </div>
                                                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
-                                                                    <input type="text" id="ii_spousefirstname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="First Name">
+                                                                    <input type="text" id="ii_spousefirstname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="First Name" value="<?php echo $rspouse["firstName"] ?>">
                                                                 </div>
                                                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
-                                                                    <input type="text" id="ii_spousemiddlename" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Middle Name (Optional)">
+                                                                    <input type="text" id="ii_spousemiddlename" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Middle Name (Optional)" value="<?php echo $rspouse["middleName"] ?>">
                                                                 </div>
                                                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 fv-row fv-plugins-icon-container">
-                                                                    <input type="text" id="ii_spousenickname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Nick Name">
+                                                                    <input type="text" id="ii_spousenickname" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Nick Name" value="<?php echo $rspouse["nickName"] ?>">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -425,8 +437,12 @@ try {
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                                                 <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Gender" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_spousegender">
                                                                     <option></option>
-                                                                    <option value="0">Male</option>
-                                                                    <option value="1">Female</option>
+                                                                    <option value="0" <?php if ($rspouse["gender"] == 0) {
+                                                                                            echo "selected";
+                                                                                        } ?>>Male</option>
+                                                                    <option value="1" <?php if ($rspouse["gender"] == 1) {
+                                                                                            echo "selected";
+                                                                                        } ?>>Female</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -437,10 +453,18 @@ try {
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                                                 <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Civil Status" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="select_spousecivilstatus">
                                                                     <option></option>
-                                                                    <option value="SINGLE">Single</option>
-                                                                    <option value="MARRIED">Married</option>
-                                                                    <option value="DIVORCED">Divorced</option>
-                                                                    <option value="WIDOWED">Widowed</option>
+                                                                    <option value="SINGLE" <?php if ($rspouse["civilStatus"] == "SINGLE") {
+                                                                                                echo "selected";
+                                                                                            } ?>>Single</option>
+                                                                    <option value="MARRIED" <?php if ($rspouse["civilStatus"] == "MARRIED") {
+                                                                                                echo "selected";
+                                                                                            } ?>>Married</option>
+                                                                    <option value="DIVORCED" <?php if ($rspouse["civilStatus"] == "DIVORCED") {
+                                                                                                    echo "selected";
+                                                                                                } ?>>Divorced</option>
+                                                                    <option value="WIDOWED" <?php if ($rspouse["civilStatus"] == "WIDOWED") {
+                                                                                                echo "selected";
+                                                                                            } ?>>Widowed</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -449,7 +473,7 @@ try {
                                                         <label class="col-lg-4 col-form-label fw-semibold fs-6">Nationality</label>
                                                         <div class="col-lg-8">
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                <input type="text" id="ii_spousenationality" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Nationality">
+                                                                <input type="text" id="ii_spousenationality" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Nationality" value="<?php echo $rspouse["nationality"] ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -457,7 +481,7 @@ try {
                                                         <label class="col-lg-4 col-form-label fw-semibold fs-6">Age</label>
                                                         <div class="col-lg-8">
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                <input type="number" min="0" max="200" id="ii_spouseage" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age">
+                                                                <input type="number" min="0" max="200" id="ii_spouseage" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age" value="<?php echo $rspouse["age"] ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -465,7 +489,7 @@ try {
                                                         <label class="col-lg-4 col-form-label fw-semibold fs-6">Birthdate</label>
                                                         <div class="col-lg-8">
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Birthdate" id="ii_spousebirthdate" />
+                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Birthdate" id="ii_spousebirthdate" value="<?php echo $rspouse["birthdate"] ?>"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -473,7 +497,7 @@ try {
                                                         <label class="col-lg-4 col-form-label fw-semibold fs-6">Place of Birth</label>
                                                         <div class="col-lg-8">
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                <input type="text" id="ii_spouseplaceofbirth" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Place of Birth">
+                                                                <input type="text" id="ii_spouseplaceofbirth" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Place of Birth" value="<?php echo $rspouse["placeofBirth"] ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -483,9 +507,8 @@ try {
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                                                 <div class="input-group input-group-solid mb-5">
                                                                     <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
-                                                                    <input class="form-control form-control-lg form-control-solid fw-bolder" id="ii_spousecontactnumber" inputmode="text" placeholder="___-____-___">
+                                                                    <input class="form-control form-control-lg form-control-solid fw-bolder" id="ii_spousecontactnumber" inputmode="text" placeholder="___-____-___" value="<?php echo $rspouse["contactNumber"] ?>">
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -512,7 +535,7 @@ try {
                                                             <div class="row g-3 mb-10">
                                                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
                                                                     <div class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio" value="1" name="ii_homeownershipradio" id="ii_homeownership1" />
+                                                                        <input class="form-check-input" type="radio" value="Owned" name="ii_homeownershipradio" id="ii_homeownership1" <?php if ($rhomeownership["selectedOption"] == "Owned") { echo "checked"; } ?>/>
                                                                         <label class="form-check-label" for="ii_homeownership1">
                                                                             Owned
                                                                         </label>
@@ -520,7 +543,7 @@ try {
                                                                 </div>
                                                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
                                                                     <div class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio" value="2" name="ii_homeownershipradio" id="ii_homeownership2" />
+                                                                        <input class="form-check-input" type="radio" value="Renting/Boarding" name="ii_homeownershipradio" id="ii_homeownership2" <?php if ($rhomeownership["selectedOption"] == "Renting/Boarding") { echo "checked"; } ?>/>
                                                                         <label class="form-check-label" for="ii_homeownership2">
                                                                             Renting/Boarding
                                                                         </label>
@@ -528,7 +551,7 @@ try {
                                                                 </div>
                                                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
                                                                     <div class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio" value="3" name="ii_homeownershipradio" id="ii_homeownership3" />
+                                                                        <input class="form-check-input" type="radio" value="Living with Parents" name="ii_homeownershipradio" id="ii_homeownership3" <?php if ($rhomeownership["selectedOption"] == "Living with Parents") { echo "checked"; } ?>/>
                                                                         <label class="form-check-label" for="ii_homeownership3">
                                                                             Living w/ Parents
                                                                         </label>
@@ -536,7 +559,7 @@ try {
                                                                 </div>
                                                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
                                                                     <div class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio" value="4" name="ii_homeownershipradio" id="ii_homeownership4" />
+                                                                        <input class="form-check-input" type="radio" value="Mortgaged" name="ii_homeownershipradio" id="ii_homeownership4" <?php if ($rhomeownership["selectedOption"] == "Mortgaged") { echo "checked"; } ?>/>
                                                                         <label class="form-check-label" for="ii_homeownership4">
                                                                             Mortgaged
                                                                         </label>
@@ -547,7 +570,8 @@ try {
                                                                 <label class="col-lg-4 col-form-label required fw-semibold fs-6">Monthly Amortization</label>
                                                                 <div class="col-lg-8">
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="text" id="ii_homeownershipmonthlyamortization" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Amortization" value="0.00">
+                                                                        <input type="text" id="ii_homeownershipmonthlyamortization" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Amortization" value="<?php 
+                                                                        if ($rhomeownership["monthlyAmortization"] != "0.00") { echo $rhomeownership["monthlyAmortization"]; } else { echo "0.00"; } ?>">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -555,7 +579,8 @@ try {
                                                                 <label class="col-lg-4 col-form-label required fw-semibold fs-6">Monthly Rental</label>
                                                                 <div class="col-lg-8">
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="text" id="ii_homeownershipmonthlyrental" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Rental" value="0.00">
+                                                                        <input type="text" id="ii_homeownershipmonthlyrental" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Rental" value="<?php 
+                                                                        if ($rhomeownership["monthlyAmortization"] != "0.00") { echo $rhomeownership["monthlyRental"]; } else { echo "0.00"; } ?>">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -563,7 +588,7 @@ try {
                                                                 <label class="col-lg-4 col-form-label required fw-semibold fs-6">Name of Land Lord</label>
                                                                 <div class="col-lg-8">
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="text" id="ii_homeownershiplandlord" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name of Land Lord">
+                                                                        <input type="text" id="ii_homeownershiplandlord" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name of Land Lord" value="<?php echo $rhomeownership["landLord"] ?>">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -571,7 +596,7 @@ try {
                                                                 <label class="col-lg-4 col-form-label required fw-semibold fs-6">Number of Years of Stay</label>
                                                                 <div class="col-lg-8">
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="number" min="0" max="200" id="ii_homeownershipyearsstay" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Years of Stay">
+                                                                        <input type="number" min="0" max="200" id="ii_homeownershipyearsstay" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Years of Stay" value="<?php echo $rhomeownership["yearsStay"] ?>">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -579,7 +604,7 @@ try {
                                                                 <label class="col-lg-4 col-form-label fw-semibold fs-6">PREVIOUS ADDRESS (House No., Street, Brgy, City/Municipality, Province) </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="text" id="ii_homeownershippreviousaddress" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Previous Address">
+                                                                        <input type="text" id="ii_homeownershippreviousaddress" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Previous Address" value="<?php echo $rhomeownership["previousAddress"] ?>">
                                                                     </div>
                                                                 </div>
                                                             </div>

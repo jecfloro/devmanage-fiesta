@@ -64,10 +64,18 @@ INSERT INTO `appsysusers` (`PK_appsysUsers`, `user_email`, `user_password`, `use
 CREATE TABLE IF NOT EXISTS `appsysusers_homeownership` (
   `PK_appsysusers_homeownership` int NOT NULL AUTO_INCREMENT,
   `FK_appsysUsers` int DEFAULT NULL,
+  `selectedOption` varchar(50) DEFAULT NULL,
+  `monthlyAmortization` decimal(10,2) DEFAULT NULL,
+  `monthlyRental` decimal(10,2) DEFAULT NULL,
+  `landLord` varchar(255) DEFAULT NULL,
+  `yearsStay` int DEFAULT NULL,
+  `previousAddress` longtext,
   PRIMARY KEY (`PK_appsysusers_homeownership`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.appsysusers_homeownership: ~0 rows (approximately)
+-- Dumping data for table devmanage-fiesta.appsysusers_homeownership: ~1 rows (approximately)
+INSERT INTO `appsysusers_homeownership` (`PK_appsysusers_homeownership`, `FK_appsysUsers`, `selectedOption`, `monthlyAmortization`, `monthlyRental`, `landLord`, `yearsStay`, `previousAddress`) VALUES
+	(1, 24, 'Renting/Boarding', 0.02, 0.03, 'PALAD, CHARLA JANNEA V', 15, 'Davao del Norte State College Compound, New Visayas, Panabo City, Davao del Norte');
 
 -- Dumping structure for table devmanage-fiesta.appsysusers_spouse
 CREATE TABLE IF NOT EXISTS `appsysusers_spouse` (
@@ -77,6 +85,7 @@ CREATE TABLE IF NOT EXISTS `appsysusers_spouse` (
   `firstName` varchar(255) DEFAULT NULL,
   `middleName` varchar(255) DEFAULT NULL,
   `nickName` varchar(255) DEFAULT NULL,
+  `fullName` varchar(255) DEFAULT NULL,
   `gender` int DEFAULT NULL,
   `civilStatus` varchar(50) DEFAULT NULL,
   `nationality` varchar(50) DEFAULT NULL,
@@ -85,9 +94,11 @@ CREATE TABLE IF NOT EXISTS `appsysusers_spouse` (
   `placeofBirth` longtext,
   `contactNumber` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`PK_appsysusers_spouse`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.appsysusers_spouse: ~0 rows (approximately)
+-- Dumping data for table devmanage-fiesta.appsysusers_spouse: ~1 rows (approximately)
+INSERT INTO `appsysusers_spouse` (`PK_appsysusers_spouse`, `FK_appsysUsers`, `lastName`, `firstName`, `middleName`, `nickName`, `fullName`, `gender`, `civilStatus`, `nationality`, `age`, `birthdate`, `placeofBirth`, `contactNumber`) VALUES
+	(1, 24, 'PALAD', 'CHARLA JANNEA', '', 'CHARL', 'PALAD, CHARLA JANNEA', 1, 'SINGLE', 'FILIPINO', 24, '2024-10-13', 'PANABO', '938-9206-940');
 
 -- Dumping structure for table devmanage-fiesta.msc_categories
 CREATE TABLE IF NOT EXISTS `msc_categories` (
@@ -121,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `msc_details` (
   PRIMARY KEY (`PK_mscDetails`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.msc_details: ~11 rows (approximately)
+-- Dumping data for table devmanage-fiesta.msc_details: ~9 rows (approximately)
 INSERT INTO `msc_details` (`PK_mscDetails`, `order`, `detailsId`, `title`, `description`) VALUES
 	(34, 1, 'T1y9Aj', 'Refrigerator Type', 'Bottom Freezer, Two Door'),
 	(35, 2, 'T1y9Aj', 'Capacity', '14.8 cu.ft. / 420 liters'),
@@ -157,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `msc_products` (
   UNIQUE KEY `productName` (`productName`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.msc_products: ~3 rows (approximately)
+-- Dumping data for table devmanage-fiesta.msc_products: ~2 rows (approximately)
 INSERT INTO `msc_products` (`PK_mscProducts`, `productName`, `productSKU`, `FK_mscCategories`, `productDescription`, `FK_detailsId`, `quantity`, `regularPrice`, `salePrice`, `repoPrice`, `stockMinimum`, `stockMaximum`, `isRegular`, `isSale`, `isRepo`, `productStatus`) VALUES
 	(27, 'Panasonic NRBX471CPSP', '000000000', 25, 'Prime Fresh\nAg Clean\nAI Econavi with 4 Sensors\nInverter Compressor\nElectrostatic Touch Control Panel\nFresh Safe\nDoor Pockets\nHeight Adjustable Shelves\nTempered Glass Shelves\nLED Light\nPower Control\nTwist Ice Tray\nQuick Freezing\nQuick Ice Making\nR600a Refrigerant', 'T1y9Aj', 10, 42699.00, 40699.00, 38699.00, 0, 0, b'1', NULL, NULL, 'Active'),
 	(28, 'Fujidenzo RDD60S', '000000000', 25, 'Direct Cool\nManual Defrost\nEnergy Efficient Compressor\nR600a Refrigerant\nClean Back Design\nSpace Saver\nBig Freezer Space\nStainless Look\nReversible Door\nAdjustable Wire Shelves\nHardtop Design', 'p5Ww89', 5, 11900.00, 9900.00, 7900.00, 0, 0, NULL, b'1', NULL, 'Active'),

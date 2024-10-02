@@ -51,7 +51,7 @@ try {
             }
 
         } else {
-            echo 2;
+            
         }
 
     }
