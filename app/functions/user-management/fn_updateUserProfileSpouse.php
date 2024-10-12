@@ -45,6 +45,11 @@
             $insert->execute();
             $cinsert = $insert->rowCount();
 
+            $updateinfo = $conn->prepare("UPDATE appsysusers SET 
+                isSpouseFilled = 1
+                WHERE PK_appsysUsers = '$usercode'");
+            $updateinfo->execute();
+
             if ($cinsert > 0) {
                 $response = array('status' => 200, 'message' => "User Information Updated!");
                 echo json_encode($response);
@@ -71,6 +76,11 @@
                 WHERE FK_appsysUsers = '$usercode'");
             $update->execute();
             $cupdate = $update->rowCount();
+
+            $updateinfo = $conn->prepare("UPDATE appsysusers SET 
+                isSpouseFilled = 1
+                WHERE PK_appsysUsers = '$usercode'");
+            $updateinfo->execute();
 
             if ($cupdate > 0) {
                 $response = array('status' => 200, 'message' => "Spouse Information Updated!");

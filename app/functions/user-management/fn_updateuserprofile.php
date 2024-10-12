@@ -55,9 +55,21 @@
         $cupdate = $update->rowCount();
 
         if ($cupdate > 0) {
+
+            $updateinfo = $conn->prepare("UPDATE appsysusers SET 
+                isProfileFilled = 1
+                WHERE PK_appsysUsers = '$usercode'");
+            $updateinfo->execute();
+
             $response = array('status' => 200, 'message' => "User Information Updated!");
             echo json_encode($response);
         } else {
+
+            $updateinfo = $conn->prepare("UPDATE appsysusers SET 
+                isProfileFilled = 1
+                WHERE PK_appsysUsers = '$usercode'");
+            $updateinfo->execute();
+            
             $response = array('status' => 200, 'message' => "User Information Updated!");
             echo json_encode($response);
         }

@@ -51,7 +51,93 @@ try {
     $chomeownership = $homeownership->rowCount();
     $rhomeownership = $homeownership->fetch(PDO::FETCH_ASSOC);
 
-    
+
+
+    $employment = $conn->prepare("SELECT * FROM appsysusers_employment WHERE FK_appsysUsers = '$usercode'");
+    $employment->execute();
+    $cemployment = $employment->rowCount();
+    $remployment = $employment->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($cemployment == 0) {
+
+        for ($i = 1; $i < 3; $i++) {
+
+            $insert = $conn->prepare("INSERT INTO appsysusers_employment (`FK_appsysUsers`, `order`) VALUES ($usercode, $i)");
+            $insert->execute();
+        }
+    }
+
+    $personalpref = $conn->prepare("SELECT * FROM appsysusers_personalpref WHERE FK_appsysUsers = '$usercode'");
+    $personalpref->execute();
+    $cpersonalpref = $personalpref->rowCount();
+    $rpersonalpref = $personalpref->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($cpersonalpref == 0) {
+
+        for ($j = 1; $j < 3; $j++) {
+
+            $insert = $conn->prepare("INSERT INTO appsysusers_personalpref (`FK_appsysUsers`, `order`) VALUES ($usercode, $j)");
+            $insert->execute();
+        }
+    }
+
+    $children = $conn->prepare("SELECT * FROM appsysusers_children WHERE FK_appsysUsers = '$usercode'");
+    $children->execute();
+    $cchildren = $children->rowCount();
+    $rchildren = $children->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($cchildren == 0) {
+
+        for ($k= 1; $k < 6; $k++) {
+
+            $insert = $conn->prepare("INSERT INTO appsysusers_children (`FK_appsysUsers`, `order`) VALUES ($usercode, $k)");
+            $insert->execute();
+        }
+    }
+
+    $childrenv = $conn->prepare("SELECT * FROM appsysusers_children WHERE FK_appsysUsers = '$usercode' AND cname IS NOT NULL ORDER BY `order` ASC");
+    $childrenv->execute();
+    $cchildrenv = $childrenv->rowCount();
+    $rchildrenv = $childrenv->fetchAll(PDO::FETCH_ASSOC);
+
+    $relatives = $conn->prepare("SELECT * FROM appsysusers_relatives WHERE FK_appsysUsers = '$usercode'");
+    $relatives->execute();
+    $crelatives = $relatives->rowCount();
+    $rrelatives = $relatives->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($crelatives == 0) {
+
+        for ($l= 1; $l < 3; $l++) {
+
+            $insert = $conn->prepare("INSERT INTO appsysusers_relatives (`FK_appsysUsers`, `order`) VALUES ($usercode, $l)");
+            $insert->execute();
+        }
+    }
+
+    $relativesenv = $conn->prepare("SELECT * FROM appsysusers_relatives WHERE FK_appsysUsers = '$usercode' AND rname IS NOT NULL ORDER BY `order` ASC");
+    $relativesenv->execute();
+    $crelativesenv = $relativesenv->rowCount();
+    $rrelativesenv = $relativesenv->fetchAll(PDO::FETCH_ASSOC);
+
+    $neighbors = $conn->prepare("SELECT * FROM appsysusers_neighbors WHERE FK_appsysUsers = '$usercode'");
+    $neighbors->execute();
+    $cneighbors = $neighbors->rowCount();
+    $rneighbors = $neighbors->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($cneighbors == 0) {
+
+        for ($m= 1; $m < 3; $m++) {
+
+            $insert = $conn->prepare("INSERT INTO appsysusers_neighbors (`FK_appsysUsers`, `order`) VALUES ($usercode, $m)");
+            $insert->execute();
+        }
+    }
+
+    $neighborsenv = $conn->prepare("SELECT * FROM appsysusers_neighbors WHERE FK_appsysUsers = '$usercode' AND rname IS NOT NULL ORDER BY `order` ASC");
+    $neighborsenv->execute();
+    $cneighborsenv = $neighborsenv->rowCount();
+    $rneighborsenv = $neighborsenv->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -256,9 +342,6 @@ try {
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
                                         Customer
-                                    </li>
-                                    <li class="breadcrumb-item text-muted">
-                                        Apps
                                     </li>
                                     <li class="breadcrumb-item text-dark">
                                         <a href="profile.php" class="text-dark text-hover-primary">
@@ -489,7 +572,7 @@ try {
                                                         <label class="col-lg-4 col-form-label fw-semibold fs-6">Birthdate</label>
                                                         <div class="col-lg-8">
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Birthdate" id="ii_spousebirthdate" value="<?php echo $rspouse["birthdate"] ?>"/>
+                                                                <input class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Birthdate" id="ii_spousebirthdate" value="<?php echo $rspouse["birthdate"] ?>" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -535,7 +618,9 @@ try {
                                                             <div class="row g-3 mb-10">
                                                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
                                                                     <div class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio" value="Owned" name="ii_homeownershipradio" id="ii_homeownership1" <?php if ($rhomeownership["selectedOption"] == "Owned") { echo "checked"; } ?>/>
+                                                                        <input class="form-check-input" type="radio" value="Owned" name="ii_homeownershipradio" id="ii_homeownership1" <?php if ($rhomeownership["selectedOption"] == "Owned") {
+                                                                                                                                                                                            echo "checked";
+                                                                                                                                                                                        } ?> />
                                                                         <label class="form-check-label" for="ii_homeownership1">
                                                                             Owned
                                                                         </label>
@@ -543,7 +628,9 @@ try {
                                                                 </div>
                                                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
                                                                     <div class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio" value="Renting/Boarding" name="ii_homeownershipradio" id="ii_homeownership2" <?php if ($rhomeownership["selectedOption"] == "Renting/Boarding") { echo "checked"; } ?>/>
+                                                                        <input class="form-check-input" type="radio" value="Renting/Boarding" name="ii_homeownershipradio" id="ii_homeownership2" <?php if ($rhomeownership["selectedOption"] == "Renting/Boarding") {
+                                                                                                                                                                                                        echo "checked";
+                                                                                                                                                                                                    } ?> />
                                                                         <label class="form-check-label" for="ii_homeownership2">
                                                                             Renting/Boarding
                                                                         </label>
@@ -551,7 +638,9 @@ try {
                                                                 </div>
                                                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
                                                                     <div class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio" value="Living with Parents" name="ii_homeownershipradio" id="ii_homeownership3" <?php if ($rhomeownership["selectedOption"] == "Living with Parents") { echo "checked"; } ?>/>
+                                                                        <input class="form-check-input" type="radio" value="Living with Parents" name="ii_homeownershipradio" id="ii_homeownership3" <?php if ($rhomeownership["selectedOption"] == "Living with Parents") {
+                                                                                                                                                                                                            echo "checked";
+                                                                                                                                                                                                        } ?> />
                                                                         <label class="form-check-label" for="ii_homeownership3">
                                                                             Living w/ Parents
                                                                         </label>
@@ -559,7 +648,9 @@ try {
                                                                 </div>
                                                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 fv-row fv-plugins-icon-container">
                                                                     <div class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio" value="Mortgaged" name="ii_homeownershipradio" id="ii_homeownership4" <?php if ($rhomeownership["selectedOption"] == "Mortgaged") { echo "checked"; } ?>/>
+                                                                        <input class="form-check-input" type="radio" value="Mortgaged" name="ii_homeownershipradio" id="ii_homeownership4" <?php if ($rhomeownership["selectedOption"] == "Mortgaged") {
+                                                                                                                                                                                                echo "checked";
+                                                                                                                                                                                            } ?> />
                                                                         <label class="form-check-label" for="ii_homeownership4">
                                                                             Mortgaged
                                                                         </label>
@@ -570,8 +661,7 @@ try {
                                                                 <label class="col-lg-4 col-form-label required fw-semibold fs-6">Monthly Amortization</label>
                                                                 <div class="col-lg-8">
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="text" id="ii_homeownershipmonthlyamortization" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Amortization" value="<?php 
-                                                                        if ($rhomeownership["monthlyAmortization"] != "0.00") { echo $rhomeownership["monthlyAmortization"]; } else { echo "0.00"; } ?>">
+                                                                        <input type="text" id="ii_homeownershipmonthlyamortization" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Amortization" value="<?php if ($rhomeownership["monthlyAmortization"] != "0.00") { echo $rhomeownership["monthlyAmortization"]; } else { echo "0.00"; } ?>">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -579,8 +669,7 @@ try {
                                                                 <label class="col-lg-4 col-form-label required fw-semibold fs-6">Monthly Rental</label>
                                                                 <div class="col-lg-8">
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="text" id="ii_homeownershipmonthlyrental" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Rental" value="<?php 
-                                                                        if ($rhomeownership["monthlyAmortization"] != "0.00") { echo $rhomeownership["monthlyRental"]; } else { echo "0.00"; } ?>">
+                                                                        <input type="text" id="ii_homeownershipmonthlyrental" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Monthly Rental" value="<?php if ($rhomeownership["monthlyAmortization"] != "0.00") { echo $rhomeownership["monthlyRental"]; } else { echo "0.00";} ?>">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -624,14 +713,6 @@ try {
                                                 <span class="rounded bg-primary pt-1 pe-3 ps-3 pb-1 text-white">3</span>
                                                 <h3 class="fw-bold m-0">Employment</h3>
                                             </div>
-                                            <div class="">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckEmployment" />
-                                                    <label class="form-check-label" for="flexCheckEmployment">
-                                                        Employed
-                                                    </label>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="blockui">
                                             <div>
@@ -642,25 +723,56 @@ try {
                                                                 <div class="col-lg-6">
                                                                     <label class="col-form-label fw-semibold fs-6">Name of Employer or Business</label>
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="text" id="ii_employmentemployerbusiness" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name of Employer or Business">
+                                                                        <input type="text" id="ii_employmentemployerbusiness_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name of Employer or Business" value="<?php echo $remployment[0]["employerName"]; ?>">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <label class="col-form-label fw-semibold fs-6">Telephone Number</label>
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="text" id="ii_employmentemployerbusiness" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Telephone Number">
+                                                                        <input type="text" id="ii_employmenttelephonenumber_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Telephone Number" value="<?php echo $remployment[0]["telephoneNumber"]; ?>">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <label class="col-form-label fw-semibold fs-6">Position</label>
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="text" id="ii_employmentposition" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Position">
+                                                                        <input type="text" id="ii_employmentposition_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Position" value="<?php echo $remployment[0]["position"]; ?>">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <label class="col-form-label fw-semibold fs-6">Number of Years Employed</label>
                                                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                                                        <input type="number" min="0" max="200" id="ii_employmentyearsemployed" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Years Employed">
+                                                                        <input type="number" min="0" max="200" id="ii_employmentyearsemployed_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Years Employed" value="<?php echo $remployment[0]["yearsEmployed"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <hr class="text-muted">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name of Employer or Business</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_employmentemployerbusiness_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name of Employer or Business" value="<?php echo $remployment[1]["employerName"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Telephone Number</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_employmenttelephonenumber_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Telephone Number" value="<?php echo $remployment[1]["telephoneNumber"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Position</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_employmentposition_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Position" value="<?php echo $remployment[1]["position"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Number of Years Employed</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="number" min="0" max="200" id="ii_employmentyearsemployed_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Years Employed" value="<?php echo $remployment[1]["yearsEmployed"]; ?>">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -668,13 +780,404 @@ try {
                                                     </div>
                                                 </div>
                                                 <div class="card-footer d-flex justify-content-end py-6 px-9 gap-3">
-                                                    <button type="submit" class="btn btn-light" data-add-updateemployment-input-action="add">Add Row</button>
                                                     <button type="submit" class="btn btn-primary" data-ii-updateemployment-modal-action="update" data-passaccess="updateemployment">Save Changes</button>
                                                 </div>
-                                                <div class="blockui-container">
-                                                    <div class="blockui-overlay" style="z-index: 1;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-5 mb-xl-10" id="kt-container-personal">
+                                        <div class="card-header border-0 cursor-pointer d-flex align-items-center">
+                                            <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                <span class="rounded bg-primary pt-1 pe-3 ps-3 pb-1 text-white">4</span>
+                                                <h3 class="fw-bold m-0">Personal Preferences</h3>
+                                            </div>
+                                        </div>
+                                        <div class="blockui">
+                                            <div>
+                                                <div class="card-body border-top p-9">
+                                                    <div class="row mb-6">
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Father's Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_personalfname_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Father's Name" value="<?php echo $rpersonalpref[0]["pname"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Age</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="number" min="0" max="200" id="ii_personalfage_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age" value="<?php echo $rpersonalpref[0]["age"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">HOME ADDRESS (House No., Street, Brgy, City/Municipality, Province)</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_personaladdress_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Home Address" value="<?php echo $rpersonalpref[0]["homeAddress"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Employer</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_personalemployer_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Employer" value="<?php echo $rpersonalpref[0]["employer"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <label class="col-form-label fw-semibold fs-6">Employer Address</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_personalemployeraddress_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Employer Address" value="<?php echo $rpersonalpref[0]["employerAddress"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <hr class="text-muted">
+                                                        </div>
+                                                        <div class="row mb-6">
+                                                            <div class="col-lg-3">
+                                                                <label class="col-form-label fw-semibold fs-6">Mother's Name</label>
+                                                                <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_personalmname_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Mother's Name" value="<?php echo $rpersonalpref[1]["pname"]; ?>">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <label class="col-form-label fw-semibold fs-6">Age</label>
+                                                                <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="number" min="0" max="200" id="ii_personalmage_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age" value="<?php echo $rpersonalpref[1]["age"]; ?>">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label fw-semibold fs-6">HOME ADDRESS (House No., Street, Brgy, City/Municipality, Province)</label>
+                                                                <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_personaladdress_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Home Address" value="<?php echo $rpersonalpref[1]["homeAddress"]; ?>">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label fw-semibold fs-6">Employer</label>
+                                                                <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_personalemployer_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Employer" value="<?php echo $rpersonalpref[1]["employer"]; ?>">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label fw-semibold fs-6">Employer Address</label>
+                                                                <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" id="ii_personalemployeraddress_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Employer Address" value="<?php echo $rpersonalpref[1]["employerAddress"]; ?>">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9 gap-3">
+                                            <button type="submit" class="btn btn-primary" data-ii-updatepersonal-modal-action="update" data-passaccess="updatepersonal">Save Changes</button>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-5 mb-xl-10" id="kt-container-children">
+                                        <div class="card-header border-0 cursor-pointer d-flex align-items-center">
+                                            <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                <span class="rounded bg-primary pt-1 pe-3 ps-3 pb-1 text-white">5</span>
+                                                <h3 class="fw-bold m-0">Children</h3>
+                                            </div>
+                                        </div>
+                                        <div class="blockui">
+                                            <div>
+                                                <div class="card-body border-top p-9">
+                                                    <div class="row mb-6">
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenname_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name" value="<?php echo $rchildrenv[0]["cname"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Age</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="number" min="0" max="200" id="ii_childrenage_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age" value="<?php echo $rchildrenv[0]["age"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Graduate/Year</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrengraduate_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Graduate/Year" value="<?php echo $rchildrenv[0]["graduateYear"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">School</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenschool_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="School" value="<?php echo $rchildrenv[0]["school"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <hr class="text-muted">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenname_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name" value="<?php echo $rchildrenv[1]["cname"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Age</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="number" min="0" max="200" id="ii_childrenage_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age" value="<?php echo $rchildrenv[1]["age"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Graduate/Year</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrengraduate_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Graduate/Year" value="<?php echo $rchildrenv[1]["graduateYear"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">School</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenschool_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="School" value="<?php echo $rchildrenv[1]["school"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <hr class="text-muted">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenname_3" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name" value="<?php echo $rchildrenv[2]["cname"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Age</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="number" min="0" max="200" id="ii_childrenage_3" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age" value="<?php echo $rchildrenv[2]["age"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Graduate/Year</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrengraduate_3" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Graduate/Year" value="<?php echo $rchildrenv[2]["graduateYear"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">School</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenschool_3" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="School" value="<?php echo $rchildrenv[2]["school"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <hr class="text-muted">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenname_4" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name" value="<?php echo $rchildrenv[3]["cname"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Age</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="number" min="0" max="200" id="ii_childrenage_4" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age" value="<?php echo $rchildrenv[3]["age"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Graduate/Year</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrengraduate_4" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Graduate/Year" value="<?php echo $rchildrenv[3]["graduateYear"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">School</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenschool_4" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="School" value="<?php echo $rchildrenv[3]["school"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <hr class="text-muted">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenname_5" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name" value="<?php echo $rchildrenv[4]["cname"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Age</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="number" min="0" max="200" id="ii_childrenage_5" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Age" value="<?php echo $rchildrenv[4]["age"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">Graduate/Year</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrengraduate_5" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Graduate/Year" value="<?php echo $rchildrenv[4]["graduateYear"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <label class="col-form-label fw-semibold fs-6">School</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_childrenschool_5" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="School" value="<?php echo $rchildrenv[4]["school"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9 gap-3">
+                                            <button type="submit" class="btn btn-primary" data-ii-updatechildren-modal-action="update" data-passaccess="updatechildren">Save Changes</button>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-5 mb-xl-10" id="kt-container-relatives">
+                                        <div class="card-header border-0 cursor-pointer d-flex align-items-center">
+                                            <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                <span class="rounded bg-primary pt-1 pe-3 ps-3 pb-1 text-white">6</span>
+                                                <h3 class="fw-bold m-0">Relatives (Not living with you)</h3>
+                                            </div>
+                                        </div>
+                                        <div class="blockui">
+                                            <div>
+                                                <div class="card-body border-top p-9">
+                                                    <div class="row mb-6">
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_relativesname_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name" value="<?php echo $rrelativesenv[0]["rname"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Address</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_relativesaddress_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Address" value="<?php echo $rrelativesenv[0]["raddress"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Cellphone Number</label>
+                                                                    <div class="input-group input-group-solid mb-5">
+                                                                        <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
+                                                                        <input class="form-control form-control-lg form-control-solid fw-bolder" id="ii_relativescpnumber_1" inputmode="text" placeholder="___-____-___" value="<?php echo $rrelativesenv[0]["cellphoneNumber"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <hr class="text-muted">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_relativesname_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name" value="<?php echo $rrelativesenv[1]["rname"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Address</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_relativesaddress_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Address" value="<?php echo $rrelativesenv[1]["raddress"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Cellphone Number</label>
+                                                                    <div class="input-group input-group-solid mb-5">
+                                                                        <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
+                                                                        <input class="form-control form-control-lg form-control-solid fw-bolder" id="ii_relativescpnumber_2" inputmode="text" placeholder="___-____-___" value="<?php echo $rrelativesenv[1]["cellphoneNumber"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9 gap-3">
+                                            <button type="submit" class="btn btn-primary" data-ii-updaterelatives-modal-action="update" data-passaccess="updaterelatives">Save Changes</button>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-5 mb-xl-10" id="kt-container-neighbors">
+                                        <div class="card-header border-0 cursor-pointer d-flex align-items-center">
+                                            <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                <span class="rounded bg-primary pt-1 pe-3 ps-3 pb-1 text-white">7</span>
+                                                <h3 class="fw-bold m-0">Neighbors</h3>
+                                            </div>
+                                        </div>
+                                        <div class="blockui">
+                                            <div>
+                                                <div class="card-body border-top p-9">
+                                                    <div class="row mb-6">
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_neighborsname_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name" value="<?php echo $rneighborsenv[0]["rname"]; ?>" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Address</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_neighborsaddress_1" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Address" value="<?php echo $rneighborsenv[0]["raddress"]; ?>" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Cellphone Number</label>
+                                                                    <div class="input-group input-group-solid mb-5">
+                                                                        <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
+                                                                        <input class="form-control form-control-lg form-control-solid fw-bolder" id="ii_neighborscpnumber_1" inputmode="text" placeholder="___-____-___" value="<?php echo $rneighborsenv[0]["cellphoneNumber"]; ?>" >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <hr class="text-muted">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="row mb-6">
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Name</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_neighborsname_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Name" value="<?php echo $rneighborsenv[1]["rname"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Address</label>
+                                                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                                        <input type="text" id="ii_neighborsaddress_2" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Address" value="<?php echo $rneighborsenv[1]["raddress"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <label class="col-form-label fw-semibold fs-6">Cellphone Number</label>
+                                                                    <div class="input-group input-group-solid mb-5">
+                                                                        <span class="input-group-text fw-bolder" id="basic-addon1">+63</span>
+                                                                        <input class="form-control form-control-lg form-control-solid fw-bolder" id="ii_neighborscpnumber_2" inputmode="text" placeholder="___-____-___" value="<?php echo $rneighborsenv[1]["cellphoneNumber"]; ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9 gap-3">
+                                            <button type="submit" class="btn btn-primary" data-ii-updateneighbors-modal-action="update" data-passaccess="updateneighbors">Save Changes</button>
                                         </div>
                                     </div>
                                 </div>
@@ -682,21 +1185,23 @@ try {
                         </div>
                     </div>
                 </div>
-                <div class="footer py-4 d-flex flex-lg-column user-select-none" id="kt_footer">
-                    <div class="container-fluid d-flex flex-column justify-content-end flex-md-row flex-stack">
-                        <div class="text-dark order-2 order-md-1">
-                            <span class="text-muted fw-semibold me-1">
-                                <script>
-                                    document.write(new Date().getFullYear());
-                                </script> &copy;
-                            </span>
-                            <span class="text-gray-800 text-hover-primary">Fiesta Appliances, Inc.</span>
-                        </div>
-                    </div>
-                </div>
-                <?php include './authsetting.php'; ?>
             </div>
         </div>
+        <div class="footer py-4 d-flex flex-lg-column user-select-none" id="kt_footer">
+            <div class="container-fluid d-flex flex-column justify-content-end flex-md-row flex-stack">
+                <div class="text-dark order-2 order-md-1">
+                    <span class="text-muted fw-semibold me-1">
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script> &copy;
+                    </span>
+                    <span class="text-gray-800 text-hover-primary">Fiesta Appliances, Inc.</span>
+                </div>
+            </div>
+        </div>
+        <?php include './authsetting.php'; ?>
+    </div>
+    </div>
     </div>
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
         <i class="ki-duotone ki-arrow-up"><span class="path1"></span><span class="path2"></span></i>

@@ -608,7 +608,7 @@ $(".datainput [data-ii-input-action='view']").click(function (e) {
                 for (let aa = 0; aa < status.productdetails.length; aa++) {
 
                     if(aa % 2 == 0) {
-                        $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center bg-light p-3'><span class='fw-bolder'>"+ status.productdetails[aa]["title"] +"</span><span class=''>"+ status.productdetails[aa]["description"] +"</span></div>");
+                        $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center details-light p-3'><span class='fw-bolder'>"+ status.productdetails[aa]["title"] +"</span><span class=''>"+ status.productdetails[aa]["description"] +"</span></div>");
                     } else {
                         $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center p-3'><span class='fw-bolder'>"+ status.productdetails[aa]["title"] +"</span><span class=''>"+ status.productdetails[aa]["description"] +"</span></div>");
                     }

@@ -24,9 +24,7 @@ try {
 
     if ($cselect_category == 0) {
 
-        $categoryEncrypt = secureToken::tokenencrypt($ii_categoryedit);
-
-        $update = $conn->prepare("UPDATE `msc_categories` SET `description` = '$categoryEncrypt' WHERE PK_mscCategories = '$ii_categoryidedit'");
+        $update = $conn->prepare("UPDATE `msc_categories` SET `description` = '$ii_categoryedit' WHERE PK_mscCategories = '$ii_categoryidedit'");
         $update->execute();
         $cupdate = $update->rowCount();
         

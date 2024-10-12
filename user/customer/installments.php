@@ -16,7 +16,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $usercode = $_SESSION['session_usercode'];
-    
+
     $userprofile = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
     $userprofile->execute();
     $cuserprofile = $userprofile->rowCount();
@@ -26,6 +26,14 @@ try {
         $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
     }
+
+    if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
+        header("Location: /");
+    }
+
+    $installments = $conn->prepare("SELECT * FROM mn_installments JOIN msc_products ON mn_installments.FK_mscProducts = msc_products.PK_mscProducts JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories WHERE FK_appsysUsers = '$usercode'");
+    $installments->execute();
+    $cinstallments = $installments->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -229,7 +237,7 @@ try {
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Customer
+                                        Installments
                                     </li>
                                 </ul>
                             </div>
@@ -242,7 +250,139 @@ try {
                         <div class="container-fluid">
                             <div class="row g-xl-12">
                                 <div class="col-xxl-12">
+                                    <div class="card">
+                                        <div class="card-header border-0 pt-6">
+                                            <div class="card-title">
+                                                <div class="d-flex align-items-center position-relative my-1">
+                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span
+                                                            class="path1"></span><span class="path2"></span></i> <input
+                                                        type="text" data-kt-installment-table-filter="search"
+                                                        class="form-control form-control-solid w-250px ps-13"
+                                                        placeholder="Search" />
+                                                </div>
+                                            </div>
+                                            <div class="card-toolbar">
+                                                <!-- Filter -->
+                                                <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                    <i class="ki-duotone ki-filter fs-2"><span class="path1"></span><span class="path2"></span></i> Filter
+                                                </button>
+                                                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" style="">
+                                                    <!--begin::Header-->
+                                                    <div class="px-7 py-5">
+                                                        <div class="fs-5 text-dark fw-bold">Filter Options</div>
+                                                    </div>
+                                                    <!--end::Header-->
 
+                                                    <!--begin::Separator-->
+                                                    <div class="separator border-gray-200"></div>
+                                                    <!--end::Separator-->
+
+                                                    <!--begin::Content-->
+                                                    <div class="px-7 py-5" data-kt-user-table-filter="form">
+                                                        <!--begin::Input group-->
+                                                        <div class="mb-10">
+                                                            <label class="form-label fs-6 fw-semibold">Status:</label>
+                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Status" data-allow-clear="false" data-hide-search="true" data-kt-installment-table-filter="status">
+                                                                <option value=""></option>
+                                                                <option value="All">All</option>
+                                                                <option value="Approved">Approved</option>
+                                                                <option value="Pending">Pending</option>
+                                                                <option value="Rejected">Rejected</option>
+                                                                <option value="Cancelled">Cancelled</option>
+                                                                <option value="Completed">Completed</option>
+                                                            </select>
+                                                        </div>
+                                                        <!--end::Input group-->
+
+                                                        <!--begin::Actions-->
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="reset" class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6" data-kt-menu-dismiss="true" data-kt-installment-table-filter="reset">Reset</button>
+                                                            <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-installment-table-filter="filter">Apply</button>
+                                                        </div>
+                                                        <!--end::Actions-->
+                                                    </div>
+                                                    <!--end::Content-->
+                                                </div>
+                                                <!-- Search -->
+                                                <div class="d-flex justify-content-end gap-3 flex-wrap">
+                                                    <a href="" class="btn btn-secondary d-flex align-items-center">
+                                                        <i class="ki-duotone ki-arrow-circle-right fs-2">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        <span>Refresh</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body py-4">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5"
+                                                id="tb_installment">
+                                                <thead>
+                                                    <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                                        <th class="w-25">Product Name</th>
+                                                        <th class="w-25">Category</th>
+                                                        <th class="w-25">Installment Months</th>
+                                                        <th class="w-25">Status</th>
+                                                        <th class=""></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-gray-600 fw-semibold">
+                                                    <?php if ($cinstallments > 0) { ?>
+                                                        <?php while ($rinstallments = $installments->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                            <tr>
+                                                                <td class="fw-bolder text-primary"><?php echo $rinstallments["productName"] ?></td>
+                                                                <td><?php echo $rinstallments["description"] ?></td>
+                                                                <td>
+                                                                    <?php if ($rinstallments["installmentStatus"] == "CANCELLED" || $rinstallments["installmentStatus"] == "REJECTED") { ?>
+                                                                        
+                                                                    <?php } else { ?>
+
+                                                                        <?php if ($rinstallments["approvedMonths"] == "") { ?>
+                                                                            <span>WAITING FOR APPROVAL</span>
+                                                                        <?php } else {
+                                                                            echo $rinstallments["approvedMonths"]. " MONTHS";
+                                                                        } ?>
+
+                                                                    <?php } ?>
+
+                                                                </td>
+                                                                <td>
+                                                                    <?php if ($rinstallments["installmentStatus"] == "CANCELLED") { ?>
+                                                                        <span class="badge bg-danger text-white"><?php echo $rinstallments["installmentStatus"] ?></span>
+                                                                    <?php } ?>
+                                                                    <?php if ($rinstallments["installmentStatus"] == "REJECTED") { ?>
+                                                                        <span class="badge bg-danger text-white"><?php echo $rinstallments["installmentStatus"] ?></span>
+                                                                    <?php } ?>
+                                                                    <?php if ($rinstallments["installmentStatus"] == "PENDING") { ?>
+                                                                        <span class="badge bg-warning"><?php echo $rinstallments["installmentStatus"] ?></span>
+                                                                    <?php } ?>
+                                                                    <?php if ($rinstallments["installmentStatus"] == "APPROVED") { ?>
+                                                                        <span class="badge bg-primary text-white"><?php echo $rinstallments["installmentStatus"] ?></span>
+                                                                    <?php } ?>
+                                                                    <?php if ($rinstallments["installmentStatus"] == "COMPLETED") { ?>
+                                                                        <span class="badge bg-light"><?php echo $rinstallments["installmentStatus"] ?></span>
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td class="text-end datainput">
+                                                                    <div class="d-flex justify-content-end gap-2">
+                                                                        <a href="installments-view.php?iid=<?php echo $rinstallments["PK_mn_installments"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3"
+                                                                            data-ii-val="<?php echo $rinstallments["PK_mn_installments"]; ?>"
+                                                                            data-ii-input-action="view">
+                                                                            <i class="ki-duotone ki-right-square fs-2x">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -272,6 +412,8 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
+    <script src="../../assets/js/datatables/tb-installments.js"></script>
+    <script type="module" src="../../app/js/main.customerScript.js"></script>
 </body>
 
 </html>

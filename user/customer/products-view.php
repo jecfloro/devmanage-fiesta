@@ -38,6 +38,17 @@ try {
     $cproduct = $product->rowCount();
     $rproduct = $product->fetch(PDO::FETCH_ASSOC);
 
+    if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
+        header("Location: /");
+    }
+
+    $installments = $conn->prepare("SELECT SUM(CASE WHEN installmentStatus = 'PENDING' THEN 1 ELSE 0 END) AS pendingTotal, SUM(CASE WHEN installmentStatus = 'APPROVED' THEN 1 ELSE 0 END) approvedTotal FROM  mn_installments WHERE FK_appsysUsers = '$usercode' AND FK_mscProducts = '$prodid'");
+    $installments->execute();
+    $cinstallments = $installments->rowCount();
+    $rinstallments = $installments->fetch(PDO::FETCH_ASSOC);
+
+    
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -337,7 +348,17 @@ try {
                                                     </div>
                                                 <?php } ?>
                                                 <div class="mt-10">
-                                                    <button class="btn btn-darkgreen">Apply for Installment</button>
+                                                    <?php if ($cinstallments > 0) { ?>
+
+                                                        <?php if ($rinstallments["pendingTotal"] == 1 && $rinstallments["approvedTotal"] == 0) { ?>
+                                                            <a href="installments-view.php?iid=<?php echo $rinstallments["PK_mn_installments"] ?>" class="btn btn-primary">View Installment</a>
+                                                        <?php } else if ($rinstallments["pendingTotal"] == 0 && $rinstallments["approvedTotal"] == 1) { ?>
+                                                            <a href="installments-view.php?iid=<?php echo $rinstallments["PK_mn_installments"] ?>" class="btn btn-primary">View Installment</a>
+                                                        <?php } else { ?>
+                                                            <button class="btn btn-darkgreen" data-ii-applyinstallment-modal-action="apply" data-passaccess="applyinstallment">Apply for Installment</button>
+                                                        <?php } ?>
+                                                            
+                                                    <?php } ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -375,7 +396,7 @@ try {
                                                 <?php for ($i = 0; $i < count($rproductdetails); $i++) { ?>
 
                                                     <?php if ($i % 2 == 0) { ?>
-                                                        <div class='d-flex justify-content-between align-items-center bg-secondary p-3'><span class='fw-bolder'><?php echo $rproductdetails[$i]["title"]; ?></span><span class=''><?php echo $rproductdetails[$i]["description"]; ?></span></div>
+                                                        <div class='d-flex justify-content-between align-items-center details-light p-3'><span class='fw-bolder'><?php echo $rproductdetails[$i]["title"]; ?></span><span class=''><?php echo $rproductdetails[$i]["description"]; ?></span></div>
                                                     <?php } else { ?>
                                                         <div class='d-flex justify-content-between align-items-center p-3'><span class='fw-bolder'><?php echo $rproductdetails[$i]["title"]; ?></span><span class=''><?php echo $rproductdetails[$i]["description"]; ?></span></div>
                                                     <?php } ?>
@@ -387,12 +408,91 @@ try {
                                             <div class="d-flex justify-content-center flex-column">
                                                 <h1>Reviews</h1>
                                                 <span>There are no reviews yet.<br>
-                                                    Be the first to review "<span class="text-primary"><?php echo $rproduct["productName"]; ?></span>"<br>
-                                                    You must be <a href="login.php" class="text-primary">logged in</a> to post a review.</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Drawer -->
+                                <button id="kt_drawer_trigger" class="btn btn-primary" hidden>Toggle basic drawer</button>
+                                <div id="kt_drawer_advanced" class="bg-white drawer drawer-end mt-0" data-kt-drawer="true"
+                                    data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_trigger"
+                                    data-kt-drawer-close="#kt_drawer_advanced_close" data-kt-drawer-name="docs"
+                                    data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'100%', 'md': '500px', 'lg': '900px'}"
+                                    data-kt-drawer-direction="end">
+                                    <div class="card rounded-0 w-100">
+                                        <div class="card-header pe-5 d-flex justify-content-between align-items-center">
+                                            <div class="card-toolbar">
+                                                <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3"
+                                                    id="kt_drawer_advanced_close">
+                                                    <i class="ki-duotone ki-exit-right fs-2x">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                    </i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body hover-scroll-overlay-y">
+                                            <div class="col-xl-12">
+                                                <div class="row mb-6">
+                                                    <div class="col-xl-12">
+                                                        <div class="productTitle">
+                                                            <div class="d-flex flex-column gap-1">
+                                                                <span class="h1 fw-bolder"><?php echo $rproduct["productName"]; ?></span>
+                                                                <span class="h5">
+                                                                    <span><?php echo $rproduct["description"]; ?></span>
+                                                                    <span class="text-muted opacity-50">|</span>
+                                                                    <span class="text-muted"><?php echo $rproduct["productSKU"]; ?></span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-12">
+                                                        <hr class="text-muted opacity-10">
+                                                    </div>
+                                                    <div class="col-xl-4 col-sm-6 h3">Order Value:</div>
+                                                    <div class="col-xl-8 col-sm-6 h3">
+                                                        <?php if ($rproduct["isRegular"] == 1) { ?>
+                                                            <h3 class="fw-bolder">₱ <span class="ii_ordervalue"><?php echo $rproduct["regularPrice"]; ?></span></h3>
+                                                        <?php } ?>
+                                                        <?php if ($rproduct["isSale"] == 1) { ?>
+                                                            <div class="d-flex gap-5">
+                                                                <h3 class="fw-bolder">₱ <span class="ii_ordervalue"><?php echo $rproduct["salePrice"]; ?></span></h3>
+                                                            </div>
+                                                        <?php } ?>
+                                                        <?php if ($rproduct["isRepo"] == 1) { ?>
+                                                            <div class="d-flex gap-5">
+                                                                <h3 class="fw-bolder">₱ <span class="ii_ordervalue"><?php echo $rproduct["repoPrice"]; ?></span></h3>
+                                                            </div>
+                                                        <?php } ?>
+                                                    </div>
+                                                    <div class="col-xl-4 col-sm-6 h3">Downpayment:</div>
+                                                    <div class="col-xl-8 col-sm-6 h3">
+                                                        <h3 class="fw-bolder text-muted">Need Approval</h3>
+                                                    </div>
+                                                    <div class="col-xl-4 col-sm-6 h3">Installment:</div>
+                                                    <div class="col-xl-8 col-sm-6 h3">
+                                                        <h3 class="fw-bolder text-muted">Need Approval</h3>
+                                                    </div>
+                                                    <div class="col-xl-4 col-sm-6 h3">Remaining:</div>
+                                                    <div class="col-xl-8 col-sm-6 h3">
+                                                        <h3 class="fw-bolder text-muted">Need Approval</h3>
+                                                    </div>
+                                                    <div class="col-xl-12 h3">
+                                                        <div class="mt-10 mb-10 pt-4 pe-4 ps-4 rounded bg-light d-flex justify-content-center align-items-center text-center">
+                                                            <div class="">
+                                                                <p><span class="fw-bolder">Reminder:</span> Downpayment, Installment Options may vary depending on your approval</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-12">
+                                                        <button class="btn btn-primary w-100" data-ii-applyinstallment-modal-action="sendrequest" data-passaccess="sendrequest" data-id="<?php echo $prodid; ?>">Send Installment Request</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Drawer -->
                             </div>
                         </div>
                     </div>
@@ -409,6 +509,7 @@ try {
                         </div>
                     </div>
                 </div>
+                <?php include './authsetting.php'; ?>
             </div>
         </div>
     </div>

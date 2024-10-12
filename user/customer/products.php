@@ -34,7 +34,10 @@ try {
     $product = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories");
     $product->execute();
     $cproduct = $product->rowCount();
-
+    
+    if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
+        header("Location: /");
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }

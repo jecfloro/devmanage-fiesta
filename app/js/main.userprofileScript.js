@@ -223,6 +223,26 @@ $("[data-ii-userpassword-modal-action='submit']").click(function (e) {
                     $("[data-ii-updatehomeownership-modal-action='update']").click();
                 }
 
+                if (ii_accesspassword == "updateemployment") {
+                    $("[data-ii-updateemployment-modal-action='update']").click();
+                }
+
+                if (ii_accesspassword == "updatepersonal") {
+                    $("[data-ii-updatepersonal-modal-action='update']").click();
+                }
+
+                if (ii_accesspassword == "updatechildren") {
+                    $("[data-ii-updatechildren-modal-action='update']").click();
+                }
+
+                if (ii_accesspassword == "updaterelatives") {
+                    $("[data-ii-updaterelatives-modal-action='update']").click();
+                }
+
+                if (ii_accesspassword == "updateneighbors") {
+                    $("[data-ii-updateneighbors-modal-action='update']").click();
+                }
+
             }
             if (status.status == 401) {
                 $("#ii_password").val("");
@@ -756,15 +776,897 @@ if ($("[data-ii-updatehomeownership-modal-action='update']").length == 1) {
 
 }
 
-$("#flexCheckEmployment").change(function (e) {
+if ($("[data-ii-updateemployment-modal-action='update']").length == 1) {
 
-    e.preventDefault();
+    $("[data-ii-updateemployment-modal-action='update']").click(function (e) {
 
-    if (this.checked) {
-        $(".blockui-container").empty();
-    } else {
-        $(".blockui-container").append("<div class='blockui-overlay' style='z-index: 1;'></div>");
-    }
+        e.preventDefault();
+
+        var setting = this.getAttribute("data-passaccess");
+
+        var ii_employmentemployerbusiness_1 = $("#ii_employmentemployerbusiness_1").val().trim();
+        var ii_employmenttelephonenumber_1 = $("#ii_employmenttelephonenumber_1").val().trim();
+        var ii_employmentposition_1 = $("#ii_employmentposition_1").val().trim();
+        var ii_employmentyearsemployed_1 = $("#ii_employmentyearsemployed_1").val().trim();
+
+        var ii_employmentemployerbusiness_2 = $("#ii_employmentemployerbusiness_2").val().trim();
+        var ii_employmenttelephonenumber_2 = $("#ii_employmenttelephonenumber_2").val().trim();
+        var ii_employmentposition_2 = $("#ii_employmentposition_2").val().trim();
+        var ii_employmentyearsemployed_2 = $("#ii_employmentyearsemployed_2").val().trim();
+
+        let set_1 = 0;
+        let set_2 = 0;
+
+        if (ii_employmentemployerbusiness_1 != "" || ii_employmenttelephonenumber_1 != "" || ii_employmentposition_1 != "" || ii_employmentyearsemployed_1 != "") {
+
+            if (ii_employmentemployerbusiness_1 == "") {
+                sweetAlertError("Employer Business is required!");
+                return;
+            }
+
+            if (ii_employmenttelephonenumber_1 == "") {
+                sweetAlertError("Telephone Number is required!");
+                return;
+            }
+
+            if (ii_employmentposition_1 == "") {
+                sweetAlertError("Position is required!");
+                return;
+            }
+
+            if (ii_employmentyearsemployed_1 == "") {
+                sweetAlertError("Years Employed is required!");
+                return;
+            }
+
+            if (!ii_employmentemployerbusiness_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Employer Business!");
+                return;
+            }
+
+            if (!ii_employmenttelephonenumber_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Telephone Number!");
+                return;
+            }
+
+            if (!ii_employmentposition_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Position!");
+                return;
+            }
+
+            if (!ii_employmentyearsemployed_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Years Employed!");
+                return;
+            }
+
+            set_1++;
+
+        }
+
+        if (ii_employmentemployerbusiness_2 != "" || ii_employmenttelephonenumber_2 != "" || ii_employmentposition_2 != "" || ii_employmentyearsemployed_2 != "") {
+
+            if (ii_employmentemployerbusiness_2 == "") {
+                sweetAlertError("Employer Business is required!");
+                return;
+            }
+
+            if (ii_employmenttelephonenumber_2 == "") {
+                sweetAlertError("Telephone Number is required!");
+                return;
+            }
+
+            if (ii_employmentposition_2 == "") {
+                sweetAlertError("Position is required!");
+                return;
+            }
+
+            if (ii_employmentyearsemployed_2 == "") {
+                sweetAlertError("Years Employed is required!");
+                return;
+            }
+
+            if (!ii_employmentemployerbusiness_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Employer Business!");
+                return;
+            }
+
+            if (!ii_employmenttelephonenumber_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Telephone Number!");
+                return;
+            }
+
+            if (!ii_employmentposition_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Position!");
+                return;
+            }
+
+            if (!ii_employmentyearsemployed_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Years Employed!");
+                return;
+            }
+
+            set_2++;
+
+        }
+
+        if (set_1 == 0 && set_2 == 0) {
+            sweetAlertError("At least one employment record is required!");
+            return;
+        }
+
+        var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+        if (ii_accessconfirmation == "") {
+            $("#ii_accesspassword").val(setting);
+            $("#modal_access").modal("show");
+            setTimeout(() => {
+                $("#ii_password").focus();
+            }, 500);
+        } else {
+
+            $.ajax({
+                url: '../../app/functions/user-management/fn_updateUserProfileEmployment.php',
+                type: 'POST',
+                data: {
+                    set_1: set_1,
+                    set_2: set_2,
+                    ii_employmentemployerbusiness_1: ii_employmentemployerbusiness_1,
+                    ii_employmenttelephonenumber_1: ii_employmenttelephonenumber_1,
+                    ii_employmentposition_1: ii_employmentposition_1,
+                    ii_employmentyearsemployed_1: ii_employmentyearsemployed_1,
+                    ii_employmentemployerbusiness_2: ii_employmentemployerbusiness_2,
+                    ii_employmenttelephonenumber_2: ii_employmenttelephonenumber_2,
+                    ii_employmentposition_2: ii_employmentposition_2,
+                    ii_employmentyearsemployed_2: ii_employmentyearsemployed_2
+                },
+                cache: false,
+                success: function (response) {
+                    var status = JSON.parse(response);
+                    if (status.status == 200) {
+                        $("#modal_access").modal("hide");
+                        sweetAlertSuccess(status.message);
+                        $("#ii_accessconfirmation").val("");
+                        $("#ii_password").val("");
+                        // setTimeout(() => {
+                        //     location.reload();
+                        // }, 1000);
+                    }
+                    if (status.status == 403) {
+                        sweetAlertError(status.message);
+                    }
+                    if (status.status == 500) {
+                        sweetAlertError(status.message);
+                    }
+                },
+                error: function (response) {
+                    sweetAlertError("Server Error, Please contact administrator!");
+                }
+            })
+
+        }
+
+    });
+
+}
+
+if ($("[data-ii-updatepersonal-modal-action='update']").length == 1) {
+
+    $("[data-ii-updatepersonal-modal-action='update']").click(function (e) {
+
+        e.preventDefault();
+
+        var setting = this.getAttribute("data-passaccess");
+
+        var ii_personalfname_1 = $("#ii_personalfname_1").val().trim();
+        var ii_personalfage_1 = $("#ii_personalfage_1").val().trim();
+        var ii_personaladdress_1 = $("#ii_personaladdress_1").val().trim();
+        var ii_personalemployer_1 = $("#ii_personalemployer_1").val().trim();
+        var ii_personalemployeraddress_1 = $("#ii_personalemployeraddress_1").val().trim();
+
+        var ii_personalmname_2 = $("#ii_personalmname_2").val().trim();
+        var ii_personalmage_2 = $("#ii_personalmage_2").val().trim();
+        var ii_personaladdress_2 = $("#ii_personaladdress_2").val().trim();
+        var ii_personalemployer_2 = $("#ii_personalemployer_2").val().trim();
+        var ii_personalemployeraddress_2 = $("#ii_personalemployeraddress_2").val().trim();
+
+        let set_1 = 0;
+        let set_2 = 0;
+
+        if (ii_personalfname_1 != "" || ii_personalfage_1 != "" || ii_personaladdress_1 != "" || ii_personalemployer_1 != "" || ii_personalemployeraddress_1 != "") {
+
+            if (ii_personalfname_1 == "") {
+                sweetAlertError("Father's name is required!");
+                return;
+            }
+
+            if (ii_personalfage_1 == "") {
+                sweetAlertError("Age is required!");
+                return;
+            }
+
+            if (ii_personaladdress_1 == "") {
+                sweetAlertError("Address is required!");
+                return;
+            }
+
+            if (ii_personalemployer_1 == "") {
+                sweetAlertError("Employer is required!");
+                return;
+            }
+
+            if (ii_personalemployeraddress_1 == "") {
+                sweetAlertError("Employer Address is required!");
+                return;
+            }
+
+            if (!ii_personalfname_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Father's Name!");
+                return;
+            }
+
+            if (!ii_personaladdress_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Address!");
+                return;
+            }
+
+            if (!ii_personalemployer_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Employer!");
+                return;
+            }
+
+            if (!ii_personalemployeraddress_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Employer Address!");
+                return;
+            }
+
+            set_1++;
+
+        }
+
+        if (ii_personalmname_2 != "" || ii_personalmage_2 != "" || ii_personaladdress_2 != "" || ii_personalemployer_2 != "" || ii_personalemployeraddress_2 != "") {
+
+            if (ii_personalmname_2 == "") {
+                sweetAlertError("Father's name is required!");
+                return;
+            }
+
+            if (ii_personalmage_2 == "") {
+                sweetAlertError("Age is required!");
+                return;
+            }
+
+            if (ii_personaladdress_2 == "") {
+                sweetAlertError("Address is required!");
+                return;
+            }
+
+            if (ii_personalemployer_2 == "") {
+                sweetAlertError("Employer is required!");
+                return;
+            }
+
+            if (ii_personalemployeraddress_2 == "") {
+                sweetAlertError("Employer Address is required!");
+                return;
+            }
+
+            if (!ii_personalmname_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Father's Name!");
+                return;
+            }
+
+            if (!ii_personaladdress_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Address!");
+                return;
+            }
+
+            if (!ii_personalemployer_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Employer!");
+                return;
+            }
+
+            if (!ii_personalemployeraddress_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Employer Address!");
+                return;
+            }
+
+            set_2++;
+
+        }
+
+        if (set_1 == 0 && set_2 == 0) {
+            sweetAlertError("At least one personal record is required!");
+            return;
+        }
+
+        var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+        if (ii_accessconfirmation == "") {
+            $("#ii_accesspassword").val(setting);
+            $("#modal_access").modal("show");
+            setTimeout(() => {
+                $("#ii_password").focus();
+            }, 500);
+        } else {
+
+            $.ajax({
+                url: '../../app/functions/user-management/fn_updateUserProfilePersonal.php',
+                type: 'POST',
+                data: {
+                    set_1: set_1,
+                    set_2: set_2,
+                    ii_personalfname_1: ii_personalfname_1,
+                    ii_personalfage_1: ii_personalfage_1,
+                    ii_personaladdress_1: ii_personaladdress_1,
+                    ii_personalemployer_1: ii_personalemployer_1,
+                    ii_personalemployeraddress_1: ii_personalemployeraddress_1,
+                    ii_personalmname_2: ii_personalmname_2,
+                    ii_personalmage_2: ii_personalmage_2,
+                    ii_personaladdress_2: ii_personaladdress_2,
+                    ii_personalemployer_2: ii_personalemployer_2,
+                    ii_personalemployeraddress_2: ii_personalemployeraddress_2
+                },
+                cache: false,
+                success: function (response) {
+                    var status = JSON.parse(response);
+                    if (status.status == 200) {
+                        $("#modal_access").modal("hide");
+                        sweetAlertSuccess(status.message);
+                        $("#ii_accessconfirmation").val("");
+                        $("#ii_password").val("");
+                        // setTimeout(() => {
+                        //     location.reload();
+                        // }, 1000);
+                    }
+                    if (status.status == 403) {
+                        sweetAlertError(status.message);
+                    }
+                    if (status.status == 500) {
+                        sweetAlertError(status.message);
+                    }
+                },
+                error: function (response) {
+                    sweetAlertError("Server Error, Please contact administrator!");
+                }
+            })
+
+        }
+
+    });
+
+}
+
+if ($("[data-ii-updatechildren-modal-action='update']").length == 1) {
+
+    $("[data-ii-updatechildren-modal-action='update']").click(function (e) {
+
+        e.preventDefault();
+
+        var setting = this.getAttribute("data-passaccess");
+
+        var ii_childrenname_1 = $("#ii_childrenname_1").val().trim();
+        var ii_childrenage_1 = $("#ii_childrenage_1").val().trim();
+        var ii_childrengraduate_1 = $("#ii_childrengraduate_1").val().trim();
+        var ii_childrenschool_1 = $("#ii_childrenschool_1").val().trim();
+        var ii_childrenname_2 = $("#ii_childrenname_2").val().trim();
+        var ii_childrenage_2 = $("#ii_childrenage_2").val().trim();
+        var ii_childrengraduate_2 = $("#ii_childrengraduate_2").val().trim();
+        var ii_childrenschool_2 = $("#ii_childrenschool_2").val().trim();
+        var ii_childrenname_3 = $("#ii_childrenname_3").val().trim();
+        var ii_childrenage_3 = $("#ii_childrenage_3").val().trim();
+        var ii_childrengraduate_3 = $("#ii_childrengraduate_3").val().trim();
+        var ii_childrenschool_3 = $("#ii_childrenschool_3").val().trim();
+        var ii_childrenname_4 = $("#ii_childrenname_4").val().trim();
+        var ii_childrenage_4 = $("#ii_childrenage_4").val().trim();
+        var ii_childrengraduate_4 = $("#ii_childrengraduate_4").val().trim();
+        var ii_childrenschool_4 = $("#ii_childrenschool_4").val().trim();
+        var ii_childrenname_5 = $("#ii_childrenname_5").val().trim();
+        var ii_childrenage_5 = $("#ii_childrenage_5").val().trim();
+        var ii_childrengraduate_5 = $("#ii_childrengraduate_5").val().trim();
+        var ii_childrenschool_5 = $("#ii_childrenschool_5").val().trim();
+        
+        let set_1 = 0;
+        let set_2 = 0;
+        let set_3 = 0;
+        let set_4 = 0;
+        let set_5 = 0;
+
+        if (ii_childrenname_1 != "" || ii_childrenage_1 != "" || ii_childrengraduate_1 != "" || ii_childrenschool_1 != "") {
+
+            if (ii_childrenname_1 == "") {
+                sweetAlertError("Name is required!");
+                return;
+            }
+
+            if (ii_childrenage_1 == "") {
+                sweetAlertError("Age is required!");
+                return;
+            }
+
+            if (ii_childrengraduate_1 == "") {
+                sweetAlertError("Graduation year is required!");
+                return;
+            }
+
+            if (ii_childrenschool_1 == "") {
+                sweetAlertError("School is required!");
+                return;
+            }
+
+            set_1++;
+
+        }
+
+        if (ii_childrenname_2 != "" || ii_childrenage_2 != "" || ii_childrengraduate_2 != "" || ii_childrenschool_2 != "") {
+
+            if (ii_childrenname_2 == "") {
+                sweetAlertError("Name is required!");
+                return;
+            }
+
+            if (ii_childrenage_2 == "") {
+                sweetAlertError("Age is required!");
+                return;
+            }
+
+            if (ii_childrengraduate_2 == "") {
+                sweetAlertError("Graduation year is required!");
+                return;
+            }
+
+            if (ii_childrenschool_2 == "") {
+                sweetAlertError("School is required!");
+                return;
+            }
+
+            set_2++;
+
+        }
+
+        if (ii_childrenname_3 != "" || ii_childrenage_3 != "" || ii_childrengraduate_3 != "" || ii_childrenschool_3 != "") {
+
+            if (ii_childrenname_3 == "") {
+                sweetAlertError("Name is required!");
+                return;
+            }
+
+            if (ii_childrenage_3 == "") {
+                sweetAlertError("Age is required!");
+                return;
+            }
+
+            if (ii_childrengraduate_3 == "") {
+                sweetAlertError("Graduation year is required!");
+                return;
+            }
+
+            if (ii_childrenschool_3 == "") {
+                sweetAlertError("School is required!");
+                return;
+            }
+
+            set_3++;
+
+        }
+
+        if (ii_childrenname_4 != "" || ii_childrenage_4 != "" || ii_childrengraduate_4 != "" || ii_childrenschool_4 != "") {
+
+            if (ii_childrenname_4 == "") {
+                sweetAlertError("Name is required!");
+                return;
+            }
+
+            if (ii_childrenage_4 == "") {
+                sweetAlertError("Age is required!");
+                return;
+            }
+
+            if (ii_childrengraduate_4 == "") {
+                sweetAlertError("Graduation year is required!");
+                return;
+            }
+
+            if (ii_childrenschool_4 == "") {
+                sweetAlertError("School is required!");
+                return;
+            }
+
+            set_4++;
+
+        }
+
+        if (ii_childrenname_5 != "" || ii_childrenage_5 != "" || ii_childrengraduate_5 != "" || ii_childrenschool_5 != "") {
+
+            if (ii_childrenname_5 == "") {
+                sweetAlertError("Name is required!");
+                return;
+            }
+
+            if (ii_childrenage_5 == "") {
+                sweetAlertError("Age is required!");
+                return;
+            }
+
+            if (ii_childrengraduate_5 == "") {
+                sweetAlertError("Graduation year is required!");
+                return;
+            }
+
+            if (ii_childrenschool_5 == "") {
+                sweetAlertError("School is required!");
+                return;
+            }
+
+            set_5++;
+
+        }
+
+        var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+        if (ii_accessconfirmation == "") {
+            $("#ii_accesspassword").val(setting);
+            $("#modal_access").modal("show");
+            setTimeout(() => {
+                $("#ii_password").focus();
+            }, 500);
+        } else {
+
+            $.ajax({
+                url: '../../app/functions/user-management/fn_updateUserProfileChildren.php',
+                type: 'POST',
+                data: {
+                    set_1: set_1,
+                    set_2: set_2,
+                    set_3: set_3,
+                    set_4: set_4,
+                    set_5: set_5,
+                    ii_childrenname_1: ii_childrenname_1,
+                    ii_childrenage_1: ii_childrenage_1,
+                    ii_childrengraduate_1: ii_childrengraduate_1,
+                    ii_childrenschool_1: ii_childrenschool_1,
+                    ii_childrenname_2: ii_childrenname_2,
+                    ii_childrenage_2: ii_childrenage_2,
+                    ii_childrengraduate_2: ii_childrengraduate_2,
+                    ii_childrenschool_2: ii_childrenschool_2,
+                    ii_childrenname_3: ii_childrenname_3,
+                    ii_childrenage_3: ii_childrenage_3,
+                    ii_childrengraduate_3: ii_childrengraduate_3,
+                    ii_childrenschool_3: ii_childrenschool_3,
+                    ii_childrenname_4: ii_childrenname_4,
+                    ii_childrenage_4: ii_childrenage_4,
+                    ii_childrengraduate_4: ii_childrengraduate_4,
+                    ii_childrenschool_4: ii_childrenschool_4,
+                    ii_childrenname_5: ii_childrenname_5,
+                    ii_childrenage_5: ii_childrenage_5,
+                    ii_childrengraduate_5: ii_childrengraduate_5,
+                    ii_childrenschool_5: ii_childrenschool_5
+                },
+                cache: false,
+                success: function (response) {
+                    var status = JSON.parse(response);
+                    if (status.status == 200) {
+                        $("#modal_access").modal("hide");
+                        sweetAlertSuccess(status.message);
+                        $("#ii_accessconfirmation").val("");
+                        $("#ii_password").val("");
+                        // setTimeout(() => {
+                        //     location.reload();
+                        // }, 1000);
+                    }
+                    if (status.status == 403) {
+                        sweetAlertError(status.message);
+                    }
+                    if (status.status == 500) {
+                        sweetAlertError(status.message);
+                    }
+                },
+                error: function (response) {
+                    sweetAlertError("Server Error, Please contact administrator!");
+                }
+            })
+
+        }
+
+    });
+
+}
+
+if ($("[data-ii-updaterelatives-modal-action='update']").length == 1) {
+
+    $("[data-ii-updaterelatives-modal-action='update']").click(function (e) {
+
+        e.preventDefault();
+
+        var setting = this.getAttribute("data-passaccess");
+
+        var ii_relativesname_1 = $("#ii_relativesname_1").val().trim();
+        var ii_relativesaddress_1 = $("#ii_relativesaddress_1").val().trim();
+        var ii_relativescpnumber_1 = $("#ii_relativescpnumber_1").val().trim();
+
+        var ii_relativesname_2 = $("#ii_relativesname_2").val().trim();
+        var ii_relativesaddress_2 = $("#ii_relativesaddress_2").val().trim();
+        var ii_relativescpnumber_2 = $("#ii_relativescpnumber_2").val().trim();
+
+        let set_1 = 0;
+        let set_2 = 0;
+
+        if (ii_relativesname_1 != "" || ii_relativesaddress_1 != "" || ii_relativescpnumber_1 != "") {
+
+            if (ii_relativesname_1 == "") {
+                sweetAlertError("Name is required!");
+                return;
+            }
+
+            if (ii_relativesaddress_1 == "") {
+                sweetAlertError("Address is required!");
+                return;
+            }
+
+            if (ii_relativescpnumber_1 == "") {
+                sweetAlertError("Cellphone Number is required!");
+                return;
+            }
+
+            if (!ii_relativesname_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Name!");
+                return;
+            }
+
+            if (!ii_relativesaddress_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Address!");
+                return;
+            }
+
+            if (!ii_relativescpnumber_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Cellphone Number!");
+                return;
+            }
+
+            set_1++;
+
+        }
+
+        if (ii_relativesname_2 != "" || ii_relativesaddress_2 != "" || ii_relativescpnumber_2 != "") {
+
+            if (ii_relativesname_2 == "") {
+                sweetAlertError("Name is required!");
+                return;
+            }
+
+            if (ii_relativesaddress_2 == "") {
+                sweetAlertError("Address is required!");
+                return;
+            }
+
+            if (ii_relativescpnumber_2 == "") {
+                sweetAlertError("Cellphone Number is required!");
+                return;
+            }
+
+            if (!ii_relativesname_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Name!");
+                return;
+            }
+
+            if (!ii_relativesaddress_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Address!");
+                return;
+            }
+
+            if (!ii_relativescpnumber_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Cellphone Number!");
+                return;
+            }
 
 
-})
+            set_2++;
+
+        }
+
+        if (set_1 == 0 && set_2 == 0) {
+            sweetAlertError("At least one Relative is required!");
+            return;
+        }
+
+        var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+        if (ii_accessconfirmation == "") {
+            $("#ii_accesspassword").val(setting);
+            $("#modal_access").modal("show");
+            setTimeout(() => {
+                $("#ii_password").focus();
+            }, 500);
+        } else {
+
+            $.ajax({
+                url: '../../app/functions/user-management/fn_updateUserProfileRelatives.php',
+                type: 'POST',
+                data: {
+                    set_1: set_1,
+                    set_2: set_2,
+                    ii_relativesname_1: ii_relativesname_1,
+                    ii_relativesaddress_1: ii_relativesaddress_1,
+                    ii_relativescpnumber_1: ii_relativescpnumber_1,
+                    ii_relativesname_2: ii_relativesname_2,
+                    ii_relativesaddress_2: ii_relativesaddress_2,
+                    ii_relativescpnumber_2: ii_relativescpnumber_2
+                },
+                cache: false,
+                success: function (response) {
+                    var status = JSON.parse(response);
+                    if (status.status == 200) {
+                        $("#modal_access").modal("hide");
+                        sweetAlertSuccess(status.message);
+                        $("#ii_accessconfirmation").val("");
+                        $("#ii_password").val("");
+                        // setTimeout(() => {
+                        //     location.reload();
+                        // }, 1000);
+                    }
+                    if (status.status == 403) {
+                        sweetAlertError(status.message);
+                    }
+                    if (status.status == 500) {
+                        sweetAlertError(status.message);
+                    }
+                },
+                error: function (response) {
+                    sweetAlertError("Server Error, Please contact administrator!");
+                }
+            })
+
+        }
+
+    });
+
+}
+
+if ($("[data-ii-updateneighbors-modal-action='update']").length == 1) {
+
+    $("[data-ii-updateneighbors-modal-action='update']").click(function (e) {
+
+        e.preventDefault();
+
+        var setting = this.getAttribute("data-passaccess");
+
+        var ii_neighborsname_1 = $("#ii_neighborsname_1").val().trim();
+        var ii_neighborsaddress_1 = $("#ii_neighborsaddress_1").val().trim();
+        var ii_neighborscpnumber_1 = $("#ii_neighborscpnumber_1").val().trim();
+
+        var ii_neighborsname_2 = $("#ii_neighborsname_2").val().trim();
+        var ii_neighborsaddress_2 = $("#ii_neighborsaddress_2").val().trim();
+        var ii_neighborscpnumber_2 = $("#ii_neighborscpnumber_2").val().trim();
+
+        let set_1 = 0;
+        let set_2 = 0;
+
+        if (ii_neighborsname_1 != "" || ii_neighborsaddress_1 != "" || ii_neighborscpnumber_1 != "") {
+
+            if (ii_neighborsname_1 == "") {
+                sweetAlertError("Name is required!");
+                return;
+            }
+
+            if (ii_neighborsaddress_1 == "") {
+                sweetAlertError("Address is required!");
+                return;
+            }
+
+            if (ii_neighborscpnumber_1 == "") {
+                sweetAlertError("Cellphone Number is required!");
+                return;
+            }
+
+            if (!ii_neighborsname_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Name!");
+                return;
+            }
+
+            if (!ii_neighborsaddress_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Address!");
+                return;
+            }
+
+            if (!ii_neighborscpnumber_1.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Cellphone Number!");
+                return;
+            }
+
+            set_1++;
+
+        }
+
+        if (ii_neighborsname_2 != "" || ii_neighborsaddress_2 != "" || ii_neighborscpnumber_2 != "") {
+
+            if (ii_neighborsname_2 == "") {
+                sweetAlertError("Name is required!");
+                return;
+            }
+
+            if (ii_neighborsaddress_2 == "") {
+                sweetAlertError("Address is required!");
+                return;
+            }
+
+            if (ii_neighborscpnumber_2 == "") {
+                sweetAlertError("Cellphone Number is required!");
+                return;
+            }
+
+            if (!ii_neighborsname_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Name!");
+                return;
+            }
+
+            if (!ii_neighborsaddress_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Address!");
+                return;
+            }
+
+            if (!ii_neighborscpnumber_2.match(defaultFormat)) {
+                sweetAlertError("Invalid Characters on Cellphone Number!");
+                return;
+            }
+
+
+            set_2++;
+
+        }
+
+        if (set_1 == 0 && set_2 == 0) {
+            sweetAlertError("At least one Neighbor is required!");
+            return;
+        }
+
+        var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+        if (ii_accessconfirmation == "") {
+            $("#ii_accesspassword").val(setting);
+            $("#modal_access").modal("show");
+            setTimeout(() => {
+                $("#ii_password").focus();
+            }, 500);
+        } else {
+
+            $.ajax({
+                url: '../../app/functions/user-management/fn_updateUserProfileNeighbor.php',
+                type: 'POST',
+                data: {
+                    set_1: set_1,
+                    set_2: set_2,
+                    ii_neighborsname_1: ii_neighborsname_1,
+                    ii_neighborsaddress_1: ii_neighborsaddress_1,
+                    ii_neighborscpnumber_1: ii_neighborscpnumber_1,
+                    ii_neighborsname_2: ii_neighborsname_2,
+                    ii_neighborsaddress_2: ii_neighborsaddress_2,
+                    ii_neighborscpnumber_2: ii_neighborscpnumber_2
+                },
+                cache: false,
+                success: function (response) {
+                    var status = JSON.parse(response);
+                    if (status.status == 200) {
+                        $("#modal_access").modal("hide");
+                        sweetAlertSuccess(status.message);
+                        $("#ii_accessconfirmation").val("");
+                        $("#ii_password").val("");
+                        // setTimeout(() => {
+                        //     location.reload();
+                        // }, 1000);
+                    }
+                    if (status.status == 403) {
+                        sweetAlertError(status.message);
+                    }
+                    if (status.status == 500) {
+                        sweetAlertError(status.message);
+                    }
+                },
+                error: function (response) {
+                    sweetAlertError("Server Error, Please contact administrator!");
+                }
+            })
+
+        }
+
+    });
+
+}

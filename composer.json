@@ -6,6 +6,9 @@
         "sonata-project/google-authenticator": "^2.3",
         "vectorface/googleauthenticator": "^3.2",
         "bacon/bacon-qr-code": "^3.0",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "dompdf/dompdf": "^3.0",
+        "tecnickcom/tc-lib-pdf": "^8.0",
+        "mpdf/mpdf": "^8.2"
     }
 }

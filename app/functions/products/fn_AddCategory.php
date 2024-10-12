@@ -23,9 +23,7 @@ try {
 
     if ($cselect_category == 0) {
 
-        $categoryEncrypt = $ii_category;
-
-        $insert = $conn->prepare("INSERT INTO `msc_categories` (`description`) VALUES ('$categoryEncrypt')");
+        $insert = $conn->prepare("INSERT INTO `msc_categories` (`description`) VALUES ('$ii_category')");
         $insert->execute();
         $cinsert = $insert->rowCount();
         

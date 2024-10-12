@@ -16,7 +16,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $usercode = $_SESSION['session_usercode'];
-    
+
     $userprofile = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
     $userprofile->execute();
     $cuserprofile = $userprofile->rowCount();
@@ -26,6 +26,8 @@ try {
         $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
     }
+
+    
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -241,9 +243,20 @@ try {
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <div class="container-fluid">
                             <div class="row g-xl-12">
-                                <div class="col-xxl-12">
-
-                                </div>
+                                <?php if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) { ?>
+                                    <div class="col-xxl-12">
+                                        <div class="card mb-5 mb-xl-10" id="kt-container-homeownership">
+                                            <div class="card-header border-0 cursor-pointer">
+                                                <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                    <h3 class="fw-bold m-0">Update Profile</h3>
+                                                </div>
+                                            </div>
+                                            <div class="card-body border-top pt-9 pb-5">
+                                                <p>Complete <strong>Profile</strong> setup to browse products, click <a href="profile.php" class="text-primary">here</a> to go to profile.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>

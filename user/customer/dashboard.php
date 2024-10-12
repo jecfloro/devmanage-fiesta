@@ -26,6 +26,11 @@ try {
         $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
     }
+
+    if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
+        header("Location: /");
+    }
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
