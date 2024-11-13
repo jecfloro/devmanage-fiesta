@@ -470,6 +470,46 @@ try {
                                                         </div>
                                                     </div>
                                                     <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Region</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Region" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_region">
+                                                                    <option></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Province</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Province" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_province">
+                                                                    <option></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">City</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select City" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_city">
+                                                                    <option></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-semibold fs-6">Barangay</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select Barangay" data-allow-clear="true" data-kt-user-table-filter="usertype" data-hide-search="true" id="ii_barangay">
+                                                                    <option></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-6">
                                                         <label class="col-lg-4 col-form-label required fw-semibold fs-6">Address</label>
                                                         <div class="col-lg-8">
                                                             <div class="col-xl-12 fv-row fv-plugins-icon-container">

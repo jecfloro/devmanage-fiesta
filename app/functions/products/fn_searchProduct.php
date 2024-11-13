@@ -25,9 +25,13 @@ try {
     if ($cproduct > 0) {
 
         $productname = $rproduct[0]["productName"];
+        $productunit = $rproduct[0]["productUnit"];
+        $productbrand = $rproduct[0]["productBrand"];
+        $productmodel = $rproduct[0]["productModel"];
         $productsku = $rproduct[0]["productSKU"];
         $productdescription = $rproduct[0]["productDescription"];
         $productdetailsid = $rproduct[0]["FK_detailsId"];
+        $productcid = $rproduct[0]["PK_mscCategories"];
         $productcategory = $rproduct[0]["description"];
         
         $productquantity = $rproduct[0]["quantity"];
@@ -41,15 +45,19 @@ try {
         $productisrepo = $rproduct[0]["isRepo"];
         $productstatus = $rproduct[0]["productStatus"];
 
-        $productdetails = $conn->prepare("SELECT `order`, `title`, `description` FROM msc_details WHERE detailsId = '$productdetailsid' ORDER BY `order` ASC");
+        $productdetails = $conn->prepare("SELECT `PK_mscDetails` AS `details`, `order`, `title`, `description` FROM msc_details WHERE detailsId = '$productdetailsid' ORDER BY `order` ASC");
         $productdetails->execute();
         $cproductdetails = $productdetails->rowCount();
         $rproductdetails = $productdetails->fetchall(PDO::FETCH_ASSOC);
 
         $response = array('status' => 200, 
             'productname' => $productname,
+            'productunit' => $productunit,
+            'productbrand' => $productbrand,
+            'productmodel' => $productmodel,
             'productsku' => $productsku,
             'productdescription' => $productdescription,
+            'productcid' => $productcid,
             'productcategory' => $productcategory,
             'productquantity' => $productquantity,
             'productregularprice' => $productregularprice,

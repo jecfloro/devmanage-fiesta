@@ -325,7 +325,7 @@ try {
                                                                 <tr>
                                                                     <td>
                                                                         <?php if ($ruser["userFullName"] != "") { ?>
-                                                                            <?php echo $ruserprofile["userFullName"]; ?>
+                                                                            <?php echo $ruser["userFullName"]; ?>
                                                                         <?php } else { ?>
                                                                             PROFILE NOT SET
                                                                         <?php } ?>

@@ -10,6 +10,10 @@
 
         header("Location: ../../user/customer/");
         
+    } else if ($_SESSION['isLoggedIn'] == 1 && $_SESSION['isDisabled'] == 0 && $_SESSION['isCreditCoordinator'] == 1) {
+
+        header("Location: ../../user/creditcoordinator/");
+        
     } else {
 
         $_SESSION['session_usercode'] = 0;

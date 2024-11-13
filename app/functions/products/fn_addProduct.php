@@ -13,6 +13,9 @@ $todaysDate = date("Y-m-d H:i:s");
 
 $chkbxReturnable = $_POST['chkbxReturnable'];
 $ii_productname = $_POST['ii_productname'];
+$ii_productunit = $_POST['ii_productunit'];
+$ii_productbrand = $_POST['ii_productbrand'];
+$ii_productmodel = $_POST['ii_productmodel'];
 $ii_productsku = $_POST['ii_productsku'];
 $ii_productcategory = $_POST['ii_productcategory'];
 $ii_productdescription = $_POST['ii_productdescription'];
@@ -54,8 +57,11 @@ try {
             $isSetting = "isRepo";
         }
 
-        $insert = $conn->prepare("INSERT INTO `msc_products` (productName, productSKU, FK_mscCategories, productDescription, FK_detailsId, quantity, regularPrice, salePrice, repoPrice, stockMinimum, stockMaximum, $isSetting, productStatus) VALUES (
+        $insert = $conn->prepare("INSERT INTO `msc_products` (productName, productUnit, productBrand, productModel, productSKU, FK_mscCategories, productDescription, FK_detailsId, quantity, regularPrice, salePrice, repoPrice, stockMinimum, stockMaximum, $isSetting, productStatus) VALUES (
         '$ii_productnameencrypt',
+        '$ii_productunit',
+        '$ii_productbrand',
+        '$ii_productmodel',
         '$ii_productskuencrypt',
         '$ii_productcategory',
         '$ii_productdescriptionencrypt',
@@ -89,7 +95,7 @@ try {
         }
 
     } else {
-        $response = array('status' => 409, 'message' => "Category already exists!");
+        $response = array('status' => 409, 'message' => "Product already exists!");
         echo json_encode($response);
     }
 

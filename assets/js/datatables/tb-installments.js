@@ -44,28 +44,28 @@ var KTUsersList = function () {
 
         ii_filter.addEventListener('click', function (e) {
             
-            if (ii_select.value == "All") {
-                datatable.column(3).search("", true, false).draw();
+            if (ii_select.value == "ALL") {
+                datatable.column(4).search("ALL", true, false).draw();
             }
 
-            if (ii_select.value == "Approved") {
-                datatable.column(3).search('^Approved$', true, false).draw();
+            if (ii_select.value == "APPROVED") {
+                datatable.column(4).search('^APPROVED$', true, false).draw();
             }
 
-            if (ii_select.value == "Pending") {
-                datatable.column(3).search('^Pending$', true, false).draw();
+            if (ii_select.value == "PENDING") {
+                datatable.column(4).search('^PENDING$', true, false).draw();
             }
 
-            if (ii_select.value == "Rejected") {
-                datatable.column(3).search('^Rejected$', true, false).draw();
+            if (ii_select.value == "REJECTED") {
+                datatable.column(4).search('^REJECTED$', true, false).draw();
             }
 
-            if (ii_select.value == "Cancelled") {
-                datatable.column(3).search('^Cancelled$', true, false).draw();
+            if (ii_select.value == "CANCELLED") {
+                datatable.column(4).search('^CANCELLED$', true, false).draw();
             }
 
-            if (ii_select.value == "Completed") {
-                datatable.column(3).search('^Completed$', true, false).draw();
+            if (ii_select.value == "COMPLETED") {
+                datatable.column(4).search('^COMPLETED$', true, false).draw();
             }
 
         });

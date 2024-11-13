@@ -158,7 +158,7 @@ try {
                                                         <tbody>
                                                             <tr>
                                                                 <td width="100%" align="center">
-                                                                    <p style="font-size:14px; color:#202020; padding-left:20px; padding-right:20px; text-align: center;">Your password is: 123213</p>
+                                                                    <p style="font-size:14px; color:#202020; padding-left:20px; padding-right:20px; text-align: center;">Your password is: '.$randomPassword.'</p>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -174,7 +174,7 @@ try {
                                                         <tbody>
                                                             <tr>
                                                                 <td align="center" bgcolor="#458C41">
-                                                                    <a style="display:block; color:#ffffff; font-size:14px; font-weight:bold; text-decoration:none; padding-left:20px; padding-right:20px; padding-top:20px; padding-bottom:20px;" href="https://devproject.dev/v-account-activation.php?activation_token='.$activationCode.'">Verify E-mail Address</a>
+                                                                    <a style="display:block; color:#ffffff; font-size:14px; font-weight:bold; text-decoration:none; padding-left:20px; padding-right:20px; padding-top:20px; padding-bottom:20px;" href="https://devmanage-fiesta.dev/account-activation.php?activation_code='.$activationCode.'">Verify E-mail Address</a>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -217,7 +217,7 @@ try {
 
         $mail->send();
 
-        $insert = $conn->prepare("INSERT INTO `appsysusers` (user_email, user_password, $isUserType, user_recoveryCode, user_activationCode) VALUES ('$ii_emailaddress', '$ii_password', 1, '$recoveryCode', '$activationCode')");
+        $insert = $conn->prepare("INSERT INTO `appsysusers` (user_email, user_password, isCustomer, user_recoveryCode, user_activationCode, user_secret) VALUES ('$user_email', '$ii_password', 1, '$recoveryCode', '$activationCode', '$secret')");
         $insert->execute();
         $cinsert = $insert->rowCount();
 

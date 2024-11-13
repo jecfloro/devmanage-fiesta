@@ -3,6 +3,321 @@
 import { defaultFormat, PasswordFormat, emailFormat, phoneFormat, phoneInputMask } from "./main.formatScript.js";
 import { sweetAlertSuccess, sweetAlertError } from "./main.SweetAlert.js";
 
+var my_handlers = {
+    // fill province
+    fill_provinces: function () {
+        //selected region
+        var region_code = $('option:selected', this).attr('region-code');
+
+        // set selected text to input
+        var region_text = $(this).find("option:selected").text();
+        let region_input = $('#region-text');
+        region_input.val(region_text);
+        //clear province & city & barangay input
+        $('#province-text').val('');
+        $('#city-text').val('');
+        $('#barangay-text').val('');
+
+        //province
+        let dropdown = $('#ii_province');
+        dropdown.empty();
+        dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+        dropdown.prop('selectedIndex', 0);
+
+        //city
+        let city = $('#ii_city');
+        city.empty();
+        city.append('<option selected="true" disabled></option>');
+        city.prop('selectedIndex', 0);
+
+        //barangay
+        let barangay = $('#ii_barangay');
+        barangay.empty();
+        barangay.append('<option selected="true" disabled></option>');
+        barangay.prop('selectedIndex', 0);
+        // filter & fill
+        var url = '../../assets/js/json/province.json';
+        $.getJSON(url, function (data) {
+            var result = data.filter(function (value) {
+                return value.region_code == region_code;
+            });
+
+            result.sort(function (a, b) {
+                return a.province_name.localeCompare(b.province_name);
+            });
+
+            $.each(result, function (key, entry) {
+                dropdown.append($('<option></option>').attr({ 'value': entry.province_name, 'province-code': entry.province_code }).text(entry.province_name));
+            })
+
+        });
+    },
+    // fill city
+    fill_cities: function () {
+        //selected province
+        var province_code = $('option:selected', this).attr('province-code');
+
+        // set selected text to input
+        var province_text = $(this).find("option:selected").text();
+        let province_input = $('#province-text');
+        province_input.val(province_text);
+        //clear city & barangay input
+        $('#city-text').val('');
+        $('#barangay-text').val('');
+
+        //city
+        let dropdown = $('#ii_city');
+        dropdown.empty();
+        dropdown.append('<option selected="true" disabled>Choose city/municipality</option>');
+        dropdown.prop('selectedIndex', 0);
+
+        //barangay
+        let barangay = $('#ii_barangay');
+        barangay.empty();
+        barangay.append('<option selected="true" disabled></option>');
+        barangay.prop('selectedIndex', 0);
+
+        // filter & fill
+        var url = '../../assets/js/json/city.json';
+        $.getJSON(url, function (data) {
+            var result = data.filter(function (value) {
+                return value.province_code == province_code;
+            });
+
+            result.sort(function (a, b) {
+                return a.city_name.localeCompare(b.city_name);
+            });
+
+            $.each(result, function (key, entry) {
+                dropdown.append($('<option></option>').attr({ 'value': entry.city_name, 'city-code': entry.city_code }).text(entry.city_name));
+            })
+
+        });
+    },
+    // fill barangay
+    fill_barangays: function () {
+        // selected barangay
+        var city_code = $('option:selected', this).attr('city-code');
+
+        // set selected text to input
+        var city_text = $(this).find("option:selected").text();
+        let city_input = $('#city-text');
+        city_input.val(city_text);
+        //clear barangay input
+        $('#barangay-text').val('');
+
+        // barangay
+        let dropdown = $('#ii_barangay');
+        dropdown.empty();
+        dropdown.append('<option selected="true" disabled>Choose barangay</option>');
+        dropdown.prop('selectedIndex', 0);
+
+        // filter & Fill
+        var url = '../../assets/js/json/barangay.json';
+        $.getJSON(url, function (data) {
+            var result = data.filter(function (value) {
+                return value.city_code == city_code;
+            });
+
+            result.sort(function (a, b) {
+                return a.brgy_name.localeCompare(b.brgy_name);
+            });
+
+            $.each(result, function (key, entry) {
+                dropdown.append($('<option></option>').attr({ 'value': entry.brgy_name, 'brgy-code': entry.brgy_code }).text(entry.brgy_name));
+            })
+
+        });
+    },
+
+    onchange_barangay: function () {
+        // set selected text to input
+        var barangay_text = $(this).find("option:selected").text();
+        let barangay_input = $('#barangay-text');
+        barangay_input.val(barangay_text);
+    },
+
+};
+
+$(function () {
+    // events
+    $('#ii_region').on('change', my_handlers.fill_provinces);
+    $('#ii_province').on('change', my_handlers.fill_cities);
+    $('#ii_city').on('change', my_handlers.fill_barangays);
+    $('#ii_barangay').on('change', my_handlers.onchange_barangay);
+
+    // Region
+    let dropdown_region = $('#ii_region');
+    dropdown_region.empty();
+    dropdown_region.append('<option selected="true">Choose Region</option>');
+    dropdown_region.prop('selectedIndex', 0);
+    const url_region = '../../assets/js/json/region.json';
+    //province
+    let dropdown_province = $('#ii_province');
+    dropdown_province.empty();
+    dropdown_province.append('<option selected="true">Choose State/Province</option>');
+    dropdown_province.prop('selectedIndex', 0);
+    const url_province = '../../assets/js/json/province.json';
+    //city
+    let dropdown_city = $('#ii_city');
+    dropdown_city.empty();
+    dropdown_city.append('<option selected="true">Choose city/municipality</option>');
+    dropdown_city.prop('selectedIndex', 0);
+    const url_city = '../../assets/js/json/city.json';
+    // barangay
+    let dropdown_barangay = $('#ii_barangay');
+    dropdown_barangay.empty();
+    dropdown_barangay.append('<option selected="true">Choose barangay</option>');
+    dropdown_barangay.prop('selectedIndex', 0);
+    const url_barangay = '../../assets/js/json/barangay.json';
+
+    $.ajax({
+        url: '../../app/functions/user-management/fn_retrieveDetails.php',
+        type: 'POST',
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+
+                if (status.user[0]["userRegionCode"] == null) {
+                    $.getJSON(url_region, function (data) {
+                        $.each(data, function (key, entry) {
+                            dropdown_region.append($('<option></option>').attr({ 'value': entry.region_name, 'region-code': entry.region_code }).text(entry.region_name));
+                        })
+                    });
+                } else {
+                    
+                    $.getJSON(url_region, function (data) {
+                        $.each(data, function (key, entry) {
+                            if (entry.region_code == status.user[0]["userRegionCode"]) {
+                                dropdown_region.append($('<option></option>').attr({ 'value': entry.region_name, 'region-code': entry.region_code, 'selected': 'selected'}).text(entry.region_name));
+                            } else {
+                                dropdown_region.append($('<option></option>').attr({ 'value': entry.region_name, 'region-code': entry.region_code}).text(entry.region_name));
+                            }
+                        })
+                    });
+                }
+
+                if (status.user[0]["userProvinceCode"] == null) {
+                    $.getJSON(url_province, function (data) {
+                        var result = data.filter(function (value) {
+                            return value.region_code == status.user[0]["userRegionCode"];
+                        });
+            
+                        result.sort(function (a, b) {
+                            return a.province_name.localeCompare(b.province_name);
+                        });
+            
+                        $.each(result, function (key, entry) {
+                            dropdown_province.append($('<option></option>').attr({ 'value': entry.province_name, 'province-code': entry.province_code }).text(entry.province_name));
+                        })
+            
+                    });
+                } else {
+                    $.getJSON(url_province, function (data) {
+                        var result = data.filter(function (value) {
+                            return value.region_code == status.user[0]["userRegionCode"];
+                        });
+            
+                        result.sort(function (a, b) {
+                            return a.province_name.localeCompare(b.province_name);
+                        });
+            
+                        $.each(result, function (key, entry) {
+                            if (entry.province_code == status.user[0]["userProvinceCode"]) {
+                                dropdown_province.append($('<option></option>').attr({ 'value': entry.province_name, 'province-code': entry.province_code, 'selected': 'selected'}).text(entry.province_name));
+                            } else {
+                                dropdown_province.append($('<option></option>').attr({ 'value': entry.province_name, 'province-code': entry.province_code }).text(entry.province_name));
+                            }
+                        })
+            
+                    });
+                }
+
+                if (status.user[0]["userCityCode"] == null) {
+                    $.getJSON(url_city, function (data) {
+                        var result = data.filter(function (value) {
+                            return value.province_code == status.user[0]["userProvinceCode"];
+                        });
+            
+                        result.sort(function (a, b) {
+                            return a.city_name.localeCompare(b.city_name);
+                        });
+            
+                        $.each(result, function (key, entry) {
+                            dropdown_city.append($('<option></option>').attr({ 'value': entry.city_name, 'city-code': entry.city_code }).text(entry.city_name));
+                        })
+            
+                    });
+                } else {
+                    $.getJSON(url_city, function (data) {
+                        var result = data.filter(function (value) {
+                            return value.province_code == status.user[0]["userProvinceCode"];
+                        });
+            
+                        result.sort(function (a, b) {
+                            return a.city_name.localeCompare(b.city_name);
+                        });
+            
+                        $.each(result, function (key, entry) {
+                            if (entry.city_code == status.user[0]["userCityCode"]) {
+                                dropdown_city.append($('<option></option>').attr({ 'value': entry.city_name, 'city-code': entry.city_code, 'selected': 'selected' }).text(entry.city_name));
+                            } else {
+                                dropdown_city.append($('<option></option>').attr({ 'value': entry.city_name, 'city-code': entry.city_code }).text(entry.city_name));
+                            }
+                        })
+            
+                    });
+                }
+
+                if (status.user[0]["userBarangayCode"] == null) {
+                    $.getJSON(url_barangay, function (data) {
+                        var result = data.filter(function (value) {
+                            return value.city_code == status.user[0]["userCityCode"];
+                        });
+            
+                        result.sort(function (a, b) {
+                            return a.brgy_name.localeCompare(b.brgy_name);
+                        });
+            
+                        $.each(result, function (key, entry) {
+                            dropdown_barangay.append($('<option></option>').attr({ 'value': entry.brgy_name, 'brgy-code': entry.brgy_code }).text(entry.brgy_name));
+                        })
+            
+                    });
+                } else {
+                    $.getJSON(url_barangay, function (data) {
+                        var result = data.filter(function (value) {
+                            return value.city_code == status.user[0]["userCityCode"];
+                        });
+            
+                        result.sort(function (a, b) {
+                            return a.brgy_name.localeCompare(b.brgy_name);
+                        });
+            
+                        $.each(result, function (key, entry) {
+                            if (entry.brgy_code == status.user[0]["userBarangayCode"]) {
+                                dropdown_barangay.append($('<option></option>').attr({ 'value': entry.brgy_name, 'brgy-code': entry.brgy_code, 'selected': 'selected' }).text(entry.brgy_name));
+                            } else {
+                                dropdown_barangay.append($('<option></option>').attr({ 'value': entry.brgy_name, 'brgy-code': entry.brgy_code }).text(entry.brgy_name));
+                            }
+                        })
+            
+                    });
+                }
+                
+            }
+            if (status.status == 401 || status.status == 404) {
+                alert(status.message);
+            }
+            if (status.status == 500) {
+                alert(status.message);
+            }
+        }
+    })
+
+});
+
 $("[data-ii-updateprofile-modal-action='update']").click(function (e) {
 
     e.preventDefault();
@@ -24,6 +339,15 @@ $("[data-ii-updateprofile-modal-action='update']").click(function (e) {
     var ii_placeofbirth = $("#ii_placeofbirth").val().trim();
     var ii_contactnumber = $("#ii_contactnumber").val();
     var ii_address = $("#ii_address").val();
+
+    var region_code = $("#ii_region").find(':selected').attr('region-code')
+    var province_code = $("#ii_province").find(':selected').attr('province-code')
+    var city_code = $("#ii_city").find(':selected').attr('city-code')
+    var barangay_code = $("#ii_barangay").find(':selected').attr('brgy-code')
+    var region = $("#ii_region").val();
+    var province = $("#ii_province").val();
+    var city = $("#ii_city").val();
+    var barangay = $("#ii_barangay").val();
 
     if (ii_lastname == "") {
         sweetAlertError("Last Name is required!");
@@ -82,6 +406,26 @@ $("[data-ii-updateprofile-modal-action='update']").click(function (e) {
 
     if (ii_address == "") {
         sweetAlertError("Address is required!");
+        return;
+    }
+
+    if (region == "") {
+        sweetAlertError("Region is required!");
+        return;
+    }
+
+    if (province == "") {
+        sweetAlertError("Province is required!");
+        return;
+    }
+
+    if (city == "") {
+        sweetAlertError("City is required!");
+        return;
+    }
+
+    if (barangay == "") {
+        sweetAlertError("Barangay is required!");
         return;
     }
 
@@ -147,7 +491,15 @@ $("[data-ii-updateprofile-modal-action='update']").click(function (e) {
                 ii_birthdate: ii_birthdate,
                 ii_placeofbirth: ii_placeofbirth,
                 ii_contactnumber: ii_contactnumber,
-                ii_address: ii_address
+                ii_address: ii_address,
+                region_code: region_code,
+                province_code: province_code,
+                city_code: city_code,
+                barangay_code: barangay_code,
+                region: region,
+                province: province,
+                city: city,
+                barangay: barangay
             },
             cache: false,
             success: function (response) {

@@ -38,7 +38,7 @@ try {
     $generateSecret = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
     $secret = $generateSecret->generateSecret();
 
-    $qr_link = \Sonata\GoogleAuthenticator\GoogleQrUrl::generate($email, $infosecret, 'Fiest Appliances - Authentication');
+    $qr_link = \Sonata\GoogleAuthenticator\GoogleQrUrl::generate($email, $infosecret, 'Fiesta Appliances - Authentication');
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -243,10 +243,7 @@ try {
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Administrator
-                                    </li>
-                                    <li class="breadcrumb-item text-muted">
-                                        Apps
+                                        Customer
                                     </li>
                                     <li class="breadcrumb-item text-dark">
                                         <a href="settings.php" class="text-dark text-hover-primary">
@@ -256,7 +253,7 @@ try {
                                 </ul>
                             </div>
                             <div class="d-flex align-items-center flex-nowrap text-nowrap py-1">
-
+                                
                             </div>
                         </div>
                     </div>

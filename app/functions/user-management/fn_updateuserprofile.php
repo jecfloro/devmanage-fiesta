@@ -23,6 +23,14 @@
     $ii_placeofbirth = strtoupper($_POST['ii_placeofbirth']);
     $ii_contactnumber = $_POST['ii_contactnumber'];
     $ii_address = strtoupper($_POST['ii_address']);
+    $region_code = $_POST['region_code'];
+    $province_code = $_POST['province_code'];
+    $city_code = $_POST['city_code'];
+    $barangay_code = $_POST['barangay_code'];
+    $region = strtoupper($_POST['region']);
+    $province = strtoupper($_POST['province']);
+    $city = strtoupper($_POST['city']);
+    $barangay = strtoupper($_POST['barangay']);
     
     try {
         $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
@@ -49,6 +57,14 @@
             userPlaceofBirth = '$ii_placeofbirth', 
             userContactNumber = '$ii_contactnumber', 
             userAddress = '$ii_address', 
+            userRegionCode = '$region_code', 
+            userRegion = '$region', 
+            userProvinceCode = '$province_code', 
+            userProvince = '$province', 
+            userCityCode = '$city_code', 
+            userCity = '$city', 
+            userBarangayCode = '$barangay_code', 
+            userBarangay = '$barangay', 
             userFullName = '$ii_fullname' 
             WHERE PK_appsysUsers = '$usercode'");
         $update->execute();

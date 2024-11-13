@@ -16,7 +16,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $usercode = $_SESSION['session_usercode'];
-    
+
     $userprofile = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
     $userprofile->execute();
     $cuserprofile = $userprofile->rowCount();
@@ -30,7 +30,11 @@ try {
     if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
         header("Location: /");
     }
-    
+
+    $locationlist = $conn->prepare("SELECT * FROM mm_location WHERE FK_appsysUsers = '$usercode'");
+    $locationlist->execute();
+    $clocationlist = $locationlist->rowCount();
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -54,6 +58,10 @@ try {
     <link href="../../assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
     <link href="../../assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
     <link href="../../assets/css/custom.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <script src="../../assets/js/routing.bundle.js"></script>
     <script>
         // Frame-busting to prevent site from being loaded within a frame without permission (click-jacking)
         if (window.top != window.self) {
@@ -230,11 +238,14 @@ try {
                         <div class=" container-fluid  d-flex flex-stack flex-wrap flex-sm-nowrap">
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                    Fiest Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
+                                    Fiesta Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
                                         Customer
+                                    </li>
+                                    <li class="breadcrumb-item text-dark">
+                                        <a href="location.php" class="text-dark">Location</a>
                                     </li>
                                 </ul>
                             </div>
@@ -247,7 +258,53 @@ try {
                         <div class="container-fluid">
                             <div class="row g-xl-12">
                                 <div class="col-xxl-12">
-
+                                    <div class="card">
+                                        <div class="card-header border-0 pt-6">
+                                            <div class="card-title">
+                                                <div class="d-flex align-items-center position-relative my-1">
+                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span
+                                                            class="path1"></span><span class="path2"></span></i> <input
+                                                        type="text" data-kt-location-table-filter="search"
+                                                        class="form-control form-control-solid w-250px ps-13"
+                                                        placeholder="Search" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body py-4">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5"
+                                                id="tb_location">
+                                                <thead>
+                                                    <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                                        <th class="w-25">Address</th>
+                                                        <th class="w-25">Date Added</th>
+                                                        <th class=""></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-gray-600 fw-semibold">
+                                                    <?php if ($clocationlist > 0) { ?>
+                                                        <?php while ($rlocationlist = $locationlist->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                            <tr>
+                                                                <td><?php echo $rlocationlist["addressNoteDescription"] ?></td>
+                                                                <td><?php echo date("F d, Y h:i A", strtotime($rlocationlist["dateAdded"])) ?></td>
+                                                                <td class="text-end datainput">
+                                                                    <div class="d-flex justify-content-end gap-2">
+                                                                        <a href="location-view.php?lid=<?php echo $rlocationlist["PK_mm_location"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3"
+                                                                            data-ii-val="<?php echo $rinstallments["PK_mn_installments"]; ?>"
+                                                                            data-ii-input-action="view">
+                                                                            <i class="ki-duotone ki-right-square fs-2x">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -277,6 +334,7 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
+    <script src="../../assets/js/datatables/tb-location.js"></script>
 </body>
 
 </html>

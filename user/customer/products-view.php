@@ -47,8 +47,6 @@ try {
     $cinstallments = $installments->rowCount();
     $rinstallments = $installments->fetch(PDO::FETCH_ASSOC);
 
-    
-
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -248,11 +246,14 @@ try {
                         <div class=" container-fluid  d-flex flex-stack flex-wrap flex-sm-nowrap">
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                    Fiest Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
+                                    Fiesta Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Products
+                                        Customer
+                                    </li>
+                                    <li class="breadcrumb-item text-dark">
+                                        <a href="products.php" class="text-dark">Products</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <?php echo $rproduct["description"]; ?>
@@ -351,9 +352,9 @@ try {
                                                     <?php if ($cinstallments > 0) { ?>
 
                                                         <?php if ($rinstallments["pendingTotal"] == 1 && $rinstallments["approvedTotal"] == 0) { ?>
-                                                            <a href="installments-view.php?iid=<?php echo $rinstallments["PK_mn_installments"] ?>" class="btn btn-primary">View Installment</a>
+                                                            <a href="installments.php" class="btn btn-primary">View Installment</a>
                                                         <?php } else if ($rinstallments["pendingTotal"] == 0 && $rinstallments["approvedTotal"] == 1) { ?>
-                                                            <a href="installments-view.php?iid=<?php echo $rinstallments["PK_mn_installments"] ?>" class="btn btn-primary">View Installment</a>
+                                                            <a href="installments.php" class="btn btn-primary">View Installment</a>
                                                         <?php } else { ?>
                                                             <button class="btn btn-darkgreen" data-ii-applyinstallment-modal-action="apply" data-passaccess="applyinstallment">Apply for Installment</button>
                                                         <?php } ?>

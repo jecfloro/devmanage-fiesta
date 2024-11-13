@@ -248,11 +248,14 @@ try {
                         <div class=" container-fluid  d-flex flex-stack flex-wrap flex-sm-nowrap">
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                    Fiest Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
+                                    Fiesta Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Installments
+                                        Customer
+                                    </li>
+                                    <li class="breadcrumb-item text-dark">
+                                        <a href="installments.php" class="text-dark">Installments</a>
                                     </li>
                                     <li class="breadcrumb-item">
                                         <?php echo $rinstallments["productName"] ?>
@@ -280,20 +283,20 @@ try {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-6">
+                                <div class="col-xl-12">
                                     <div class="card">
                                         <div class="card-header">
                                             <div class="card-title m-0">
                                                 <h3 class="fw-bold m-0">Installment Details</h3>
                                             </div>
                                         </div>
-                                        <div class="card-body d-flex justify-content-start flex-wrap">
+                                        <div class="card-body">
                                             <?php if ($rinstallments["installmentStatus"] == "CANCELLED") { ?>
                                                 <table class="table table-bordered">
                                                     <tbody>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Status</td>
-                                                            <td class="fw-bolder">CANCELLED</td>
+                                                            <td class="fw-bolder w-75">CANCELLED</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Cancelled Date</td>
@@ -307,22 +310,22 @@ try {
                                                     <tbody>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Status</td>
-                                                            <td class="fw-bolder">REJECTED</td>
+                                                            <td class="fw-bolder w-75">REJECTED</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Rejected By</td>
                                                             <td class="fw-bolder">
-                                                                <?php 
+                                                                <?php
 
-                                                                    $uid = $rinstallments["rejectedBy"];
-                                                                
-                                                                    // Fetch the name of the approved by user
-                                                                    $approvedby = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$uid'");
-                                                                    $approvedby->execute();
-                                                                    $rapprovedby = $approvedby->fetch(PDO::FETCH_ASSOC);
+                                                                $uid = $rinstallments["rejectedBy"];
 
-                                                                    echo $rapprovedby["userFullName"];
-                                                                
+                                                                // Fetch the name of the approved by user
+                                                                $approvedby = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$uid'");
+                                                                $approvedby->execute();
+                                                                $rapprovedby = $approvedby->fetch(PDO::FETCH_ASSOC);
+
+                                                                echo $rapprovedby["userFullName"];
+
                                                                 ?>
                                                             </td>
                                                         </tr>
@@ -342,7 +345,7 @@ try {
                                                     <tbody>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Status</td>
-                                                            <td class="fw-bolder">WAITING FOR REVIEW</td>
+                                                            <td class="fw-bolder w-75">WAITING FOR REVIEW</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Requested Date</td>
@@ -356,22 +359,22 @@ try {
                                                     <tbody>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Status</td>
-                                                            <td class="fw-bolder">APPROVED</td>
+                                                            <td class="fw-bolder w-75">APPROVED</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Approved By</td>
                                                             <td class="fw-bolder">
-                                                                <?php 
+                                                                <?php
 
-                                                                    $uid = $rinstallments["approvedBy"];
-                                                                
-                                                                    // Fetch the name of the approved by user
-                                                                    $approvedby = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$uid'");
-                                                                    $approvedby->execute();
-                                                                    $rapprovedby = $approvedby->fetch(PDO::FETCH_ASSOC);
+                                                                $uid = $rinstallments["approvedBy"];
 
-                                                                    echo $rapprovedby["userFullName"];
-                                                                
+                                                                // Fetch the name of the approved by user
+                                                                $approvedby = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$uid'");
+                                                                $approvedby->execute();
+                                                                $rapprovedby = $approvedby->fetch(PDO::FETCH_ASSOC);
+
+                                                                echo $rapprovedby["userFullName"];
+
                                                                 ?>
                                                             </td>
                                                         </tr>
@@ -381,17 +384,62 @@ try {
                                                         </tr>
                                                     </tbody>
                                                 </table>
+
+                                                <table class="table table-bordered mt-10">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Product Price</td>
+                                                            <td class="fw-bolder w-75">₱ <?php echo number_format($rinstallments["productPrice"], 2); ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Down Payment</td>
+                                                            <td class="fw-bolder">₱ <?php echo number_format($rinstallments["productDownpayment"], 2); ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Approved Months</td>
+                                                            <td class="fw-bolder"><?php echo $rinstallments["approvedMonths"] . " Months"; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Installment</td>
+                                                            <?php
+
+                                                            $deduct = $rinstallments["productPrice"] - $rinstallments["productDownpayment"];
+                                                            $installment = $deduct / $rinstallments["approvedMonths"];
+                                                            $multiply = $installment * $rinstallments["approvedMonths"];
+
+                                                            ?>
+                                                            <td class="fw-bolder">₱ <?php echo number_format($installment, 2); ?> x <?php echo $rinstallments["approvedMonths"]; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Remaining</td>
+                                                            <td class="fw-bolder">₱ <?php echo number_format($multiply, 2); ?></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             <?php } ?>
                                             <?php if ($rinstallments["installmentStatus"] == "COMPLETED") { ?>
                                                 <table class="table table-bordered">
                                                     <tbody>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Status</td>
-                                                            <td class="fw-bolder">COMPLETED</td>
+                                                            <td class="fw-bolder w-75">COMPLETED</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Approved By</td>
-                                                            <td class="fw-bolder">JECO</td>
+                                                            <td class="fw-bolder">
+                                                                <?php
+
+                                                                $uid = $rinstallments["approvedBy"];
+
+                                                                // Fetch the name of the approved by user
+                                                                $approvedby = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$uid'");
+                                                                $approvedby->execute();
+                                                                $rapprovedby = $approvedby->fetch(PDO::FETCH_ASSOC);
+
+                                                                echo $rapprovedby["userFullName"];
+
+                                                                ?>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Approved Date</td>
@@ -403,10 +451,68 @@ try {
                                                         </tr>
                                                     </tbody>
                                                 </table>
+
+                                                <table class="table table-bordered mt-10">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Product Price</td>
+                                                            <td class="fw-bolder w-75">₱ <?php echo number_format($rinstallments["productPrice"], 2); ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Down Payment</td>
+                                                            <td class="fw-bolder">₱ <?php echo number_format($rinstallments["productDownpayment"], 2); ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Approved Months</td>
+                                                            <td class="fw-bolder"><?php echo $rinstallments["approvedMonths"] . " Months"; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Installment</td>
+                                                            <?php
+
+                                                            $deduct = $rinstallments["productPrice"] - $rinstallments["productDownpayment"];
+                                                            $installment = $deduct / $rinstallments["approvedMonths"];
+                                                            $multiply = $installment * $rinstallments["approvedMonths"];
+
+                                                            ?>
+                                                            <td class="fw-bolder">₱ <?php echo number_format($installment, 2); ?> x <?php echo $rinstallments["approvedMonths"]; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Remaining</td>
+                                                            <td class="fw-bolder">₱ <?php echo number_format($multiply, 2); ?></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
                                             <?php } ?>
                                         </div>
                                     </div>
                                 </div>
+                                <?php if ($rinstallments["installmentStatus"] == "APPROVED" || $rinstallments["installmentStatus"] == "COMPLETED") { ?>
+                                    <div class="col-xl-7">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title m-0">
+                                                    <h3 class="fw-bold m-0">Payment Schedule</h3>
+                                                </div>
+                                            </div>
+                                            <div class="card-body d-flex justify-content-end flex-wrap">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-5">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="card-title m-0">
+                                                    <h3 class="fw-bold m-0">Payment History</h3>
+                                                </div>
+                                            </div>
+                                            <div class="card-body d-flex justify-content-end flex-wrap">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
                                 <div class="col-xl-6">
                                     <div class="card">
                                         <div class="card-header">
@@ -446,17 +552,17 @@ try {
                                                                             M224.793,153.959c-0.334,1.805-4.189,2.837-5.988,3.121c-5.316,0.836-10.94,0.167-16.028-1.542
                                                                             c-3.491-1.172-6.858-2.768-10.057-4.688c-3.18-1.921-6.155-4.181-8.936-6.673c3.429-0.206,6.9-0.341,10.388-0.275
                                                                             c3.488,0.035,7.003,0.211,10.475,0.664c6.511,0.726,13.807,2.961,18.932,7.186C224.588,152.585,224.91,153.321,224.793,153.959z"></path>
-                                                                                        <polygon style="fill:#FB3449;" points="227.64,25.263 32.842,25.263 32.842,0 219.821,0 	"></polygon>
-                                                                                        <g>
-                                                                                            <path style="fill:#A4A9AD;" d="M126.841,241.152c0,5.361-1.58,9.501-4.742,12.421c-3.162,2.921-7.652,4.381-13.472,4.381h-3.643
+                                                                        <polygon style="fill:#FB3449;" points="227.64,25.263 32.842,25.263 32.842,0 219.821,0 	"></polygon>
+                                                                        <g>
+                                                                            <path style="fill:#A4A9AD;" d="M126.841,241.152c0,5.361-1.58,9.501-4.742,12.421c-3.162,2.921-7.652,4.381-13.472,4.381h-3.643
                                                                             v15.917H92.022v-47.979h16.606c6.06,0,10.611,1.324,13.652,3.971C125.321,232.51,126.841,236.273,126.841,241.152z
                                                                             M104.985,247.387h2.363c1.947,0,3.495-0.546,4.644-1.641c1.149-1.094,1.723-2.604,1.723-4.529c0-3.238-1.794-4.857-5.382-4.857
                                                                             h-3.348C104.985,236.36,104.985,247.387,104.985,247.387z"></path>
-                                                                                            <path style="fill:#A4A9AD;" d="M175.215,248.864c0,8.007-2.205,14.177-6.613,18.509s-10.606,6.498-18.591,6.498h-15.523v-47.979
+                                                                            <path style="fill:#A4A9AD;" d="M175.215,248.864c0,8.007-2.205,14.177-6.613,18.509s-10.606,6.498-18.591,6.498h-15.523v-47.979
                                                                             h16.606c7.701,0,13.646,1.969,17.836,5.907C173.119,235.737,175.215,241.426,175.215,248.864z M161.76,249.324
                                                                             c0-4.398-0.87-7.657-2.609-9.78c-1.739-2.122-4.381-3.183-7.926-3.183h-3.773v26.877h2.888c3.939,0,6.826-1.143,8.664-3.43
                                                                             C160.841,257.523,161.76,254.028,161.76,249.324z"></path>
-                                                                                            <path style="fill:#A4A9AD;" d="M196.579,273.871h-12.766v-47.979h28.355v10.403h-15.589v9.156h14.374v10.403h-14.374
+                                                                            <path style="fill:#A4A9AD;" d="M196.579,273.871h-12.766v-47.979h28.355v10.403h-15.589v9.156h14.374v10.403h-14.374
                                                                             L196.579,273.871L196.579,273.871z"></path>
                                                                         </g>
                                                                         <polygon style="fill:#D1D3D3;" points="219.821,50.525 270.346,50.525 219.821,0 	"></polygon>
@@ -479,32 +585,6 @@ try {
                                         </div>
                                     </div>
                                 </div>
-                                <?php if ($rinstallments["installmentStatus"] == "APPROVED" || $rinstallments["installmentStatus"] == "COMPLETED") { ?>
-                                    <div class="col-xl-7">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <div class="card-title m-0">
-                                                    <h3 class="fw-bold m-0">Payment Schedule</h3>
-                                                </div>
-                                            </div>
-                                            <div class="card-body d-flex justify-content-end flex-wrap">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-5">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <div class="card-title m-0">
-                                                    <h3 class="fw-bold m-0">Payment History</h3>
-                                                </div>
-                                            </div>
-                                            <div class="card-body d-flex justify-content-end flex-wrap">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php } ?>
                             </div>
                         </div>
                     </div>

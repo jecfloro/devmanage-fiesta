@@ -237,11 +237,14 @@ try {
                         <div class=" container-fluid  d-flex flex-stack flex-wrap flex-sm-nowrap">
                             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
                                 <h1 class="text-dark fw-bold my-1 fs-2">
-                                    Fiest Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
+                                    Fiesta Appliances <small class="text-muted fs-6 fw-normal ms-1"></small>
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Products
+                                        Customer
+                                    </li>
+                                    <li class="breadcrumb-item text-dark">
+                                        <a href="products.php" class="text-dark">Products</a>
                                     </li>
                                 </ul>
                             </div>

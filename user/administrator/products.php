@@ -31,6 +31,10 @@ try {
     $categories->execute();
     $ccategories = $categories->rowCount();
 
+    $categoriesedit = $conn->prepare("SELECT * FROM msc_categories");
+    $categoriesedit->execute();
+    $ccategoriesedit = $categoriesedit->rowCount();
+
     $categoriesfilter = $conn->prepare("SELECT * FROM msc_categories");
     $categoriesfilter->execute();
     $ccategoriesfilter = $categoriesfilter->rowCount();
@@ -565,6 +569,24 @@ try {
                                                 class="form-control form-control-lg form-control-solid fw-bolder"
                                                 placeholder="Product Name">
                                         </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productunit" class="fw-bolder required">Product Unit</label>
+                                            <input type="text" id="ii_productunit"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Unit">
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productbrand" class="fw-bolder required">Product Brand</label>
+                                            <input type="text" id="ii_productbrand"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Brand">
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productmodel" class="fw-bolder required">Product Model</label>
+                                            <input type="text" id="ii_productmodel"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Model">
+                                        </div>
                                         <div class="row g-3 mt-5">
                                             <div class="col-xl-6">
                                                 <div class="">
@@ -710,6 +732,203 @@ try {
                         </div>
                     </div>
                 </div>
+                <div class="modal fade" tabindex="-1" id="editProductModal">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header" id="modal_accessHeader">
+                                <h2 class="fw-bold mt-3">Edit Product</h2>
+                                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+                                            class="path2"></span></i>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row g-5">
+                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                        <p class="fw-bolder text-muted">General Information</p>
+                                        <div class="">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value=""
+                                                    id="chkbxReturnableedit">
+                                                <label class="form-check-label fw-bolder text-dark"
+                                                    for="chkbxReturnableedit">
+                                                    Returnable Product
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="mt-5" hidden>
+                                            <label for="ii_productidedit" class="fw-bolder required">Product ID</label>
+                                            <input type="text" id="ii_productidedit"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product ID">
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productnameedit" class="fw-bolder required">Product Name</label>
+                                            <input type="text" id="ii_productnameedit"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Name">
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productunitedit" class="fw-bolder required">Product Unit</label>
+                                            <input type="text" id="ii_productunitedit"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Unit">
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productbrandedit" class="fw-bolder required">Product Brand</label>
+                                            <input type="text" id="ii_productbrandedit"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Brand">
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productmodeledit" class="fw-bolder required">Product Model</label>
+                                            <input type="text" id="ii_productmodeledit"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Model">
+                                        </div>
+                                        <div class="row g-3 mt-5">
+                                            <div class="col-xl-6">
+                                                <div class="">
+                                                    <label for="ii_productskuedit" class="fw-bolder required">Product
+                                                        SKU</label>
+                                                    <input type="text" id="ii_productskuedit"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        placeholder="XXX-XXX-XX">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="">
+                                                    <label for="ii_productcategoryedit" class="fw-bolder required">Product
+                                                        Category</label>
+                                                    <select class="form-select form-select-solid fw-bolder"
+                                                        data-kt-select2="true" data-placeholder="Select Category"
+                                                        data-allow-clear="true"
+                                                        data-hide-search="true" id="ii_productcategoryedit">
+                                                        <?php if ($ccategoriesedit > 0) { ?>
+                                                            <?php while ($rcategoriesedit = $categoriesedit->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                                <option value="<?php echo $rcategoriesedit["PK_mscCategories"]; ?>">
+                                                                    <?php echo $rcategoriesedit["description"]; ?>
+                                                                </option>
+                                                            <?php } ?>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productdescriptionedit" class="fw-bolder required">Product
+                                                Description</label>
+                                            <textarea name="" id="ii_productdescriptionedit"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                placeholder="Product Description" data-kt-autosize="true"></textarea>
+                                        </div>
+                                        <div class="mt-5">
+                                            <label for="ii_productdetailsedit" class="fw-bolder required">Product
+                                                Details</label>
+                                            <div class="ii_productdetailscontaineredit">
+                                            </div>
+                                            <div class="d-flex justify-content-end">
+                                                <button class="w-100 btn btn-light"
+                                                    data-addedit-product-details="add">Add</button>
+                                            </div>
+                                        </div>
+                                        <p class="fw-bolder text-muted mt-5">Quantity &amp; Reorder</p>
+                                        <div class="mt-5">
+                                            <label for="ii_totalquantityedit" class="fw-bolder">Total Quantity</label>
+                                            <input type="number" min="0" max="9999" id="ii_totalquantityedit"
+                                                class="form-control form-control-lg form-control-solid fw-bolder"
+                                                value="0">
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_minstockedit" class="fw-bolder">Minimum Stock</label>
+                                                    <input type="number" min="0" max="99999" id="ii_minstockedit"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        value="0">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_maxstockedit" class="fw-bolder">Maximum Stock</label>
+                                                    <input type="number" min="0" max="99999" id="ii_maxstockedit"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        value="0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="fw-bolder text-muted mt-5">Pricing</p>
+                                        <div class="row g-3">
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_regularpriceedit" class="fw-bolder required">Regular
+                                                        Price</label>
+                                                    <input type="text" id="ii_regularpriceedit"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        placeholder="0.00" value="0.00">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_salepriceedit" class="fw-bolder">Sale Price</label>
+                                                    <input type="text" id="ii_salepriceedit"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        placeholder="0.00" value="0.00">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="mt-5">
+                                                    <label for="ii_repopriceedit" class="fw-bolder">Repo Price</label>
+                                                    <input type="text" id="ii_repopriceedit"
+                                                        class="form-control form-control-lg form-control-solid fw-bolder"
+                                                        placeholder="0.00" value="0.00">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="fw-bolder text-muted mt-5">Product Status</p>
+                                        <div class="row g-3 mt-5">
+                                            <div class="col-xl-6">
+                                                <div class="">
+                                                    <label for="ii_productsettingedit" class="fw-bolder required">Product
+                                                        Setting</label>
+                                                    <select class="form-select form-select-solid fw-bolder"
+                                                        data-kt-select2="true" data-placeholder="Select Product Setting"
+                                                        data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                        data-hide-search="true" id="ii_productsettingedit">
+                                                        <option value="Regular">Regular</option>
+                                                        <option value="Sale">Sale</option>
+                                                        <option value="Repo">Repo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="">
+                                                    <label for="ii_productstatusedit" class="fw-bolder required">Product
+                                                        Status</label>
+                                                    <select class="form-select form-select-solid fw-bolder"
+                                                        data-kt-select2="true" data-placeholder="Select Product Status"
+                                                        data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                        data-hide-search="true" id="ii_productstatusedit">
+                                                        <option value="Active">Active</option>
+                                                        <option value="Inactive">Inactive</option>
+                                                        <option value="Draft">Draft</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-ii-productedit-modal-action="submit"
+                                    data-passaccess="editproduct">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Modal -->
                 <?php include './authsetting.php'; ?>
                 <!-- Drawer -->
@@ -732,8 +951,8 @@ try {
                             </div>
                             <div class="card-title">
                                 <div class="d-flex me-3 gap-3">
-                                    <button class="btn btn-light btn-sm">Edit</button>
-                                    <button class="btn btn-light btn-sm">Delete</button>
+                                    <button class="btn btn-light btn-sm" data-edit-product-details="edit">Edit</button>
+                                    <button class="btn btn-light btn-sm" data-delete-product-details="delete">Delete</button>
                                 </div>
                             </div>
                         </div>
