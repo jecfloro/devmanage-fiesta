@@ -382,7 +382,7 @@ try {
                                                                 </td>
                                                                 <td class="text-end datainput">
                                                                     <div class="d-flex justify-content-end gap-2">
-                                                                        <a href="installments-view.php?iid=<?php echo $rinstallments["PK_mn_installments"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3"
+                                                                        <a href="installments-view.php?uid=<?php echo $rinstallments["FK_appsysUsers"]; ?>&iid=<?php echo $rinstallments["PK_mn_installments"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3"
                                                                             data-ii-val="<?php echo $rinstallments["PK_mn_installments"]; ?>"
                                                                             data-ii-input-action="view">
                                                                             <i class="ki-duotone ki-right-square fs-2x">

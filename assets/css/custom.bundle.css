@@ -83,12 +83,12 @@ body {
   background-color: #f1f1f1 !important; 
 }
 
+
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
   .product-list {
     width: 100% !important;
   }
-
 }
 
 /* Medium devices (tablets, 768px and up) */

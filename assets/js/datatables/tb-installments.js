@@ -39,13 +39,13 @@ var KTUsersList = function () {
         const ii_search = document.querySelector('[data-kt-installment-table-filter="search"]');
 
         ii_reset.addEventListener('click', function (e) {
-            datatable.search('').draw();
+            datatable.column(4).search("", true, false).draw();
         });
 
         ii_filter.addEventListener('click', function (e) {
             
             if (ii_select.value == "ALL") {
-                datatable.column(4).search("ALL", true, false).draw();
+                datatable.column(4).search("", true, false).draw();
             }
 
             if (ii_select.value == "APPROVED") {
