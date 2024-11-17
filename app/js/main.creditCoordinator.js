@@ -38,6 +38,14 @@ $("[data-ii-userpassword-modal-action='submit']").click(function (e) {
                     $("[data-ii-uplfile-action='save']").click();
                 }
 
+                if (ii_accesspassword == "rejectInstallment") {
+                    $("[data-save-installment='reject']").click();
+                }
+
+                if (ii_accesspassword == "approveInstallment") {
+                    $("[data-save-installment='approve']").click();
+                }
+
             }
             if (status.status == 401) {
                 $("#ii_password").val("");
@@ -96,6 +104,7 @@ $("#uplfiles-container").on('click', "[data-ii-input-action='remove']", function
 
     if (attachments.length == 0) {
         $(".save-container").addClass("d-none");
+        $("#uplfiles-container").append("<span>No attachments</span>");
     }
 
 });
@@ -113,6 +122,8 @@ $("[data-ii-uplfile-action='save']").click(function (e) {
     e.preventDefault();
 
     var attachments = document.getElementById("upldFile").files; // <-- reference your file input here
+    var session_iid =   $("#session_iid").val().trim();
+    var session_uid =   $("#session_uid").val().trim();
 
     // for (var i = 0; i < attachments.length; i++) {
     //     console.log(attachments[i].name + " - " + attachments[i].type);
@@ -187,3 +198,219 @@ function removeFile(index) {
         document.getElementById("upldFile").files = fileBuffer.files; // <-- according to your file input reference
     }
 }
+
+$("#uplfiles-uploaded").on('click', "[data-ii-input-action='delete']", function () {
+
+    let dataid = parseInt(this.getAttribute('data-id'));
+
+    $(this).parent().remove();
+
+    $.ajax({
+        url: '../../app/functions/credit-coordinator/fn_delfiles.php',
+        type: 'POST',
+        data: {
+            dataid: dataid
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                sweetAlertSuccess(status.message);
+            }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 403) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 409) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
+
+});
+
+$("[data-modal-select='Reject']").click(function (e) {
+
+    e.preventDefault();
+
+    $("#modalReject").modal('show');
+
+});
+
+$("[data-save-installment='reject']").click(function (e) {
+
+    e.preventDefault();
+
+    var input_rejectReasons = $("#input_rejectReasons").val().trim();
+
+    if (input_rejectReasons == "") {
+        sweetAlertError("Please input the reason for rejection!");
+        return;
+    }
+
+    var setting = this.getAttribute("data-passaccess");
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#modalReject").modal('hide');
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/credit-coordinator/fn_rejectInstallment.php',
+            type: 'POST',
+            data: {
+                input_rejectReasons: input_rejectReasons
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 401) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$('#ii_downPayment').on('keyup', function () {
+
+    var price = $(this).val().replace(/[^\d]/g, '');
+    var pre, dec;
+    var delimiter = '.';
+
+    var result = price;
+
+    if (price.length > 3 && price.charAt(0) == '0') {
+        price = price.substr(1);
+    }
+
+    if (price.length > 2) {
+        pre = price.slice(0, -2);
+        dec = price.substr((price.length - 2), 2);
+        result = pre + delimiter + dec;
+    }
+
+    $(this).val('').val(result);
+
+    if (this.value == "") {
+        $("#ii_downPayment").val("0.00");
+    }
+
+});
+
+$("[data-modal-select='Approve']").click(function (e) {
+
+    e.preventDefault();
+
+    $("#modalApproved").modal('show');
+
+});
+
+$("[data-save-installment='approve']").click(function (e) {
+
+    e.preventDefault();
+
+    var ii_selectMonths = $("#ii_selectMonths").val().trim();
+    var ii_downPayment = $("#ii_downPayment").val().trim();
+    var ii_approvedDateSched = $("#ii_approvedDateSched").val().trim();
+
+    if (ii_selectMonths == "") {
+        sweetAlertError("Please select the number of months!");
+        return;
+    }
+
+    if (ii_downPayment == "") {
+        sweetAlertError("Please input the down payment!");
+        return;
+    }
+
+    if (ii_approvedDateSched == "") {
+        sweetAlertError("Please input the payment start schedule!");
+        return;
+    }
+
+    var setting = this.getAttribute("data-passaccess");
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#modalApproved").modal('hide');
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/credit-coordinator/fn_acceptInstallment.php',
+            type: 'POST',
+            data: {
+                ii_selectMonths: ii_selectMonths,
+                ii_downPayment: ii_downPayment,
+                ii_approvedDateSched: ii_approvedDateSched
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 401) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});

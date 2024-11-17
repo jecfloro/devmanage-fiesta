@@ -39,33 +39,33 @@ var KTUsersList = function () {
         const ii_search = document.querySelector('[data-kt-installment-table-filter="search"]');
 
         ii_reset.addEventListener('click', function (e) {
-            datatable.column(4).search("", true, false).draw();
+            datatable.search("").draw();
         });
 
         ii_filter.addEventListener('click', function (e) {
             
             if (ii_select.value == "ALL") {
-                datatable.column(4).search("", true, false).draw();
+                datatable.search("").draw();
             }
 
             if (ii_select.value == "APPROVED") {
-                datatable.column(4).search('^APPROVED$', true, false).draw();
+                datatable.search('APPROVED').draw();
             }
 
             if (ii_select.value == "PENDING") {
-                datatable.column(4).search('^PENDING$', true, false).draw();
+                datatable.search('PENDING').draw();
             }
 
             if (ii_select.value == "REJECTED") {
-                datatable.column(4).search('^REJECTED$', true, false).draw();
+                datatable.search('REJECTED').draw();
             }
 
             if (ii_select.value == "CANCELLED") {
-                datatable.column(4).search('^CANCELLED$', true, false).draw();
+                datatable.search('CANCELLED').draw();
             }
 
             if (ii_select.value == "COMPLETED") {
-                datatable.column(4).search('^COMPLETED$', true, false).draw();
+                datatable.search('COMPLETED').draw();
             }
 
         });

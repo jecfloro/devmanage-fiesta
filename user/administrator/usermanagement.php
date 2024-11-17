@@ -356,7 +356,7 @@ try {
                                                                             <span class="badge bg-secondary text-dark">Credit Coordinator</span>
                                                                         <?php } ?>
                                                                         <?php if ($ruser["isCashier"] == 1) { ?>
-                                                                            <span class="badge bg-secondary text-dark">Credit Coordinator</span>
+                                                                            <span class="badge bg-secondary text-dark">Cashier</span>
                                                                         <?php } ?>
                                                                     </td>
                                                                     <td>
