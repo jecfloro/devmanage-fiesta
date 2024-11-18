@@ -87,8 +87,16 @@ $('#ii_amount').on('keyup', function () {
 $("[data-modal-select='addPayment']").click(function (e) {
 
     e.preventDefault();
-
+    
+    var ii_receiptno = $("#ii_receiptno").val().trim();
     var ii_amount = $("#ii_amount").val().trim();
+    var ii_chkboxPayment = 0;
+
+    if ($('#ii_chkboxPayment').is(':checked')) {
+        ii_chkboxPayment = 1
+    } else {
+        ii_chkboxPayment = 0
+    }
 
     if (ii_amount == "") {
         sweetAlertError("Please fill the amount");
@@ -116,7 +124,9 @@ $("[data-modal-select='addPayment']").click(function (e) {
                 url: '../../app/functions/cashier/fn_addPayment.php',
                 type: 'POST',
                 data: {
-                    ii_amount: ii_amount
+                    ii_receiptno: ii_receiptno,
+                    ii_amount: ii_amount,
+                    ii_chkboxPayment: ii_chkboxPayment
                 },
                 cache: false,
                 success: function (response) {

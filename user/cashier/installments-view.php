@@ -292,35 +292,6 @@ try {
                                                 <h3 class="fw-bolder"><?php echo $rinstallments["productName"] ?></h3>
                                                 <span>#<?php echo $rinstallments["installmentCode"] ?></span>
                                             </div>
-                                            <div class="">
-                                                <?php if ($rinstallments["installmentStatus"] != "APPROVED" && $rinstallments["installmentStatus"] != "COMPLETED") { ?>
-                                                    <?php if ($rinstallments["installmentStatus"] != "REJECTED" && $rinstallments["installmentStatus"] != "CANCELLED") { ?>
-                                                        <div class="card-toolbar">
-                                                            <button type="button" class="btn btn-clean btn-sm btn-icon btn-icon-primary btn-active-light-primary me-n3 menu-dropdown" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                                                <i class="ki-duotone ki-dots-square-vertical fs-2 text-primary"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i> </button>
-                                                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
-                                                                <div class="menu-item px-3">
-                                                                    <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions</div>
-                                                                </div>
-                                                                <div class="separator mb-3 opacity-75"></div>
-                                                                <?php if ($rinstallments["installmentStatus"] == "PENDING") { ?>
-                                                                    <div class="menu-item px-3" data-modal-select="Approve">
-                                                                        <span class="menu-link px-3">
-                                                                            Approve
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="menu-item px-3" data-modal-select="Reject">
-                                                                        <span class="menu-link px-3">
-                                                                            Reject
-                                                                        </span>
-                                                                    </div>
-                                                                <?php } ?>
-                                                                <div class="separator mt-3 opacity-75"></div>
-                                                            </div>
-                                                        </div>
-                                                    <?php } ?>
-                                                <?php } ?>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -612,8 +583,22 @@ try {
                             </div>
 
                             <div class="modal-body">
-                                <label for="" class="fw-bolder">Amount</label>
-                                <input type="text" class="form-control form-control-solid" id="ii_amount" value="0.00">
+                                <div class="">
+                                    <label for="" class="fw-bolder">Receipt Number</label>
+                                    <input type="text" class="form-control form-control-solid" id="ii_receiptno">
+                                </div>
+                                <div class="mt-5">
+                                    <label for="" class="fw-bolder">Amount</label>
+                                    <input type="text" class="form-control form-control-solid" id="ii_amount" value="0.00">
+                                </div>
+                                <div class="mt-5">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="1" id="ii_chkboxPayment" />
+                                        <label class="form-check-label" for="ii_chkboxPayment">
+                                            Full Payment
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="modal-footer">
