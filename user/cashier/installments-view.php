@@ -40,11 +40,11 @@ try {
     $rinstallments = $installments->fetch(PDO::FETCH_ASSOC);
 
     if ($iid == "") {
-        header("Location: installments.php");
+        header("Location: customer.php");
     }
 
     if ($cinstallments == 0) {
-        header("Location: installments.php");
+        header("Location: customer.php");
     }
 
     $attachments = $conn->prepare("SELECT * FROM mm_attachments WHERE FK_mn_installments = '$iid'");
@@ -63,6 +63,34 @@ try {
     $locationlist->execute();
     $clocationlist = $locationlist->rowCount();
     $rlocationlist = $locationlist->fetch(PDO::FETCH_ASSOC);
+
+    // For calculating remaining balance
+
+    $schedulebal = $conn->prepare("SELECT * FROM mm_schedule WHERE FK_mn_installments = '$iid' AND FK_appsysUsers = '$uid' AND STATUS IS NULL OR STATUS = 'BALANCE' ORDER BY `order` ASC");
+    $schedulebal->execute();
+    $cschedulebal = $schedulebal->rowCount();
+    $rschedulebal = $schedulebal->fetchAll(PDO::FETCH_ASSOC);
+
+    $remaining = 0;
+    $actualbalance = 0;
+    $finalremaining = 0;
+
+    for ($aa = 0; $aa < count($rschedulebal); $aa++) {
+
+        if ($rschedulebal[$aa]["status"] == "BALANCE") {
+            $remaining = $remaining + $rschedulebal[$aa]["remaining"];
+        }
+
+        if ($rschedulebal[$aa]["status"] == "") {
+            $actualbalance = $actualbalance + $rschedulebal[$aa]["amount"];
+        }
+    }
+
+    $finalremaining = $actualbalance + $remaining;
+
+    $payments = $conn->prepare("SELECT * FROM mm_payments WHERE FK_appsysUsers = '$uid' AND FK_mn_installments = '$iid'");
+    $payments->execute();
+    $cpayments = $payments->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -422,7 +450,7 @@ try {
                                                             <?php
 
                                                             $deduct = $rinstallments["productPrice"] - $rinstallments["productDownpayment"];
-                                                            $installment = $deduct / $rinstallments["approvedMonths"];
+                                                            $installment = round($deduct / $rinstallments["approvedMonths"]);
                                                             $multiply = $installment * $rinstallments["approvedMonths"];
 
                                                             ?>
@@ -430,7 +458,7 @@ try {
                                                         </tr>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Remaining</td>
-                                                            <td class="fw-bolder">₱ <?php echo number_format($multiply, 2); ?></td>
+                                                            <td class="fw-bolder">₱ <?php echo number_format($finalremaining, 2); ?></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -489,17 +517,15 @@ try {
                                                             <?php
 
                                                             $deduct = $rinstallments["productPrice"] - $rinstallments["productDownpayment"];
-                                                            $installment = $deduct / $rinstallments["approvedMonths"];
+                                                            $installment = round($deduct / $rinstallments["approvedMonths"]);
                                                             $multiply = $installment * $rinstallments["approvedMonths"];
 
-                                                            ?>
-                                                            <td class="fw-bolder">₱ <?php echo number_format($installment, 2); ?> x <?php echo $rinstallments["approvedMonths"]; ?></td>
                                                             ?>
                                                             <td class="fw-bolder">₱ <?php echo number_format($installment, 2); ?> x <?php echo $rinstallments["approvedMonths"]; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bg-light text-nowrap">Remaining</td>
-                                                            <td class="fw-bolder">₱ <?php echo number_format($multiply, 2); ?></td>
+                                                            <td class="fw-bolder">₱ <?php echo number_format($finalremaining, 2); ?></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -514,24 +540,50 @@ try {
                                                 <div class="card-title m-0">
                                                     <h3 class="fw-bold m-0">Payment Schedule</h3>
                                                 </div>
-                                                <div class=""><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalPayment">Add Payment</button></div>
+                                                <?php if ($rinstallments["installmentStatus"] != "COMPLETED") { ?>
+                                                    <div class=""><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalPayment">Add Payment</button></div>
+                                                <?php } ?>
                                             </div>
                                             <div class="card-body d-flex justify-content-end flex-wrap">
-                                                <table class="table table-bordered rounded">
+                                                <table class="table table-bordered rounded table-hover">
                                                     <thead>
-                                                        <tr>
+                                                        <tr class="bg-secondary">
                                                             <th>Date</th>
                                                             <th>Amount</th>
                                                             <th>Status</th>
-                                                            <th>Evaluation</th>
                                                         </tr>
                                                     </thead>
                                                     <?php while ($rschedule = $schedule->fetch(PDO::FETCH_ASSOC)) { ?>
                                                         <tr>
                                                             <td><?php echo date("M d, Y", strtotime($rschedule["dateSchedule"])) ?></td>
-                                                            <td><?php echo $rschedule["amount"]; ?></td>
-                                                            <td>-</td>
-                                                            <td>-</td>
+                                                            <td>
+                                                                <?php if ($rschedule["status"] == "BALANCE") { ?>
+                                                                    <?php echo $rschedule["remaining"]; ?>
+                                                                <?php } else { ?>
+                                                                    <?php echo $rschedule["amount"]; ?>
+                                                                <?php } ?>
+                                                            </td>
+                                                            <td>
+                                                                <div class="d-flex gap-3 align-items-center">
+                                                                    <?php if ($rschedule["status"] == "FULL") { ?>
+                                                                        <?php if ($rschedule["evaluation"] == "PAID") { ?>
+                                                                            <span><?php echo $rschedule["evaluation"]; ?></span>
+                                                                            <i class="ki-duotone ki-check-circle fs-3 text-primary">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                        <?php } ?>
+                                                                        <?php if ($rschedule["evaluation"] == "LATE") { ?>
+                                                                            <span><?php echo $rschedule["evaluation"]; ?></span>
+                                                                            <i class="ki-duotone ki-cross-circle fs-3 text-danger">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                        <?php } ?>
+                                                                    <?php } ?>
+                                                                </div>
+
+                                                            </td>
                                                         </tr>
                                                     <?php } ?>
                                                 </table>
@@ -546,7 +598,20 @@ try {
                                                 </div>
                                             </div>
                                             <div class="card-body d-flex justify-content-end flex-wrap">
-
+                                                <?php if ($cpayments > 0) { ?>
+                                                    <?php while ($rpayments = $payments->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                        <div class="mb-5 border rounded col-12 p-3 bg-hover-secondary">
+                                                            <div class="d-flex justify-content-between">
+                                                                <span class="fw-bolder">Receipt No. #<?php echo $rpayments["receiptNo"]; ?></span>
+                                                                <span class="fw-bolder"><?php echo date("F d, Y h:i A", strtotime($rpayments["processDate"])); ?></span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <span class="">Amount Paid:</span>
+                                                                <span class="">₱ <?php echo number_format($rpayments["amount"], 2); ?></span>
+                                                            </div>
+                                                        </div>
+                                                    <?php } ?>
+                                                <?php } ?>
                                             </div>
                                         </div>
                                     </div>
@@ -592,6 +657,13 @@ try {
                                     <input type="text" class="form-control form-control-solid" id="ii_amount" value="0.00">
                                 </div>
                                 <div class="mt-5">
+                                    <label for="" class="fw-bolder">Remaining</label>
+                                    <div class="h4 mt-2">
+                                        <span><?php echo number_format($finalremaining, 2); ?></span>
+                                    </div>
+                                    <input type="text" class="form-control form-control-solid" id="ii_remaining" value="<?php echo $finalremaining; ?>" hidden>
+                                </div>
+                                <div class="mt-5" hidden>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="1" id="ii_chkboxPayment" />
                                         <label class="form-check-label" for="ii_chkboxPayment">

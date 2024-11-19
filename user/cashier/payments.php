@@ -2,7 +2,7 @@
 
 include '../../app/connection/MYSQLSERVER.php';
 include '../../app/sessions/AuthSession.php';
-include '../../app/sessions/CustomerSession.php';
+include '../../app/sessions/CashierSession.php';
 require '../../app/setting/AESCLASS.php';
 
 date_default_timezone_set("Asia/Manila");
@@ -27,11 +27,7 @@ try {
         $email = $ruserprofile["user_email"];
     }
 
-    if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
-        header("Location: /");
-    }
-
-    $payments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts WHERE a.FK_appsysUsers = '$usercode'");
+    $payments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts");
     $payments->execute();
     $cpayments = $payments->rowCount();
 
@@ -238,7 +234,7 @@ try {
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Customer
+                                        Cashier
                                     </li>
                                     <li class="breadcrumb-item text-dark">
                                         <a href="payments.php" class="text-dark">Payments</a>
@@ -279,8 +275,10 @@ try {
                                                 <thead>
                                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                                                         <th>Receipt No</th>
+                                                        <th>Fullname</th>
                                                         <th>Product</th>
                                                         <th>Amount</th>
+                                                        <th>Cashier</th>
                                                         <th>Date</th>
                                                     </tr>
                                                 </thead>
@@ -289,8 +287,10 @@ try {
                                                         <?php while ($rpayments = $payments->fetch(PDO::FETCH_ASSOC)) { ?>
                                                             <tr>
                                                                 <td><?php echo $rpayments["receiptNo"]; ?></td>
+                                                                <td><?php echo $rpayments["CustomerFullName"]; ?></td>
                                                                 <td><?php echo $rpayments["productName"]; ?></td>
                                                                 <td><?php echo $rpayments["amount"]; ?></td>
+                                                                <td><?php echo $rpayments["CashierFullName"]; ?></td>
                                                                 <td><?php echo date("F d, Y h:i A", strtotime($rpayments["processDate"])); ?></td>
                                                             </tr>
                                                         <?php } ?>

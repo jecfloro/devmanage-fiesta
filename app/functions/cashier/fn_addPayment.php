@@ -11,6 +11,7 @@ $todaysDate = date("Y-m-d H:i:s");
 
 $usercode = $_SESSION['session_usercode'];
 $ii_receiptno = $_POST["ii_receiptno"];
+$temp_amount = $_POST["ii_amount"];
 $ii_amount = $_POST["ii_amount"];
 $ii_chkboxPayment = $_POST["ii_chkboxPayment"];
 $tempiid = $_SESSION["tempiid"];
@@ -72,12 +73,29 @@ try {
         }
     }
 
-    $payment = $conn->prepare("INSERT INTO mm_payments (receiptNo, amount, processBy, processDate, FK_mn_installments, FK_appsysUsers) VALUES ('$ii_receiptno', '$ii_amount', '$usercode', '$todaysDate', '$tempiid', '$tempuid')");
+    $payment = $conn->prepare("INSERT INTO mm_payments (receiptNo, amount, processBy, processDate, FK_mn_installments, FK_appsysUsers) VALUES ('$ii_receiptno', '$temp_amount', '$usercode', '$todaysDate', '$tempiid', '$tempuid')");
     $payment->execute();
     $cpayment = $payment->rowCount();
 
     if ($cpayment > 0) {
-        $response = array('status' => 200, 'message' => "Paymnent Processed!");
+        
+        // verify if fully paid all schedules
+
+        $schedulefull = $conn->prepare("SELECT * FROM mm_schedule WHERE FK_mn_installments = '$tempiid' AND FK_appsysUsers = '$tempuid' AND STATUS = 'FULL' ORDER BY `order` ASC");
+        $schedulefull->execute();
+        $cschedulefull = $schedulefull->rowCount();
+
+        $installments = $conn->prepare("SELECT * FROM mn_installments JOIN msc_products ON mn_installments.FK_mscProducts = msc_products.PK_mscProducts JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories WHERE FK_appsysUsers = '$tempuid' AND PK_mn_installments = '$tempiid'");
+        $installments->execute();
+        $cinstallments = $installments->rowCount();
+        $rinstallments = $installments->fetch(PDO::FETCH_ASSOC);
+
+        if ($cschedulefull == $rinstallments["approvedMonths"]) {
+            $update = $conn->prepare("UPDATE mn_installments SET `completedDate` = '$date', `installmentStatus` = 'COMPLETED' WHERE FK_appsysUsers = '$tempuid' AND PK_mn_installments = '$tempiid'");
+            $update->execute();
+        }
+
+        $response = array('status' => 200, 'message' => "Payment Processed!");
         echo json_encode($response);
     } else {
         $response = array('status' => 500, 'message' => "Server Error, Please contact administrator!");

@@ -2,7 +2,7 @@
 
 include '../../app/connection/MYSQLSERVER.php';
 include '../../app/sessions/AuthSession.php';
-include '../../app/sessions/CustomerSession.php';
+include '../../app/sessions/CreditInvestigator.php';
 require '../../app/setting/AESCLASS.php';
 
 date_default_timezone_set("Asia/Manila");
@@ -27,14 +27,24 @@ try {
         $email = $ruserprofile["user_email"];
     }
 
-    if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
-        header("Location: /");
+    $uid = $_GET["uid"];
+
+    $user = $conn->prepare("SELECT * FROM appsysusers WHERE isCustomer = 1 AND PK_appsysUsers = '$uid'");
+    $user->execute();
+    $cuser = $user->rowCount();
+    $ruser = $user->fetch(PDO::FETCH_ASSOC);
+
+    if ($uid == "") {
+        header("Location: customer.php");
     }
 
-    $payments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts WHERE a.FK_appsysUsers = '$usercode'");
-    $payments->execute();
-    $cpayments = $payments->rowCount();
+    if ($cuser == 0) {
+        header("Location: customer.php");
+    }
 
+    $locationlist = $conn->prepare("SELECT * FROM mm_location WHERE FK_appsysUsers = '$uid'");
+    $locationlist->execute();
+    $clocationlist = $locationlist->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -238,10 +248,17 @@ try {
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Customer
+                                        Credit Investigator
                                     </li>
                                     <li class="breadcrumb-item text-dark">
-                                        <a href="payments.php" class="text-dark">Payments</a>
+                                        <a href="customer.php" class="text-dark">Customer</a>
+                                    </li>
+                                    <li class="breadcrumb-item text-dark">
+                                        <?php if ($ruser["userFullName"] != "") { ?>
+                                            <?php echo $ruser["userFullName"]; ?>
+                                        <?php } else { ?>
+                                            PROFILE NOT SET
+                                        <?php } ?>
                                     </li>
                                 </ul>
                             </div>
@@ -252,46 +269,177 @@ try {
                     </div>
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <div class="container-fluid">
-                            <div class="row g-xl-12">
-                                <div class="col-xl-12">
+                            <div class="row g-5">
+                                <div class="col-xl-12 order-lg-0">
                                     <div class="card">
-                                        <div class="card-header border-0 pt-6">
-                                            <div class="card-title">
-                                                <div class="d-flex align-items-center position-relative my-1">
-                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-payments-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search Receipt No" />
-                                                </div>
-                                            </div>
-                                            <div class="card-toolbar">
-                                                <!-- Search -->
-                                                <div class="d-flex justify-content-end gap-3 flex-wrap">
-                                                    <a href="" class="btn btn-secondary d-flex align-items-center">
-                                                        <i class="ki-duotone ki-arrow-circle-right fs-2">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                        </i>
-                                                        <span>Refresh</span>
-                                                    </a>
-                                                </div>
+                                        <div class="card-header cursor-pointer">
+                                            <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                <h3 class="fw-bolder m-0">APPLICANT DETAILS</h3>
                                             </div>
                                         </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">LAST NAME</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userLastname"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">FIRST NAME</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userFirstName"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">MIDDLE NAME</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userMiddleName"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">NICKNAME</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userNickName"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">GENDER</span>
+                                                            <span class="fw-bolder fs-4">
+                                                                <?php if ($ruser["userGender"] == 1) { ?>
+                                                                    FEMALE
+                                                                <?php } else { ?>
+                                                                    MALE
+                                                                <?php }  ?>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">CIVIL STATUS</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userCivilStatus"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">NATIONALITY</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userNationality"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">AGE</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userAge"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">DATE OF BIRTH</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userDateofBirth"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">PLACE OF BIRTH</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userPlaceofBirth"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">CONTACT NUMBER</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userContactNumber"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">ADDRESS</span>
+                                                            <span class="fw-bolder fs-4"><?php echo $ruser["userAddress"] . ", " . $ruser["userBarangay"] . ", " . $ruser["userCity"] . ", " . $ruser["userProvince"] ?></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-12">
+                                    <div class="card">
+                                        <div class="card-header border-0 pt-6 d-flex justify-content-between align-items-center">
+                                            <div class="card-title">
+                                                <div class="d-flex align-items-center position-relative my-1">
+                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span
+                                                            class="path1"></span><span class="path2"></span></i> <input
+                                                        type="text" data-kt-location-table-filter="search"
+                                                        class="form-control form-control-solid w-250px ps-13"
+                                                        placeholder="Search" />
+                                                </div>
+                                            </div>
+                                            <a href="customer-location.php?uid=<?php echo $uid; ?>" class="btn btn-primary">Add Location</a>
+                                        </div>
                                         <div class="card-body py-4">
-                                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_payments">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5"
+                                                id="tb_location">
                                                 <thead>
                                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                                        <th>Receipt No</th>
-                                                        <th>Product</th>
-                                                        <th>Amount</th>
-                                                        <th>Date</th>
+                                                        <th class="w-25">Address</th>
+                                                        <th class="w-25">Date Added</th>
+                                                        <th class="w-25">Status</th>
+                                                        <th class=""></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-gray-600 fw-semibold">
-                                                    <?php if ($cpayments > 0) { ?>
-                                                        <?php while ($rpayments = $payments->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                    <?php if ($clocationlist > 0) { ?>
+                                                        <?php while ($rlocationlist = $locationlist->fetch(PDO::FETCH_ASSOC)) { ?>
                                                             <tr>
-                                                                <td><?php echo $rpayments["receiptNo"]; ?></td>
-                                                                <td><?php echo $rpayments["productName"]; ?></td>
-                                                                <td><?php echo $rpayments["amount"]; ?></td>
-                                                                <td><?php echo date("F d, Y h:i A", strtotime($rpayments["processDate"])); ?></td>
+                                                                <td><?php echo $rlocationlist["addressNoteDescription"] ?></td>
+                                                                <td><?php echo date("F d, Y h:i A", strtotime($rlocationlist["dateAdded"])) ?></td>
+                                                                <td>
+                                                                    <span class="badge badge-primary fw-bolder">
+                                                                        <?php if ($rlocationlist["isDefault"] == 1) { ?>
+                                                                            Active
+                                                                        <?php } else { ?>
+                                                                            Inactive
+                                                                        <?php } ?>
+                                                                    </span>
+                                                                </td>
+                                                                <td class="text-end datainput">
+                                                                    <div class="d-flex justify-content-end gap-2">
+                                                                        <a href="location-view.php?uid=<?php echo $rlocationlist["FK_appsysUsers"]; ?>&lid=<?php echo $rlocationlist["PK_mm_location"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3"
+                                                                            data-ii-val="<?php echo $rinstallments["PK_mn_installments"]; ?>"
+                                                                            data-ii-input-action="view">
+                                                                            <i class="ki-duotone ki-right-square fs-2x">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                        </a>
+                                                                        <span class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii="<?php echo $rlocationlist["FK_appsysUsers"]; ?>" data-location="<?php echo $rlocationlist["PK_mm_location"]; ?>" data-ii-input-delete-action="delete">
+                                                                            <i class="ki-duotone ki-trash fs-2x">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                                <span class="path3"></span>
+                                                                                <span class="path4"></span>
+                                                                                <span class="path5"></span>
+                                                                            </i>
+                                                                        </span>
+                                                                        <span class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii="<?php echo $rlocationlist["FK_appsysUsers"]; ?>" data-location="<?php echo $rlocationlist["PK_mm_location"]; ?>" data-ii-input-active-action="active">
+                                                                            <i class="ki-duotone ki-check-square fs-2x">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                        </span>
+                                                                    </div>
+                                                                </td>
                                                             </tr>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -316,6 +464,61 @@ try {
                         </div>
                     </div>
                 </div>
+                <?php include './authsetting.php'; ?>
+                <!-- Modals -->
+                <div class="modal fade" tabindex="-1" id="modalDelete">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Delete Location</h3>
+
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+
+                            <div class="modal-body text-center">
+                                <input type="text" class="form-control form-control-solid" id="ii_datauser" hidden>
+                                <input type="text" class="form-control form-control-solid" id="ii_datalocation" hidden>
+                                <p class="h2">Deleting location will result to untrackable address of the customer</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-location="deleteLocation" data-passaccess="deleteLocation">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" tabindex="-1" id="modalDefault">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Default Location</h3>
+
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+
+                            <div class="modal-body text-center">
+                                <input type="text" class="form-control form-control-solid" id="ii_datauserdefault" hidden>
+                                <input type="text" class="form-control form-control-solid" id="ii_datalocationdefault" hidden>
+                                <p class="h2">Confirm location as default?</p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-location="defaultLocation" data-passaccess="defaultLocation">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modals -->
             </div>
         </div>
     </div>
@@ -328,7 +531,8 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
-    <script src="../../assets/js/datatables/tb-payments.js"></script>
+    <script src="../../assets/js/datatables/tb-location.js"></script>
+    <script type="module" src="../../app/js/main.creditInvestigator.js"></script>
 </body>
 
 </html>

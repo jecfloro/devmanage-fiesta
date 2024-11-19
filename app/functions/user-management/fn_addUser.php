@@ -217,7 +217,7 @@ try {
 
         $mail->send();
 
-        $insert = $conn->prepare("INSERT INTO `appsysusers` (user_email, user_password, isCustomer, user_recoveryCode, user_activationCode, user_secret) VALUES ('$user_email', '$ii_password', 1, '$recoveryCode', '$activationCode', '$secret')");
+        $insert = $conn->prepare("INSERT INTO `appsysusers` (user_email, user_password, $isUserType, user_recoveryCode, user_activationCode, user_secret) VALUES ('$ii_emailaddress', '$ii_password', 1, '$recoveryCode', '$activationCode', '$secret')");
         $insert->execute();
         $cinsert = $insert->rowCount();
 

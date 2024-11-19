@@ -27,6 +27,9 @@ try {
         $email = $ruserprofile["user_email"];
     }
 
+    $payments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts");
+    $payments->execute();
+    $cpayments = $payments->rowCount();
     
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -246,20 +249,57 @@ try {
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <div class="container-fluid">
                             <div class="row g-xl-12">
-                                <?php if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) { ?>
-                                    <div class="col-xxl-12">
-                                        <div class="card mb-5 mb-xl-10" id="kt-container-homeownership">
-                                            <div class="card-header border-0 cursor-pointer">
-                                                <div class="card-title m-0 d-flex gap-3 align-items-center">
-                                                    <h3 class="fw-bold m-0">Update Profile</h3>
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-header border-0 pt-6">
+                                            <div class="card-title">
+                                                <div class="d-flex align-items-center position-relative my-1">
+                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-payments-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search Receipt No" />
                                                 </div>
                                             </div>
-                                            <div class="card-body border-top pt-9 pb-5">
-                                                <p>Complete <strong>Profile</strong> setup to browse products, click <a href="profile.php" class="text-primary">here</a> to go to profile.</p>
+                                            <div class="card-toolbar">
+                                                <!-- Search -->
+                                                <div class="d-flex justify-content-end gap-3 flex-wrap">
+                                                    <a href="" class="btn btn-secondary d-flex align-items-center">
+                                                        <i class="ki-duotone ki-arrow-circle-right fs-2">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        <span>Refresh</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="card-body py-4">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_payments">
+                                                <thead>
+                                                    <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                                        <th>Receipt No</th>
+                                                        <th>Fullname</th>
+                                                        <th>Product</th>
+                                                        <th>Amount</th>
+                                                        <th>Cashier</th>
+                                                        <th>Date</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-gray-600 fw-semibold">
+                                                    <?php if ($cpayments > 0) { ?>
+                                                        <?php while ($rpayments = $payments->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                            <tr>
+                                                                <td><?php echo $rpayments["receiptNo"]; ?></td>
+                                                                <td><?php echo $rpayments["CustomerFullName"]; ?></td>
+                                                                <td><?php echo $rpayments["productName"]; ?></td>
+                                                                <td><?php echo $rpayments["amount"]; ?></td>
+                                                                <td><?php echo $rpayments["CashierFullName"]; ?></td>
+                                                                <td><?php echo date("F d, Y h:i A", strtotime($rpayments["processDate"])); ?></td>
+                                                            </tr>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                <?php } ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -288,7 +328,7 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
-    <script type="module" src="../../app/js/main.creditCoordinator.js"></script>
+    <script src="../../assets/js/datatables/tb-payments.js"></script>
 </body>
 
 </html>

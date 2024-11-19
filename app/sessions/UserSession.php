@@ -18,6 +18,10 @@
 
         header("Location: ../../user/cashier/");
         
+    } else if ($_SESSION['isLoggedIn'] == 1 && $_SESSION['isDisabled'] == 0 && $_SESSION['isCreditInvestigator'] == 1) {
+
+        header("Location: ../../user/creditinvestigator/");
+        
     } else {
 
         $_SESSION['session_usercode'] = 0;

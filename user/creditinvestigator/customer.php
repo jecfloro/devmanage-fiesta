@@ -2,7 +2,7 @@
 
 include '../../app/connection/MYSQLSERVER.php';
 include '../../app/sessions/AuthSession.php';
-include '../../app/sessions/CustomerSession.php';
+include '../../app/sessions/CreditInvestigator.php';
 require '../../app/setting/AESCLASS.php';
 
 date_default_timezone_set("Asia/Manila");
@@ -27,13 +27,9 @@ try {
         $email = $ruserprofile["user_email"];
     }
 
-    if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
-        header("Location: /");
-    }
-
-    $payments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts WHERE a.FK_appsysUsers = '$usercode'");
-    $payments->execute();
-    $cpayments = $payments->rowCount();
+    $user = $conn->prepare("SELECT * FROM appsysusers WHERE isCustomer = 1");
+    $user->execute();
+    $cuser = $user->rowCount();
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -238,10 +234,10 @@ try {
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Customer
+                                        Credit Investigator
                                     </li>
                                     <li class="breadcrumb-item text-dark">
-                                        <a href="payments.php" class="text-dark">Payments</a>
+                                        <a href="customer.php" class="text-dark">Customer</a>
                                     </li>
                                 </ul>
                             </div>
@@ -258,7 +254,7 @@ try {
                                         <div class="card-header border-0 pt-6">
                                             <div class="card-title">
                                                 <div class="d-flex align-items-center position-relative my-1">
-                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-payments-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search Receipt No" />
+                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search User" />
                                                 </div>
                                             </div>
                                             <div class="card-toolbar">
@@ -275,23 +271,36 @@ try {
                                             </div>
                                         </div>
                                         <div class="card-body py-4">
-                                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_payments">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_customer">
                                                 <thead>
                                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                                        <th>Receipt No</th>
-                                                        <th>Product</th>
-                                                        <th>Amount</th>
-                                                        <th>Date</th>
+                                                        <th>Fullname</th>
+                                                        <th>Email</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-gray-600 fw-semibold">
-                                                    <?php if ($cpayments > 0) { ?>
-                                                        <?php while ($rpayments = $payments->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                    <?php if ($cuser > 0) { ?>
+                                                        <?php while ($ruser = $user->fetch(PDO::FETCH_ASSOC)) { ?>
                                                             <tr>
-                                                                <td><?php echo $rpayments["receiptNo"]; ?></td>
-                                                                <td><?php echo $rpayments["productName"]; ?></td>
-                                                                <td><?php echo $rpayments["amount"]; ?></td>
-                                                                <td><?php echo date("F d, Y h:i A", strtotime($rpayments["processDate"])); ?></td>
+                                                                <td>
+                                                                    <?php if ($ruser["userFullName"] != "") { ?>
+                                                                        <?php echo $ruser["userFullName"]; ?>
+                                                                    <?php } else { ?>
+                                                                        PROFILE NOT SET
+                                                                    <?php } ?>
+                                                                </td>
+                                                                <td><?php echo $ruser["user_email"]; ?></td>
+                                                                <td class="text-end datainput">
+                                                                    <div class="d-flex justify-content-end gap-2">
+                                                                        <a href="customer-view.php?uid=<?php echo $ruser["PK_appsysUsers"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3">
+                                                                            <i class="ki-duotone ki-right-square fs-2x">
+                                                                                <span class="path1"></span>
+                                                                                <span class="path2"></span>
+                                                                            </i>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
                                                             </tr>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -328,7 +337,7 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
-    <script src="../../assets/js/datatables/tb-payments.js"></script>
+    <script src="../../assets/js/datatables/tb-customer.js"></script>
 </body>
 
 </html>

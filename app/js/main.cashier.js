@@ -90,7 +90,18 @@ $("[data-modal-select='addPayment']").click(function (e) {
     
     var ii_receiptno = $("#ii_receiptno").val().trim();
     var ii_amount = $("#ii_amount").val().trim();
+    let ii_remaining = $("#ii_remaining").val().trim();
     var ii_chkboxPayment = 0;
+
+    if (ii_receiptno == "") {
+        sweetAlertError("Please fill the receipt number");
+        return;
+    }
+
+    if (parseFloat(ii_amount) > parseFloat(ii_remaining)) {
+        sweetAlertError("Amount is greater than remaining balance!");
+        return;
+    }
 
     if ($('#ii_chkboxPayment').is(':checked')) {
         ii_chkboxPayment = 1
@@ -106,6 +117,7 @@ $("[data-modal-select='addPayment']").click(function (e) {
 
         if (ii_amount <= 0) {
             sweetAlertError("Please fill the amount");
+            return;
         }
 
         var setting = this.getAttribute("data-passaccess");

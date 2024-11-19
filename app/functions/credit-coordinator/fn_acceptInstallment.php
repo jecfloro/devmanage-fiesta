@@ -31,7 +31,7 @@ try {
     $rinstallments = $installments->fetch(PDO::FETCH_ASSOC);
 
     $deduct = $rinstallments["productPrice"] - $rinstallments["productDownpayment"];
-    $installment = $deduct / $rinstallments["approvedMonths"];
+    $installment = round($deduct / $rinstallments["approvedMonths"]);
     $multiply = $installment * $rinstallments["approvedMonths"];
 
     if ($cupdate > 0) {
