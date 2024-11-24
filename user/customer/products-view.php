@@ -47,6 +47,10 @@ try {
     $cinstallments = $installments->rowCount();
     $rinstallments = $installments->fetch(PDO::FETCH_ASSOC);
 
+    $images = $conn->prepare("SELECT * FROM msc_images WHERE FK_mscProducts = '$prodid'");
+    $images->execute();
+    $cimages = $images->rowCount();
+    $rimages = $images->fetchall(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -274,24 +278,46 @@ try {
                                 <div class="col-xl-12">
                                     <div class="d-flex justify-content-center gap-10 flex-wrap">
                                         <div class="">
-                                            <a class="d-block overlay w-350px h-350px" data-fslightbox="lightbox-basic" href="../../assets/media/images/output.png">
-                                                <!--begin::Image-->
-                                                <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-350px h-350px"
-                                                    style="background-image:url('../../assets/media/images/output.png')">
+                                            <?php if (count($rimages) > 0) { ?>
+                                                <a class="d-block overlay w-350px h-350px" data-fslightbox="lightbox-basic" href="../../uploads_images/<?php echo $rimages[0]["fileCode"]; ?>">
+                                                    <!--begin::Image-->
+                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-350px h-350px"
+                                                        style="background-image:url('../../uploads_images/<?php echo $rimages[0]["fileCode"]; ?>')">
+                                                    </div>
+                                                    <!--end::Image-->
+
+                                                    <!--begin::Action-->
+                                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
+                                                        <i class="bi bi-eye-fill text-white fs-3x"></i>
+                                                    </div>
+                                                    <!--end::Action-->
+                                                </a>
+                                                <div class="d-flex gap-3 mt-3 overflow-auto w-350px overflow-y-hidden">
+                                                    <?php for ($i = 0; $i < count($rimages); $i++) { ?>
+                                                        <?php if ($i == 0) { ?>
+
+                                                        <?php } else { ?>
+                                                            <a class="d-block overlay w-100px h-100px" data-fslightbox="lightbox-basic" href="../../uploads_images/<?php echo $rimages[$i]["fileCode"]; ?>">
+                                                                <!--begin::Image-->
+                                                                <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-100px h-100px"
+                                                                    style="background-image:url('../../uploads_images/<?php echo $rimages[$i]["fileCode"]; ?>')">
+                                                                </div>
+                                                                <!--end::Image-->
+
+                                                                <!--begin::Action-->
+                                                                <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
+                                                                    <i class="bi bi-eye-fill text-white fs-3x"></i>
+                                                                </div>
+                                                                <!--end::Action-->
+                                                            </a>
+                                                        <?php } ?>
+                                                    <?php } ?>
                                                 </div>
-                                                <!--end::Image-->
-
-                                                <!--begin::Action-->
-                                                <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
-                                                    <i class="bi bi-eye-fill text-white fs-3x"></i>
-                                                </div>
-                                                <!--end::Action-->
-                                            </a>
-                                            <div class="d-flex gap-3 mt-3 overflow-auto overflow-y-hidden">
-                                                <a class="d-block overlay w-100px h-100px" data-fslightbox="lightbox-basic" href="../../assets/media/images/output.png">
+                                            <?php } else { ?>
+                                                <a class="d-block overlay w-350px h-350px" data-fslightbox="lightbox-basic" href="../../assets/media/images/product.png">
                                                     <!--begin::Image-->
-                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-100px h-100px"
-                                                        style="background-image:url('../../assets/media/images/output.png')">
+                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-350px h-350px"
+                                                        style="background-image:url('../../assets/media/images/product.png')">
                                                     </div>
                                                     <!--end::Image-->
 
@@ -301,33 +327,7 @@ try {
                                                     </div>
                                                     <!--end::Action-->
                                                 </a>
-                                                <a class="d-block overlay w-100px h-100px" data-fslightbox="lightbox-basic" href="../../assets/media/images/output.png">
-                                                    <!--begin::Image-->
-                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-100px h-100px"
-                                                        style="background-image:url('../../assets/media/images/output.png')">
-                                                    </div>
-                                                    <!--end::Image-->
-
-                                                    <!--begin::Action-->
-                                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
-                                                        <i class="bi bi-eye-fill text-white fs-3x"></i>
-                                                    </div>
-                                                    <!--end::Action-->
-                                                </a>
-                                                <a class="d-block overlay w-100px h-100px" data-fslightbox="lightbox-basic" href="../../assets/media/images/output.png">
-                                                    <!--begin::Image-->
-                                                    <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded w-100px h-100px"
-                                                        style="background-image:url('../../assets/media/images/output.png')">
-                                                    </div>
-                                                    <!--end::Image-->
-
-                                                    <!--begin::Action-->
-                                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
-                                                        <i class="bi bi-eye-fill text-white fs-3x"></i>
-                                                    </div>
-                                                    <!--end::Action-->
-                                                </a>
-                                            </div>
+                                            <?php } ?>
                                         </div>
                                         <div class="d-flex flex-column align-items-xl-start align-items-custom">
                                             <h1 class="fw-bolder fs-2x"><?php echo $rproduct["productName"]; ?></h1>
@@ -358,7 +358,7 @@ try {
                                                         <?php } else { ?>
                                                             <button class="btn btn-darkgreen" data-ii-applyinstallment-modal-action="apply" data-passaccess="applyinstallment">Apply for Installment</button>
                                                         <?php } ?>
-                                                            
+
                                                     <?php } ?>
                                                 </div>
                                             </div>

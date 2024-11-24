@@ -50,6 +50,11 @@ try {
         $cproductdetails = $productdetails->rowCount();
         $rproductdetails = $productdetails->fetchall(PDO::FETCH_ASSOC);
 
+        $productimages = $conn->prepare("SELECT `PK_mscUploads` AS `imagesid`, `fileCode` FROM msc_images WHERE FK_mscProducts = '$ProductID' ORDER BY `PK_mscUploads` ASC");
+        $productimages->execute();
+        $cproductimages = $productimages->rowCount();
+        $rproductimages = $productimages->fetchall(PDO::FETCH_ASSOC);
+
         $response = array('status' => 200, 
             'productname' => $productname,
             'productunit' => $productunit,
@@ -69,7 +74,8 @@ try {
             'productissale' => $productissale,
             'productisrepo' => $productisrepo,
             'productstatus' => $productstatus,
-            'productdetails' => $rproductdetails
+            'productdetails' => $rproductdetails,
+            'productimages' => $rproductimages,
         );
         echo json_encode($response);
         

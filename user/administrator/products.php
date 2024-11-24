@@ -916,6 +916,19 @@ try {
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="col-xl-12">
+                                                <div class="mt-10 border p-3 rounded">
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <button class="btn btn-primary btn-sm w-100" id="btnUpload">Upload Image</button>
+                                                    </div>
+                                                    <input type="file" class="form-control" id="upldFile" accept="image/*" multiple hidden>
+                                                </div>
+                                                <div class="mt-3 border row p-3 rounded d-none" id="uploadTempContainer">
+                                                </div>
+                                                <div class="mt-3 border row p-3 rounded" id="uploadContainer">
+                                                    
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1080,6 +1093,7 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
+    <script src="../../assets/plugins/custom/fslightbox/fslightbox.bundle.js"></script>
     <script src="../../assets/js/datatables/tb-products.js"></script>
     <script type="module" src="../../app/js/main.product.js"></script>
 </body>

@@ -479,11 +479,11 @@ $("[data-add-product-details='add']").click(function (e) {
 
     var randomCode = stringGen();
 
-    $(".ii_productdetailscontainer").append("<div class='row mb-5 g-3 pd_item' data-count='"+randomCode+"'><div class='col-xl-6'><input type='text' id='ii_pdetails1_"+randomCode+"' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Description Title'></div><div class='col-xl-6 d-flex gap-3 dataInput'><input type='text' id='ii_pdetails2_"+randomCode+"' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Details'><div class='d-flex justify-content-end align-items-center' data-input-delete='delete' data-del='"+randomCode+"'><span class='btn btn-light'>delete</span></div></div></div>");
+    $(".ii_productdetailscontainer").append("<div class='row mb-5 g-3 pd_item' data-count='" + randomCode + "'><div class='col-xl-6'><input type='text' id='ii_pdetails1_" + randomCode + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Description Title'></div><div class='col-xl-6 d-flex gap-3 dataInput'><input type='text' id='ii_pdetails2_" + randomCode + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Details'><div class='d-flex justify-content-end align-items-center' data-input-delete='delete' data-del='" + randomCode + "'><span class='btn btn-light'>delete</span></div></div></div>");
 
 });
 
-$(document).on('click', ".dataInput [data-input-delete='delete']",function (e) {
+$(document).on('click', ".dataInput [data-input-delete='delete']", function (e) {
 
     e.preventDefault();
 
@@ -524,26 +524,26 @@ $("[data-ii-productadd-modal-action='submit']").click(function (e) {
     }
 
     let proddetailslen = $(".pd_item").length;
-    
+
     let errorCount = 0;
 
     var arrdetails = [];
 
     if (proddetailslen > 0) {
 
-        
+
         for (var i = 0; i < proddetailslen; i++) {
 
-            var input1 = $("#"+ $(".pd_item")[i]["children"][0]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
-            var input2 = $("#"+ $(".pd_item")[i]["children"][1]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
+            var input1 = $("#" + $(".pd_item")[i]["children"][0]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
+            var input2 = $("#" + $(".pd_item")[i]["children"][1]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
 
             if (input1 == "" || input2 == "") {
                 errorCount++;
                 break;
             }
 
-            arrdetails.push({"input1": input1, "input2": input2});
-            
+            arrdetails.push({ "input1": input1, "input2": input2 });
+
         }
 
     }
@@ -711,7 +711,7 @@ $(".datainput [data-ii-input-action='view']").click(function (e) {
         success: function (response) {
             var status = JSON.parse(response);
             if (status.status == 200) {
-                
+
                 $("#ii_productidedit").val(ProductID);
                 $("#ii_valProductName").text(status.productname);
                 $("#ii_valSKU").text(status.productsku);
@@ -727,10 +727,10 @@ $(".datainput [data-ii-input-action='view']").click(function (e) {
 
                 for (let aa = 0; aa < status.productdetails.length; aa++) {
 
-                    if(aa % 2 == 0) {
-                        $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center details-light p-3'><span class='fw-bolder'>"+ status.productdetails[aa]["title"] +"</span><span class=''>"+ status.productdetails[aa]["description"] +"</span></div>");
+                    if (aa % 2 == 0) {
+                        $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center details-light p-3'><span class='fw-bolder'>" + status.productdetails[aa]["title"] + "</span><span class=''>" + status.productdetails[aa]["description"] + "</span></div>");
                     } else {
-                        $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center p-3'><span class='fw-bolder'>"+ status.productdetails[aa]["title"] +"</span><span class=''>"+ status.productdetails[aa]["description"] +"</span></div>");
+                        $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center p-3'><span class='fw-bolder'>" + status.productdetails[aa]["title"] + "</span><span class=''>" + status.productdetails[aa]["description"] + "</span></div>");
                     }
 
 
@@ -766,7 +766,7 @@ $(".datainput [data-ii-input-action='view']").click(function (e) {
             sweetAlertError("Server Error, Please contact administrator!");
         }
     })
-    
+
     $("#kt_drawer_trigger").click();
 
 });
@@ -798,19 +798,19 @@ $("[data-edit-product-details='edit']").click(function (e) {
                 $("#select2-ii_productcategoryedit-container").text(status.productcategory);
                 $("#ii_productcategoryedit").val(status.productcid);
                 $("#ii_productdescriptionedit").val(status.productdescription);
-                
+
                 $("#ii_totalquantityedit").val(status.productquantity);
                 $("#ii_minstockedit").val(status.productstockminimum);
                 $("#ii_maxstockedit").val(status.productstockmaximum);
                 $("#ii_regularpriceedit").val(status.productregularprice);
                 $("#ii_salepriceedit").val(status.productsaleprice);
                 $("#ii_repopriceedit").val(status.productrepoprice);
-                
+
                 if (status.productisregular == 1) {
                     $("#select2-ii_productsettingedit-container").text("Regular");
                     $("#ii_productsettingedit").val("Regular");
                 }
-                
+
                 if (status.productisrepo == 1) {
                     $("#select2-ii_productsettingedit-container").text("Sale");
                     $("#ii_productsettingedit").val("Sale");
@@ -825,7 +825,7 @@ $("[data-edit-product-details='edit']").click(function (e) {
                     $("#select2-ii_productstatusedit-container").text("Active");
                     $("#ii_productstatusedit").val(status.productstatus);
                 }
-                
+
                 if (status.productstatus == "Inactive") {
                     $("#select2-ii_productstatusedit-container").text("Inactive");
                     $("#ii_productstatusedit").val(status.productstatus);
@@ -840,12 +840,18 @@ $("[data-edit-product-details='edit']").click(function (e) {
 
                 for (let aa = 0; aa < status.productdetails.length; aa++) {
 
-                    $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center details-light p-3'><span class='fw-bolder'>"+ status.productdetails[aa]["title"] +"</span><span class=''>"+ status.productdetails[aa]["description"] +"</span></div>");
+                    $("#ii_valStatusContainer").append("<div class='d-flex justify-content-between align-items-center details-light p-3'><span class='fw-bolder'>" + status.productdetails[aa]["title"] + "</span><span class=''>" + status.productdetails[aa]["description"] + "</span></div>");
 
-                    $(".ii_productdetailscontaineredit").append("<div class='row mb-5 g-3 pd_itemedit' data-count='"+status.productdetails[aa]["details"]+"'><div class='col-xl-6'><input type='text' id='ii_pdetails1_"+status.productdetails[aa]["details"]+"' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Description Title' value='"+ status.productdetails[aa]["title"] +"'></div><div class='col-xl-6 d-flex gap-3 dataInput'><input type='text' id='ii_pdetails2_"+status.productdetails[aa]["details"]+"' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Details' value='"+ status.productdetails[aa]["description"] +"'><div class='d-flex justify-content-end align-items-center' data-input-delete='delete' data-del='"+status.productdetails[aa]["details"]+"'><span class='btn btn-light'>delete</span></div></div></div>");
+                    $(".ii_productdetailscontaineredit").append("<div class='row mb-5 g-3 pd_itemedit' data-count='" + status.productdetails[aa]["details"] + "'><div class='col-xl-6'><input type='text' id='ii_pdetails1_" + status.productdetails[aa]["details"] + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Description Title' value='" + status.productdetails[aa]["title"] + "'></div><div class='col-xl-6 d-flex gap-3 dataInput'><input type='text' id='ii_pdetails2_" + status.productdetails[aa]["details"] + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Details' value='" + status.productdetails[aa]["description"] + "'><div class='d-flex justify-content-end align-items-center' data-input-delete='delete' data-del='" + status.productdetails[aa]["details"] + "'><span class='btn btn-light'>delete</span></div></div></div>");
 
                 }
-                
+
+                for (let bb = 0; bb < status.productimages.length; bb++) {
+
+                    $("#uploadContainer").append("<div class='col-xl-2 d-flex flex-column m-3 gap-2' style='max-width: 200px;'><img src='../../uploads_images/" + status.productimages[bb]["fileCode"] + "' alt='' id='image" + status.productimages[bb]["imagesid"] + "' width='100%' class='border rounded'><button class='btn btn-danger btn-sm' data-ii-input-action='delete' data-id=" + status.productimages[bb]["imagesid"] + ">Remove</button></div>")
+
+                }
+
             }
         },
         error: function (response) {
@@ -876,7 +882,7 @@ $("[data-addedit-product-details='add']").click(function (e) {
 
     var randomCode = stringGen();
 
-    $(".ii_productdetailscontaineredit").append("<div class='row mb-5 g-3 pd_itemedit' data-count='"+randomCode+"'><div class='col-xl-6'><input type='text' id='ii_pdetails1_"+randomCode+"' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Description Title'></div><div class='col-xl-6 d-flex gap-3 dataInput'><input type='text' id='ii_pdetails2_"+randomCode+"' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Details'><div class='d-flex justify-content-end align-items-center' data-input-delete='delete' data-del='"+randomCode+"'><span class='btn btn-light'>delete</span></div></div></div>");
+    $(".ii_productdetailscontaineredit").append("<div class='row mb-5 g-3 pd_itemedit' data-count='" + randomCode + "'><div class='col-xl-6'><input type='text' id='ii_pdetails1_" + randomCode + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Description Title'></div><div class='col-xl-6 d-flex gap-3 dataInput'><input type='text' id='ii_pdetails2_" + randomCode + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Details'><div class='d-flex justify-content-end align-items-center' data-input-delete='delete' data-del='" + randomCode + "'><span class='btn btn-light'>delete</span></div></div></div>");
 
 });
 
@@ -904,6 +910,14 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
     var ii_productsettingedit = $("#ii_productsettingedit").val();
     var ii_productstatusedit = $("#ii_productstatusedit").val();
 
+    var attachments = document.getElementById("upldFile").files;
+
+    var formData = new FormData();
+
+    for (var i = 0; i < attachments.length; i++) {
+        formData.append("files[]", attachments[i]);
+    }
+
     if ($("#chkbxReturnableedit").is(":checked")) {
         chkbxReturnable = 1;
     } else {
@@ -911,26 +925,26 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
     }
 
     let proddetailslen = $(".pd_itemedit").length;
-    
+
     let errorCount = 0;
 
     var arrdetails = [];
 
     if (proddetailslen > 0) {
 
-        
+
         for (var i = 0; i < proddetailslen; i++) {
 
-            var input1 = $("#"+ $(".pd_itemedit")[i]["children"][0]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
-            var input2 = $("#"+ $(".pd_itemedit")[i]["children"][1]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
+            var input1 = $("#" + $(".pd_itemedit")[i]["children"][0]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
+            var input2 = $("#" + $(".pd_itemedit")[i]["children"][1]["children"][0]["attributes"][1]["nodeValue"]).val().trim();
 
             if (input1 == "" || input2 == "") {
                 errorCount++;
                 break;
             }
 
-            arrdetails.push({"input1": input1, "input2": input2});
-            
+            arrdetails.push({ "input1": input1, "input2": input2 });
+
         }
 
     }
@@ -938,7 +952,7 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
     if (arrdetails.length == 0) {
 
         arrdetails = "null";
-        
+
     }
 
     if (errorCount > 0) {
@@ -1064,11 +1078,50 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
             success: function (response) {
                 var status = JSON.parse(response);
                 if (status.status == 200) {
-                    $("#modal_access").modal("hide");
-                    sweetAlertSuccess(status.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
+
+                    if (attachments.length > 0) {
+
+                        $.ajax({
+                            url: '../../app/functions/products/fn_uplfiles.php',
+                            type: 'POST',
+                            data: formData,
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function (response) {
+                                var status = JSON.parse(response);
+                                if (status.status == 200) {
+                                    $("#modal_access").modal("hide");
+                                    sweetAlertSuccess(status.message);
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000);
+                                }
+                                if (status.status == 401) {
+                                    sweetAlertError(status.message);
+                                }
+                                if (status.status == 403) {
+                                    sweetAlertError(status.message);
+                                }
+                                if (status.status == 500) {
+                                    sweetAlertError(status.message);
+                                }
+                            },
+                            error: function (response) {
+                                sweetAlertError("Server Error, Please contact administrator!");
+                            }
+                        })
+
+                    } else {
+
+                        $("#modal_access").modal("hide");
+                        sweetAlertSuccess(status.message);
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+                        
+                    }
+
                 }
                 if (status.status == 401) {
                     sweetAlertError(status.message);
@@ -1086,5 +1139,112 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
         })
 
     }
+
+});
+
+$("#btnUpload").click(function () {
+
+    $("#upldFile").click();
+
+});
+
+$("#upldFile").change(function (e) {
+
+    e.preventDefault();
+
+    var attachments = document.getElementById("upldFile").files;
+
+    $("#uploadTempContainer").empty();
+
+    $("#uploadTempContainer").removeClass("d-none");
+
+    for (var i = 0; i < attachments.length; i++) {
+
+        if (attachments[i].type == "image/jpeg" || attachments[i].type == "image/png" || attachments[i].type == "image/jpg") {
+
+            var reader = new FileReader();
+
+            reader.onload = event => {
+
+                $("#uploadTempContainer").append("<div class='col-xl-2 d-flex flex-column m-3 gap-2' style='max-width: 200px;'><img src='" + event.target.result + "' alt='' id='image" + [i] + "' width='100%' class='border rounded'><button class='btn btn-danger btn-sm' data-ii-input-action='remove' data-id=" + i + ">Remove</button></div>");
+
+            }
+            reader.readAsDataURL(attachments[i]);
+        }
+
+    }
+
+});
+
+$("#uploadTempContainer").on('click', "[data-ii-input-action='remove']", function () {
+
+    let dataid = parseInt(this.getAttribute('data-id'));
+
+    $(this).parent().remove();
+
+    removeFile(dataid);
+
+    var attachments = document.getElementById("upldFile").files;
+
+    var list = $("[data-ii-input-action='remove']");
+
+    for (var i = 0; i < list.length; i++) {
+
+        $(list[i]).attr("data-id", i);
+
+    }
+
+});
+
+function removeFile(index) {
+    var attachments = document.getElementById("upldFile").files; // <-- reference your file input here
+    var fileBuffer = new DataTransfer();
+
+    // append the file list to an array iteratively
+    for (let i = 0; i < attachments.length; i++) {
+
+        // Exclude file in specified index
+        if (index !== i) {
+            fileBuffer.items.add(attachments[i]);
+        }
+
+        // Assign buffer to file input
+        document.getElementById("upldFile").files = fileBuffer.files; // <-- according to your file input reference
+    }
+
+}
+
+$("#uploadContainer").on('click', "[data-ii-input-action='delete']", function () {
+
+    let dataid = parseInt(this.getAttribute('data-id'));
+
+    $.ajax({
+        url: '../../app/functions/products/fn_deleteImage.php',
+        type: 'POST',
+        data: {
+            dataid: dataid
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                
+            }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 403) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
+
+    $(this).parent().remove();
 
 });

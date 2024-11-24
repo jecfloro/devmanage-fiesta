@@ -30,6 +30,8 @@ $ii_productsettingedit = $_POST['ii_productsettingedit'];
 $ii_productstatusedit = $_POST['ii_productstatusedit'];
 $arrdetails = $_POST['arrdetails'];
 
+$_SESSION["tempproductid"] = $ii_productidedit;
+
 try {
     $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
