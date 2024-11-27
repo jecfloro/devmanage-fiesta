@@ -91,6 +91,12 @@ try {
     $payments = $conn->prepare("SELECT * FROM mm_payments WHERE FK_appsysUsers = '$uid' AND FK_mn_installments = '$iid'");
     $payments->execute();
     $cpayments = $payments->rowCount();
+
+    $paymentslist = $conn->prepare("SELECT SUM(daysInterval) AS totalDays FROM mm_payments WHERE FK_appsysUsers = '$uid' AND FK_mn_installments = '$iid'");
+    $paymentslist->execute();
+    $cpaymentslist = $paymentslist->rowCount();
+    $rpaymentslist = $paymentslist->fetch(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -591,6 +597,33 @@ try {
                                         </div>
                                     </div>
                                     <div class="col-xl-5">
+                                        <div class="card mb-5">
+                                            <div class="card-header">
+                                                <div class="card-title m-0">
+                                                    <h3 class="fw-bold m-0">Payment Details</h3>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Status</td>
+                                                            <td class="fw-bolder w-75">
+                                                                <?php if ($rpaymentslist["totalDays"] >= 90) { ?>
+                                                                    Delinquent
+                                                                <?php } else { ?>
+                                                                    Good
+                                                                <?php } ?>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bg-light text-nowrap">Days Late</td>
+                                                            <td class="fw-bolder w-75"><?php echo $rpaymentslist["totalDays"]; ?></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                         <div class="card">
                                             <div class="card-header">
                                                 <div class="card-title m-0">

@@ -30,7 +30,6 @@ try {
     $user = $conn->prepare("SELECT * FROM appsysusers WHERE isCustomer = 1");
     $user->execute();
     $cuser = $user->rowCount();
-
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -276,6 +275,7 @@ try {
                                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                                                         <th>Fullname</th>
                                                         <th>Email</th>
+                                                        <th>Approve Status</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -291,6 +291,21 @@ try {
                                                                     <?php } ?>
                                                                 </td>
                                                                 <td><?php echo $ruser["user_email"]; ?></td>
+                                                                <td>
+                                                                    <?php if ($ruser["isCiApproved"] == 1) { ?>
+                                                                        <?php if ($ruser["isCoordinatorApproved"] == 1) { ?>
+                                                                            <span class="badge badge-primary fw-bolder">Approved</span>
+                                                                        <?php } else if ($ruser["isCoordinatorApproved"] == 2) { ?>
+                                                                            <span class="badge badge-danger fw-bolder">Rejected</span>
+                                                                        <?php } else { ?>
+
+                                                                        <?php } ?>
+                                                                    <?php } else if ($ruser["isCiApproved"] == 2) { ?>
+                                                                        <span class="badge badge-danger fw-bolder">CI Approval Rejected</span>
+                                                                    <?php } else { ?>
+                                                                        <span class="badge badge-warning fw-bolder">Need CI Approval</span>
+                                                                    <?php } ?>
+                                                                </td>
                                                                 <td class="text-end datainput">
                                                                     <div class="d-flex justify-content-end gap-2">
                                                                         <a href="customer-view.php?uid=<?php echo $ruser["PK_appsysUsers"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3">

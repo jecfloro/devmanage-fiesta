@@ -36,6 +36,18 @@ try {
         $pkstatus = $rschedule[$i - 1]["status"];
         $numformat = round(floatval($rschedule[$i - 1]["amount"]));
 
+        function dateDiffInDays($date1, $date2) {
+  
+            // Calculating the difference in timestamps
+            $diff = strtotime($date2) - strtotime($date1);
+        
+            // 1 day = 24 hours
+            // 24 * 60 * 60 = 86400 seconds
+            return abs(round($diff / 86400));
+        }
+
+        $dateDiff = dateDiffInDays($todaysDate, $pkdate);
+
         if ($pkstatus == "BALANCE") {
             $calc = $ii_amount - $pkbalance;
         } else {
@@ -49,6 +61,7 @@ try {
         } else if ($date > $pkdate) {
             $evaluation = "LATE";
         } else {
+
         }
 
         if ($calc > 0) {
@@ -73,9 +86,31 @@ try {
         }
     }
 
-    $payment = $conn->prepare("INSERT INTO mm_payments (receiptNo, amount, processBy, processDate, FK_mn_installments, FK_appsysUsers) VALUES ('$ii_receiptno', '$temp_amount', '$usercode', '$todaysDate', '$tempiid', '$tempuid')");
-    $payment->execute();
-    $cpayment = $payment->rowCount();
+    if ($date > $pkdate) {
+
+        $verifySameDate = $conn->prepare("SELECT * FROM mm_payments WHERE processDate LIKE '%".$todaysDate."%' AND FK_mn_installments = '$tempiid' AND FK_appsysUsers = '$tempuid'");
+        $verifySameDate->execute();
+        $cverifySameDate = $verifySameDate->rowCount();
+
+        if ($cverifySameDate > 0) {
+            $payment = $conn->prepare("INSERT INTO mm_payments (receiptNo, amount, processBy, processDate, FK_mn_installments, FK_appsysUsers) VALUES ('$ii_receiptno', '$temp_amount', '$usercode', '$todaysDate', '$tempiid', '$tempuid')");
+            $payment->execute();
+            $cpayment = $payment->rowCount();
+        } else {
+            $payment = $conn->prepare("INSERT INTO mm_payments (receiptNo, amount, processBy, processDate, FK_mn_installments, daysInterval, FK_appsysUsers) VALUES ('$ii_receiptno', '$temp_amount', '$usercode', '$todaysDate', '$tempiid', $dateDiff, '$tempuid')");
+            $payment->execute();
+            $cpayment = $payment->rowCount();
+        }
+
+
+    } else {
+
+        $payment = $conn->prepare("INSERT INTO mm_payments (receiptNo, amount, processBy, processDate, FK_mn_installments, FK_appsysUsers) VALUES ('$ii_receiptno', '$temp_amount', '$usercode', '$todaysDate', '$tempiid', '$tempuid')");
+        $payment->execute();
+        $cpayment = $payment->rowCount();
+
+    }
+
 
     if ($cpayment > 0) {
         
@@ -93,10 +128,13 @@ try {
         if ($cschedulefull == $rinstallments["approvedMonths"]) {
             $update = $conn->prepare("UPDATE mn_installments SET `completedDate` = '$date', `installmentStatus` = 'COMPLETED' WHERE FK_appsysUsers = '$tempuid' AND PK_mn_installments = '$tempiid'");
             $update->execute();
+
+            $update = $conn->prepare("UPDATE appsysusers SET isNew = 0 WHERE PK_appsysUsers = '$tempuid'");
+            $update->execute();
         }
 
-        $response = array('status' => 200, 'message' => "Payment Processed!");
-        echo json_encode($response);
+        // $response = array('status' => 200, 'message' => "Payment Processed!");
+        // echo json_encode($response);
     } else {
         $response = array('status' => 500, 'message' => "Server Error, Please contact administrator!");
         echo json_encode($response);

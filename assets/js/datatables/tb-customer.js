@@ -18,7 +18,7 @@ var KTUsersList = function () {
             "pageLength": 10,
             "lengthChange": true,
             'columnDefs': [
-                { orderable: false, targets: 2 }
+                { orderable: false, targets: 3 }
             ]
         });
     }

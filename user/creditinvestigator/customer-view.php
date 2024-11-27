@@ -274,6 +274,63 @@ try {
                                     <div class="card">
                                         <div class="card-header cursor-pointer">
                                             <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                <h3 class="fw-bolder m-0">APPROVAL STATUS</h3>
+                                            </div>
+                                            <div class="card-toolbar">
+                                                <button class="btn btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true">
+                                                    <i class="ki-duotone ki-dots-square fs-1 text-gray-400 me-n1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+                                                </button>
+                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3" data-kt-menu="true" style="">
+                                                    <div class="menu-item px-3">
+                                                        <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
+                                                            Menu
+                                                        </div>
+                                                    </div>
+                                                    <div class="menu-item px-3">
+                                                        <?php if ($ruser["isCiApproved"] == 1) { ?>
+                                                            <span class="menu-link px-3" data-ii-approve-customer="undoApproval" data-passaccess="undoApproval" data-id="<?php echo $uid; ?>">
+                                                                Undo Approval
+                                                            </span>
+                                                        <?php } else { ?>
+                                                            <span class="menu-link px-3" data-ii-approve-customer="acceptApproval" data-passaccess="acceptApproval" data-id="<?php echo $uid; ?>">
+                                                                Confirm Approval
+                                                            </span>
+                                                            <?php if ($ruser["isCiApproved"] != 2) { ?>
+                                                                <span class="menu-link px-3" data-ii-approve-customer="rejectApproval" data-passaccess="rejectApproval" data-id="<?php echo $uid; ?>">
+                                                                    Reject Approval
+                                                                </span>
+                                                            <?php } ?>
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex flex-column">
+                                                            <span class="fs-8">Status</span>
+                                                            <span class="fw-bolder fs-4">
+                                                                <?php if ($ruser["isCiApproved"] == 1) { ?>
+                                                                    APPROVED
+                                                                <?php } else if ($ruser["isCiApproved"] == 2) { ?>
+                                                                    REJECTED
+                                                                <?php } else { ?>
+                                                                    PENDING
+                                                                <?php } ?>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 order-lg-0">
+                                    <div class="card">
+                                        <div class="card-header cursor-pointer">
+                                            <div class="card-title m-0 d-flex gap-3 align-items-center">
                                                 <h3 class="fw-bolder m-0">APPLICANT DETAILS</h3>
                                             </div>
                                         </div>
