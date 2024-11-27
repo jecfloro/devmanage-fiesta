@@ -277,6 +277,7 @@ try {
                                                         <th>Fullname</th>
                                                         <th>Email</th>
                                                         <th></th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-gray-600 fw-semibold">
@@ -291,6 +292,7 @@ try {
                                                                     <?php } ?>
                                                                 </td>
                                                                 <td><?php echo $ruser["user_email"]; ?></td>
+                                                                <td></td>
                                                                 <td class="text-end datainput">
                                                                     <div class="d-flex justify-content-end gap-2">
                                                                         <a href="customer-view.php?uid=<?php echo $ruser["PK_appsysUsers"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3">

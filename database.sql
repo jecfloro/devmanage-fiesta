@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `appsysusers_homeownership` (
   PRIMARY KEY (`PK_appsysusers_homeownership`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.appsysusers_homeownership: ~0 rows (approximately)
+-- Dumping data for table devmanage-fiesta.appsysusers_homeownership: ~1 rows (approximately)
 INSERT INTO `appsysusers_homeownership` (`PK_appsysusers_homeownership`, `FK_appsysUsers`, `selectedOption`, `monthlyAmortization`, `monthlyRental`, `landLord`, `yearsStay`, `previousAddress`) VALUES
 	(1, 49, 'Owned', 0.00, 0.00, '0', 0, 'na');
 
@@ -320,11 +320,7 @@ CREATE TABLE IF NOT EXISTS `mm_payments` (
   PRIMARY KEY (`PK_mm_payments`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.mm_payments: ~3 rows (approximately)
-INSERT INTO `mm_payments` (`PK_mm_payments`, `receiptNo`, `amount`, `processBy`, `processDate`, `FK_mn_installments`, `daysInterval`, `FK_appsysUsers`) VALUES
-	(9, '003', 500.00, 48, '2025-03-28 00:00:00', 2, 90, 49),
-	(10, '003', 500.00, 48, '2025-03-28 00:00:00', 2, NULL, 49),
-	(11, '003', 500.00, 48, '2025-03-28 00:00:00', 2, NULL, 49);
+-- Dumping data for table devmanage-fiesta.mm_payments: ~0 rows (approximately)
 
 -- Dumping structure for table devmanage-fiesta.mm_schedule
 CREATE TABLE IF NOT EXISTS `mm_schedule` (

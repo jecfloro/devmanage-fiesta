@@ -8,6 +8,8 @@ $year_start = date("Y");
 $year_end = date("Y") + 1;
 $date = date("Y-m-d");
 $todaysDate = date("Y-m-d H:i:s");
+// $date = "2025-12-15";
+// $todaysDate = "2025-12-15 00:00:00";
 
 $usercode = $_SESSION['session_usercode'];
 $ii_receiptno = $_POST["ii_receiptno"];
@@ -28,6 +30,17 @@ try {
 
     $uniqid = uniqid() . "" . time();
 
+    function dateDiffInDays($date1, $date2)
+    {
+
+        // Calculating the difference in timestamps
+        $diff = strtotime($date2) - strtotime($date1);
+
+        // 1 day = 24 hours
+        // 24 * 60 * 60 = 86400 seconds
+        return abs(round($diff / 86400));
+    }
+
     for ($i = 1; $i <= $cschedule; $i++) {
 
         $pkid = $rschedule[$i - 1]["PK_mm_schedule"];
@@ -35,18 +48,6 @@ try {
         $pkbalance = round(floatval($rschedule[$i - 1]["remaining"]));
         $pkstatus = $rschedule[$i - 1]["status"];
         $numformat = round(floatval($rschedule[$i - 1]["amount"]));
-
-        function dateDiffInDays($date1, $date2) {
-  
-            // Calculating the difference in timestamps
-            $diff = strtotime($date2) - strtotime($date1);
-        
-            // 1 day = 24 hours
-            // 24 * 60 * 60 = 86400 seconds
-            return abs(round($diff / 86400));
-        }
-
-        $dateDiff = dateDiffInDays($todaysDate, $pkdate);
 
         if ($pkstatus == "BALANCE") {
             $calc = $ii_amount - $pkbalance;
@@ -86,9 +87,22 @@ try {
         }
     }
 
+    $verifyLatestDate = $conn->prepare("SELECT * FROM mm_payments WHERE FK_mn_installments = '$tempiid' AND FK_appsysUsers = '$tempuid' ORDER BY processDate DESC LIMIT 1");
+    $verifyLatestDate->execute();
+    $cverifyLatestDate = $verifyLatestDate->rowCount();
+    $rverifyLatestDate = $verifyLatestDate->fetch(PDO::FETCH_ASSOC);
+
     if ($date > $pkdate) {
 
-        $verifySameDate = $conn->prepare("SELECT * FROM mm_payments WHERE processDate LIKE '%".$todaysDate."%' AND FK_mn_installments = '$tempiid' AND FK_appsysUsers = '$tempuid'");
+        if ($cverifyLatestDate > 0) {
+            $datenew = date("F d, Y h:i A", strtotime($rverifyLatestDate["processDate"]));
+
+            $dateDiff = dateDiffInDays($datenew, $date);
+        } else {
+            $dateDiff = dateDiffInDays($date, $pkdate);
+        }
+
+        $verifySameDate = $conn->prepare("SELECT * FROM mm_payments WHERE processDate LIKE '%" . $date . "%' AND FK_mn_installments = '$tempiid' AND FK_appsysUsers = '$tempuid'");
         $verifySameDate->execute();
         $cverifySameDate = $verifySameDate->rowCount();
 
@@ -101,19 +115,16 @@ try {
             $payment->execute();
             $cpayment = $payment->rowCount();
         }
-
-
     } else {
 
         $payment = $conn->prepare("INSERT INTO mm_payments (receiptNo, amount, processBy, processDate, FK_mn_installments, FK_appsysUsers) VALUES ('$ii_receiptno', '$temp_amount', '$usercode', '$todaysDate', '$tempiid', '$tempuid')");
         $payment->execute();
         $cpayment = $payment->rowCount();
-
     }
 
 
     if ($cpayment > 0) {
-        
+
         // verify if fully paid all schedules
 
         $schedulefull = $conn->prepare("SELECT * FROM mm_schedule WHERE FK_mn_installments = '$tempiid' AND FK_appsysUsers = '$tempuid' AND STATUS = 'FULL' ORDER BY `order` ASC");
@@ -133,8 +144,8 @@ try {
             $update->execute();
         }
 
-        // $response = array('status' => 200, 'message' => "Payment Processed!");
-        // echo json_encode($response);
+        $response = array('status' => 200, 'message' => "Payment Processed!");
+        echo json_encode($response);
     } else {
         $response = array('status' => 500, 'message' => "Server Error, Please contact administrator!");
         echo json_encode($response);
