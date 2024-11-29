@@ -34,7 +34,7 @@ $dompdf->render();
 // file_put_contents('dompdf_out.pdf', $output);
 
 // $dompdf->stream();
-$dompdf->stream("cashier_payments.pdf", ["Attachment" => false]);
+$dompdf->stream("Cashier Payments.pdf", ["Attachment" => false]);
 
 exit(0);
 

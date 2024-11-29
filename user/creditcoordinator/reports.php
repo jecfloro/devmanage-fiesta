@@ -278,8 +278,28 @@ try {
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between aling-items-center">
-                                                <h3 class="fw-bold mt-2">Customer Payments</h3>
+                                                <h3 class="fw-bold mt-2">Customer Payments <span class="text-muted">(Individual)</span></h3>
                                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#customerPaymentsModal">Generate</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between aling-items-center">
+                                                <h3 class="fw-bold mt-2">Customer Payments <span class="text-muted">(General)</span></h3>
+                                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#customerPaymentsGenModal">Generate</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between aling-items-center">
+                                                <h3 class="fw-bold mt-2">Customer Installments</h3>
+                                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#customerInstallmentsModal">Generate</button>
                                             </div>
                                         </div>
                                     </div>
@@ -350,7 +370,7 @@ try {
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="btn_GenerateCashierReport">Save changes</button>
+                                <button type="button" class="btn btn-primary" id="btn_GenerateCashierReport">Generate</button>
                             </div>
                         </div>
                     </div>
@@ -407,16 +427,16 @@ try {
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="btn_GenerateCustomerReport">Save changes</button>
+                                <button type="button" class="btn btn-primary" id="btn_GenerateCustomerReport">Generate</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" tabindex="-1" id="customerPaymentsModal">
+                <div class="modal fade" tabindex="-1" id="customerPaymentsGenModal">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Modal title</h5>
+                                <h5 class="modal-title">Customer Payments</h5>
 
                                 <!--begin::Close-->
                                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -426,12 +446,76 @@ try {
                             </div>
 
                             <div class="modal-body">
-
+                                <div class="fv-row mb-0">
+                                    <label class="fw-semibold fs-6 mb-2">Date Range</label>
+                                    <div class="input-group mb-5">
+                                        <span class="input-group-text">
+                                            <i class="ki-duotone ki-check-circle text-primary fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <input type="date" class="form-control" id="pp_datefrom" />
+                                    </div>
+                                    <div class="input-group mb-5">
+                                        <span class="input-group-text">
+                                            <i class="ki-duotone ki-check-circle text-primary fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <input type="date" class="form-control" id="pp_dateto" />
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-primary" id="btn_GenerateCustomerGenReport">Generate</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" tabindex="-1" id="customerInstallmentsModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Customer Installments</h5>
+
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    <span class="svg-icon fs-2x"></span>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="fv-row mb-0">
+                                    <label class="fw-semibold fs-6 mb-2">Date Range</label>
+                                    <div class="input-group mb-5">
+                                        <span class="input-group-text">
+                                            <i class="ki-duotone ki-check-circle text-primary fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <input type="date" class="form-control" id="qq_datefrom" />
+                                    </div>
+                                    <div class="input-group mb-5">
+                                        <span class="input-group-text">
+                                            <i class="ki-duotone ki-check-circle text-primary fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <input type="date" class="form-control" id="qq_dateto" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="btn_GenerateCustomerInstallmentsReport">Generate</button>
                             </div>
                         </div>
                     </div>

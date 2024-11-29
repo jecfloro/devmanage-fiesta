@@ -15,15 +15,25 @@ try {
   $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+  $usercode = $_SESSION['session_usercode'];
+
+  $user = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
+  $user->execute();
+  $cuser = $user->rowCount();
+  $ruser = $user->fetch(PDO::FETCH_ASSOC);
+
+  if ($cuser > 0) {
+    $userFullname = $ruser["userFullName"];
+  }
+
   $idate = $_GET["idate"];
   $edate = $_GET["edate"];
 
-  $userpayments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts WHERE processDate BETWEEN '$idate 00:00:00' AND '$edate 23:59:59' ORDER BY processDate DESC");
+  $userpayments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts WHERE processDate BETWEEN '$idate 00:00:00' AND '$edate 23:59:59' ORDER BY `FK_appsysUsers` DESC, `processDate` DESC");
   $userpayments->execute();
   $cuserpayments = $userpayments->rowCount();
 
   $totalamount = 0;
-
 } catch (PDOException $e) {
   echo "Error: " . $e->getMessage();
 }
@@ -181,6 +191,11 @@ try {
       font-weight: bolder !important;
     }
 
+    .darkThGray {
+      background-color: #8f8f8f !important;
+      font-weight: bolder !important;
+    }
+
     .page-break {
       page-break-before: always;
     }
@@ -249,39 +264,51 @@ try {
   <main>
     <table id="topTemplate">
       <tr>
-        <td class="text-center mainTitle" colspan="2">PAYMENTS</td>
+        <td class="text-center mainTitle" colspan="2">CUSTOMER PAYMENTS</td>
       </tr>
       <tr>
         <td class="text-right titleScheduleAlt" colspan="2">Inclusive Month/Days</td>
       </tr>
       <tr>
-        <td class="text-right titleSchedule" colspan="2"><?php echo date("F d, Y", strtotime($idate)); ?> - <?php echo date("F d, Y", strtotime($edate)); ?></td>
+        <td class="titleSchedule"><?php echo $fullname; ?></td>
+        <td class="text-right titleSchedule"><?php echo date("F d, Y", strtotime($idate)); ?> - <?php echo date("F d, Y", strtotime($edate)); ?></td>
+      </tr>
+      <tr>
+      </tr>
+      <tr>
+
       </tr>
     </table>
 
     <!-- <div class="title">SCHEDULE</div> -->
     <table id="customers" style="margin-top: 30px;">
       <tr class="text-start">
-        <td class="mainThGray">Receipt Number</td>
-        <td class="mainThGray">Processed Date</td>
-        <td class="mainThGray">Cashier</td>
-        <td class="mainThGray">Amount</td>
+        <td class="mainThGray">Customer</td>
       </tr>
       <?php if ($cuserpayments > 0) { ?>
         <?php while ($ruserpayments = $userpayments->fetch(PDO::FETCH_ASSOC)) { ?>
           <tr class="text-start">
+            <td><?php echo $ruserpayments["CustomerFullName"] ?></td>
             <td><?php echo $ruserpayments["receiptNo"] ?></td>
+            <td><?php echo $ruserpayments["productName"] ?></td>
             <td><?php echo date("F d, Y h:i A", strtotime($ruserpayments["processDate"])) ?></td>
-            <td><?php echo $ruserpayments["CashierFullName"] ?></td>
             <td><?php echo $ruserpayments["amount"] ?></td>
           </tr>
-          <?php $totalamount += $ruserpayments["amount"];?>
+          <?php $totalamount += $ruserpayments["amount"]; ?>
         <?php } ?>
-        <tr class="text-start fw-bolder">
-          <td colspan="3">Total</td>
+        <tr class="text-start fw-bolder darkThGray">
+          <td colspan="4">Total</td>
           <td><?php echo number_format($totalamount, 2); ?></td>
         </tr>
-  
+        <tr class="">
+          <td colspan="5" style="border: 0px solid black; padding-top: 100px;"></td>
+        </tr>
+        <tr class="text-start fw-bolder">
+          <td colspan="5" style="border: 0px solid black;">Prepared By</td>
+        </tr>
+        <tr class="">
+          <td colspan="5" style="border: 0px solid black; padding-top: 2px;"><?php echo $userFullname; ?></td>
+        </tr>
       <?php } ?>
 
     </table>

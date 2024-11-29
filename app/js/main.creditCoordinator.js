@@ -630,3 +630,45 @@ $("#btn_GenerateCustomerReport").click(function(e) {
     window.open("customerpayments.php?uid="+ uid +"&idate="+startDate+"&edate="+endDate, "_blank");
 
 });
+
+$("#btn_GenerateCustomerGenReport").click(function(e) {
+
+    e.preventDefault();
+
+    var startDate = $("#pp_datefrom").val().trim();
+    var endDate = $("#pp_dateto").val().trim();
+
+    if (startDate == "") {
+        sweetAlertError("Please input the start date!");
+        return;
+    }
+
+    if (endDate == "") {
+        sweetAlertError("Please input the end date!");
+        return;
+    }
+
+    window.open("customerpaymentsgen.php?idate="+startDate+"&edate="+endDate, "_blank");
+
+});
+
+$("#btn_GenerateCustomerInstallmentsReport").click(function(e) {
+
+    e.preventDefault();
+
+    var startDate = $("#qq_datefrom").val().trim();
+    var endDate = $("#qq_dateto").val().trim();
+
+    if (startDate == "") {
+        sweetAlertError("Please input the start date!");
+        return;
+    }
+
+    if (endDate == "") {
+        sweetAlertError("Please input the end date!");
+        return;
+    }
+
+    window.open("customerinstallments.php?idate="+startDate+"&edate="+endDate, "_blank");
+
+});

@@ -15,6 +15,17 @@ try {
   $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+  $usercode = $_SESSION['session_usercode'];
+
+  $user = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
+  $user->execute();
+  $cuser = $user->rowCount();
+  $ruser = $user->fetch(PDO::FETCH_ASSOC);
+
+  if ($cuser > 0) {
+    $userFullname = $ruser["userFullName"];
+  }
+
   $uid = $_GET["uid"];
   $idate = $_GET["idate"];
   $edate = $_GET["edate"];
@@ -25,7 +36,7 @@ try {
   $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
 
   if ($cuserprofile > 0) {
-      $fullname = $ruserprofile["userFullName"];
+    $fullname = $ruserprofile["userFullName"];
   }
 
   $userpayments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts WHERE a.FK_appsysUsers = '$uid' AND processDate BETWEEN '$idate 00:00:00' AND '$edate 23:59:59' ORDER BY processDate DESC");
@@ -33,7 +44,6 @@ try {
   $cuserpayments = $userpayments->rowCount();
 
   $totalamount = 0;
-
 } catch (PDOException $e) {
   echo "Error: " . $e->getMessage();
 }
@@ -191,6 +201,11 @@ try {
       font-weight: bolder !important;
     }
 
+    .darkThGray {
+      background-color: #8f8f8f !important;
+      font-weight: bolder !important;
+    }
+
     .page-break {
       page-break-before: always;
     }
@@ -272,7 +287,7 @@ try {
       <tr>
       </tr>
       <tr>
-        
+
       </tr>
     </table>
 
@@ -280,6 +295,7 @@ try {
     <table id="customers" style="margin-top: 30px;">
       <tr class="text-start">
         <td class="mainThGray">Receipt Number</td>
+        <td class="mainThGray">Product</td>
         <td class="mainThGray">Processed Date</td>
         <td class="mainThGray">Amount</td>
       </tr>
@@ -287,14 +303,24 @@ try {
         <?php while ($ruserpayments = $userpayments->fetch(PDO::FETCH_ASSOC)) { ?>
           <tr class="text-start">
             <td><?php echo $ruserpayments["receiptNo"] ?></td>
+            <td><?php echo $ruserpayments["productName"] ?></td>
             <td><?php echo date("F d, Y h:i A", strtotime($ruserpayments["processDate"])) ?></td>
             <td><?php echo $ruserpayments["amount"] ?></td>
           </tr>
-          <?php $totalamount += $ruserpayments["amount"];?>
+          <?php $totalamount += $ruserpayments["amount"]; ?>
         <?php } ?>
-        <tr class="text-start fw-bolder">
-          <td colspan="2">Total</td>
+        <tr class="text-start fw-bolder darkThGray">
+          <td colspan="3">Total</td>
           <td><?php echo number_format($totalamount, 2); ?></td>
+        </tr>
+        <tr class="">
+          <td colspan="4" style="border: 0px solid black; padding-top: 100px;"></td>
+        </tr>
+        <tr class="text-start fw-bolder">
+          <td colspan="4" style="border: 0px solid black;">Prepared By</td>
+        </tr>
+        <tr class="">
+          <td colspan="4" style="border: 0px solid black; padding-top: 2px;"><?php echo $userFullname; ?></td>
         </tr>
       <?php } ?>
 

@@ -14,7 +14,7 @@ $dompdf->getOptions()->getChroot();
 $dompdf->getOptions()->setChroot("C:\\laragon\\www\\devmanage-fiesta\\");
 
 ob_start();
-require('cp_n92nsjakjd.php');
+require('cp_82nskjdsdkm.php');
 $websiteContent = ob_get_contents();
 ob_get_clean();
 
@@ -26,25 +26,7 @@ $dompdf->setPaper('Letter', 'Portrait');
 
 $dompdf->render();
 
-try {
-    $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-  
-    $uid = $_GET["uid"];
-
-    $userprofile = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$uid'");
-    $userprofile->execute();
-    $cuserprofile = $userprofile->rowCount();
-    $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
-
-    if ($cuserprofile > 0) {
-        $fullname = $ruserprofile["userFullName"];
-    }
-
-    $dompdf->stream('Customer Payments - '.$fullname.'.pdf', ["Attachment" => false]);
-  } catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-  }
+$dompdf->stream('Customer Payments.pdf', ["Attachment" => false]);
 
 // $dompdf->stream();
 // $dompdf->getCanvas()
