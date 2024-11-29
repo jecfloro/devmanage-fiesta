@@ -10,11 +10,11 @@
         </div>
         <div class="menu-item"><a class="menu-link" href="products.php"><span class="menu-icon"><i class="ki-duotone ki-setting fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Products</span></a></div>
         <div class="menu-item"><a class="menu-link" href="product-categories.php"><span class="menu-icon"><i class="ki-duotone ki-setting fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Product Categories</span></a></div>
-        <div class="menu-item">
+        <!-- <div class="menu-item">
             <div class="menu-content">
                 <div class="separator mx-1 my-4"></div>
             </div>
-        </div>
-        <div class="menu-item"><a class="menu-link" href="changelog.php"><span class="menu-icon"><i class="ki-duotone ki-code fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Changelog</span></a></div>
+        </div> -->
+        <!-- <div class="menu-item"><a class="menu-link" href="changelog.php"><span class="menu-icon"><i class="ki-duotone ki-code fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Changelog</span></a></div> -->
     </div>
 </div>

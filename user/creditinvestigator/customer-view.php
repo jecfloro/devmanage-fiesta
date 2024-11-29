@@ -45,6 +45,11 @@ try {
     $locationlist = $conn->prepare("SELECT * FROM mm_location WHERE FK_appsysUsers = '$uid'");
     $locationlist->execute();
     $clocationlist = $locationlist->rowCount();
+
+    $paymentslist = $conn->prepare("SELECT SUM(daysInterval) AS totalDays FROM mm_payments WHERE FK_appsysUsers = '$uid'");
+    $paymentslist->execute();
+    $cpaymentslist = $paymentslist->rowCount();
+    $rpaymentslist = $paymentslist->fetch(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -323,6 +328,48 @@ try {
                                                         </div>
                                                     </td>
                                                 </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card mt-5">
+                                        <div class="card-header">
+                                            <div class="card-title m-0">
+                                                <h3 class="fw-bold m-0">Payment Details</h3>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex flex-column">
+                                                                <span class="fs-8">Status</span>
+                                                                <span class="fw-bolder fs-4">
+                                                                    <?php if ($rpaymentslist["totalDays"] >= 90) { ?>
+                                                                        Delinquent
+                                                                    <?php } else { ?>
+                                                                        Good
+                                                                    <?php } ?>
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex flex-column">
+                                                                <span class="fs-8">Days Late</span>
+                                                                <span class="fw-bolder fs-4">
+                                                                    <?php if ($rpaymentslist["totalDays"] > 0) { ?>
+                                                                        <?php echo $rpaymentslist["totalDays"]; ?>
+                                                                    <?php } else { ?>
+                                                                        0
+                                                                    <?php } ?>
+                                                                    
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>

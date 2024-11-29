@@ -43525,7 +43525,7 @@ code:not([class*=language-]) {
 .timeline-label:before {
   content: "";
   position: absolute;
-  left: 51px;
+  left: 104px;
   width: 3px;
   top: 0;
   bottom: 0;
@@ -43541,7 +43541,7 @@ code:not([class*=language-]) {
   margin-bottom: 0;
 }
 .timeline-label .timeline-label {
-  width: 50px;
+  width: 100px;
   flex-shrink: 0;
   position: relative;
   color: var(--bs-gray-800);
@@ -43556,8 +43556,8 @@ code:not([class*=language-]) {
   align-items: center;
   z-index: 1;
   position: relative;
-  margin-top: 1px;
-  margin-left: -0.5rem;
+  margin-top: 0px;
+  margin-left: -0.3rem;
   padding: 3px !important;
   border: 6px solid var(--bs-body-bg) !important;
 }

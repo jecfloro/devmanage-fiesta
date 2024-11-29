@@ -27,6 +27,38 @@ try {
         $fullname = $ruserprofile["userFullName"];
         $email = $ruserprofile["user_email"];
     }
+
+    $user = $conn->prepare("SELECT * FROM appsysusers");
+    $user->execute();
+    $cuser = $user->rowCount();
+
+    $product = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories");
+    $product->execute();
+    $cproduct = $product->rowCount();
+
+    $userapproved = $conn->prepare("SELECT * FROM appsysusers WHERE isCoordinatorApproved = 1");
+    $userapproved->execute();
+    $cuserapproved = $userapproved->rowCount();
+
+    $installments = $conn->prepare("SELECT * FROM mn_installments JOIN msc_products ON mn_installments.FK_mscProducts = msc_products.PK_mscProducts JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories JOIN appsysusers ON mn_installments.FK_appsysUsers = appsysusers.PK_appsysUsers");
+    $installments->execute();
+    $cinstallments = $installments->rowCount();
+
+    $activeinstallments = $conn->prepare("SELECT * FROM mn_installments JOIN msc_products ON mn_installments.FK_mscProducts = msc_products.PK_mscProducts JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories JOIN appsysusers ON mn_installments.FK_appsysUsers = appsysusers.PK_appsysUsers WHERE installmentStatus = 'PENDING'");
+    $activeinstallments->execute();
+    $cactiveinstallments = $activeinstallments->rowCount();
+
+    $completedinstallments = $conn->prepare("SELECT * FROM mn_installments JOIN msc_products ON mn_installments.FK_mscProducts = msc_products.PK_mscProducts JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories JOIN appsysusers ON mn_installments.FK_appsysUsers = appsysusers.PK_appsysUsers WHERE installmentStatus = 'COMPLETED'");
+    $completedinstallments->execute();
+    $ccompletedinstallments = $completedinstallments->rowCount();
+
+    $payments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts");
+    $payments->execute();
+    $cpayments = $payments->rowCount();
+
+    $userpayments = $conn->prepare("SELECT PK_mm_payments, a.receiptNo, a.amount, a.processDate, b.userFullName AS CashierFullName, c.userFullName AS CustomerFullName, d.FK_mscProducts AS productId, e.productName AS productName, a.FK_mn_installments, a.FK_appsysUsers FROM mm_payments AS a JOIN appsysusers AS b ON a.processBy = b.PK_appsysUsers JOIN appsysusers AS c ON a.FK_appsysUsers = c.PK_appsysUsers JOIN mn_installments AS d ON a.FK_mn_installments = d.PK_mn_installments JOIN msc_products AS e ON d.FK_mscProducts = e.PK_mscProducts ORDER BY processDate DESC LIMIT 10");
+    $userpayments->execute();
+    $cuserpayments = $userpayments->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -250,8 +282,150 @@ try {
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <div class="container-fluid">
                             <div class="row g-xl-12">
-                                <div class="col-xxl-12">
+                                <div class="col-xxl-4">
+                                    <div class="card  card-xl-stretch mb-5 mb-xl-8">
+                                        <div class="card-body p-0 d-flex justify-content-between flex-column">
+                                            <div class="d-flex flex-stack card-p flex-grow-1">
+                                                <div class="symbol symbol-45px">
+                                                    <div class="symbol-label"><i class="ki-duotone ki-user-square fs-2x"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i></div>
+                                                </div>
+                                                <div class="d-flex flex-column text-end">
+                                                    <span class="text-gray-400 fw-semibold fs-6">Users Registered</span>
+                                                    <span class="fw-bolder text-gray-800 fs-2"><?php echo $cuser; ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4">
+                                    <div class="card  card-xl-stretch mb-5 mb-xl-8">
+                                        <div class="card-body p-0 d-flex justify-content-between flex-column">
+                                            <div class="d-flex flex-stack card-p flex-grow-1">
+                                                <div class="symbol symbol-45px">
+                                                    <div class="symbol-label"><i class="ki-duotone ki-barcode fs-2x"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span></i></div>
+                                                </div>
+                                                <div class="d-flex flex-column text-end">
+                                                    <span class="text-gray-400 fw-semibold fs-6">Products</span>
+                                                    <span class="fw-bolder text-gray-800 fs-2"><?php echo $cproduct; ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4">
+                                    <div class="card  card-xl-stretch mb-5 mb-xl-8">
+                                        <div class="card-body p-0 d-flex justify-content-between flex-column">
+                                            <div class="d-flex flex-stack card-p flex-grow-1">
+                                                <div class="symbol symbol-45px">
+                                                    <div class="symbol-label"><i class="ki-duotone ki-check-circle fs-2x"><span class="path1"></span><span class="path2"></i></div>
+                                                </div>
+                                                <div class="d-flex flex-column text-end">
+                                                    <span class="text-gray-400 fw-semibold fs-6">Approved Customer</span>
+                                                    <span class="fw-bolder text-gray-800 fs-2"><?php echo $cuserapproved; ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4">
+                                    <div class="card  card-xl-stretch mb-5 mb-xl-8">
+                                        <div class="card-body p-0 d-flex justify-content-between flex-column">
+                                            <div class="d-flex flex-stack card-p flex-grow-1">
+                                                <div class="symbol symbol-45px">
+                                                    <div class="symbol-label"><i class="ki-duotone ki-purchase fs-2x"><span class="path1"></span><span class="path2"></i></div>
+                                                </div>
+                                                <div class="d-flex flex-column text-end">
+                                                    <span class="text-gray-400 fw-semibold fs-6">Installments</span>
+                                                    <span class="fw-bolder text-gray-800 fs-2"><?php echo $cinstallments; ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4">
+                                    <div class="card  card-xl-stretch mb-5 mb-xl-8">
+                                        <div class="card-body p-0 d-flex justify-content-between flex-column">
+                                            <div class="d-flex flex-stack card-p flex-grow-1">
+                                                <div class="symbol symbol-45px">
+                                                    <div class="symbol-label"><i class="ki-duotone ki-purchase fs-2x"><span class="path1"></span><span class="path2"></i></div>
+                                                </div>
+                                                <div class="d-flex flex-column text-end">
+                                                    <span class="text-gray-400 fw-semibold fs-6">Active Installments</span>
+                                                    <span class="fw-bolder text-gray-800 fs-2"><?php echo $cactiveinstallments; ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4">
+                                    <div class="card card-xl-stretch mb-5 mb-xl-8">
+                                        <div class="card-body p-0 d-flex justify-content-between flex-column">
+                                            <div class="d-flex flex-stack card-p flex-grow-1">
+                                                <div class="symbol symbol-45px">
+                                                    <div class="symbol-label"><i class="ki-duotone ki-purchase fs-2x"><span class="path1"></span><span class="path2"></i></div>
+                                                </div>
+                                                <div class="d-flex flex-column text-end">
+                                                    <span class="text-gray-400 fw-semibold fs-6">Completed Installments</span>
+                                                    <span class="fw-bolder text-gray-800 fs-2"><?php echo $ccompletedinstallments; ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4">
+                                    <div class="card">
+                                        <div class="card-body p-0 d-flex justify-content-between flex-column">
+                                            <div class="d-flex flex-stack card-p flex-grow-1">
+                                                <div class="symbol symbol-45px">
+                                                    <div class="symbol-label"><i class="ki-duotone ki-bill fs-2x"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span></i></div>
+                                                </div>
+                                                <div class="d-flex flex-column text-end">
+                                                    <span class="text-gray-400 fw-semibold fs-6">Payments</span>
+                                                    <span class="fw-bolder text-gray-800 fs-2"><?php echo $cpayments; ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="pe-10 ps-10 pb-10">
+                                                <div class="timeline-label">
+                                                    <?php if ($cuserpayments > 0) { ?>
+                                                        <?php while ($ruserpayments = $userpayments->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                            <div class="timeline-item">
+                                                                <div class="timeline-label fw-bold text-gray-800 fs-6"><?php echo date("F d, Y h:i A", strtotime($ruserpayments["processDate"])) ?></div>
+                                                                <div class="timeline-badge">
+                                                                    <i class="ki-duotone ki-abstract-8 text-gray-600 fs-3"><span class="path1"></span><span class="path2"></span></i>
+                                                                </div>
+                                                                <div class="fw-semibold text-gray-700 ps-3 fs-7">
+                                                                    <div class="d-flex flex-column">
+                                                                        <div class="">
+                                                                            <span class="text-primary fw-bolder"><?php echo $ruserpayments["CustomerFullName"] ?></span> desposited <span class="fw-bolder">₱ <?php echo $ruserpayments["amount"] ?></span>
+                                                                        </div>
+                                                                        <div class="">
+                                                                            Receipt #200
+                                                                        </div>
+                                                                    </div>
 
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex flex-stack card-p flex-grow-1">
+                                                <div class="symbol symbol-45px">
+                                                    <div class="symbol-label"><i class="ki-duotone ki-bill fs-2x"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span></i></div>
+                                                </div>
+                                                <div class="d-flex flex-column text-end">
+                                                    <span class="fw-bolder text-gray-800 fs-2">Payments Days Late</span>
+                                                </div>
+                                            </div>
+                                            <div id="kt_apexcharts_3" style="height: 350px;"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -281,6 +455,10 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
+    <script src="../../assets/js/custom/apexcharts.js"></script>
+    <script>
+
+    </script>
 </body>
 
 </html>

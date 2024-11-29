@@ -2,7 +2,7 @@
 
 include '../../app/connection/MYSQLSERVER.php';
 include '../../app/sessions/AuthSession.php';
-include '../../app/sessions/CustomerSession.php';
+include '../../app/sessions/CreditCoordinatorSession.php';
 require '../../app/setting/AESCLASS.php';
 
 date_default_timezone_set("Asia/Manila");
@@ -16,7 +16,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $usercode = $_SESSION['session_usercode'];
-    
+
     $userprofile = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$usercode'");
     $userprofile->execute();
     $cuserprofile = $userprofile->rowCount();
@@ -27,10 +27,9 @@ try {
         $email = $ruserprofile["user_email"];
     }
 
-    if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
-        header("Location: /");
-    }
-
+    $user = $conn->prepare("SELECT * FROM appsysusers WHERE isCustomer = 1");
+    $user->execute();
+    $cuser = $user->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -234,10 +233,12 @@ try {
                                 </h1>
                                 <ul class="breadcrumb fw-semibold fs-base my-1">
                                     <li class="breadcrumb-item text-muted">
-                                        Customer
+                                        Credit Coordinator
                                     </li>
                                     <li class="breadcrumb-item text-dark">
-                                        <a href="dashboard.php" class="text-dark">Dashboard</a>
+                                        <a href="reports.php" class="text-dark text-hover-primary">
+                                            Reports
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -248,10 +249,51 @@ try {
                     </div>
                     <div class="post fs-6 d-flex flex-column-fluid" id="kt_post">
                         <div class="container-fluid">
-                            <div class="row g-xl-12">
-                                <div class="col-xxl-12">
-
+                            <div class="row g-5">
+                                <?php if ($ruserprofile["isProfileFilled"] != 1) { ?>
+                                    <div class="col-xxl-12">
+                                        <div class="card mb-5 mb-xl-10" id="kt-container-homeownership">
+                                            <div class="card-header border-0 cursor-pointer">
+                                                <div class="card-title m-0 d-flex gap-3 align-items-center">
+                                                    <h3 class="fw-bold m-0">Update Profile</h3>
+                                                </div>
+                                            </div>
+                                            <div class="card-body border-top pt-9 pb-5">
+                                                <p>Complete <strong>Profile</strong> setup to browse products, click <a href="profile.php" class="text-primary">here</a> to go to profile.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between aling-items-center">
+                                                <h3 class="fw-bold mt-2">Cashier Payments</h3>
+                                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#cashierPaymentsModal">Generate</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between aling-items-center">
+                                                <h3 class="fw-bold mt-2">Customer Payments</h3>
+                                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#customerPaymentsModal">Generate</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between aling-items-center">
+                                                <h3 class="fw-bold mt-2">Approved / Reject Customers</h3>
+                                                <button class="btn btn-primary btn-sm">Generate</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -268,6 +310,133 @@ try {
                         </div>
                     </div>
                 </div>
+                <!-- Modals -->
+                <div class="modal fade" tabindex="-1" id="cashierPaymentsModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Cashier Payments</h3>
+
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="fv-row mb-0">
+                                    <label class="fw-semibold fs-6 mb-2">Date Range</label>
+                                    <div class="input-group mb-5">
+                                        <span class="input-group-text">
+                                            <i class="ki-duotone ki-check-circle text-primary fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <input type="date" class="form-control" id="ii_datefrom" />
+                                    </div>
+                                    <div class="input-group mb-5">
+                                        <span class="input-group-text">
+                                            <i class="ki-duotone ki-check-circle text-primary fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <input type="date" class="form-control" id="ii_dateto" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="btn_GenerateCashierReport">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="customerPaymentsModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Customer Payments</h3>
+
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="fv-row mb-0">
+                                    <div class="mb-10">
+                                        <label class="fw-semibold fs-6 mb-2">Customer</label>
+                                        <select class="form-select form-select-solid" data-control="select2" data-dropdown-parent="#customerPaymentsModal" data-placeholder="Select an option" data-allow-clear="true" id="oo_customer">
+                                            <option></option>
+                                            <?php if ($cuser > 0) { ?>
+                                                <?php while ($ruser = $user->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                    <option value="<?php echo $ruser["PK_appsysUsers"]; ?>"><?php echo $ruser["userFullName"]; ?></option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="fv-row mb-0">
+                                    <label class="fw-semibold fs-6 mb-2">Date Range</label>
+                                    <div class="input-group mb-5">
+                                        <span class="input-group-text">
+                                            <i class="ki-duotone ki-check-circle text-primary fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <input type="date" class="form-control" id="oo_datefrom" />
+                                    </div>
+                                    <div class="input-group mb-5">
+                                        <span class="input-group-text">
+                                            <i class="ki-duotone ki-check-circle text-primary fs-3">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </span>
+                                        <input type="date" class="form-control" id="oo_dateto" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="btn_GenerateCustomerReport">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" tabindex="-1" id="customerPaymentsModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Modal title</h5>
+
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    <span class="svg-icon fs-2x"></span>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+
+                            <div class="modal-body">
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modals -->
             </div>
         </div>
     </div>
@@ -280,6 +449,7 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
+    <script type="module" src="../../app/js/main.creditCoordinator.js"></script>
 </body>
 
 </html>

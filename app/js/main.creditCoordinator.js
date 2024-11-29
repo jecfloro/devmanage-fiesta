@@ -582,3 +582,51 @@ $("[data-ii-approve-customer='undoApproval']").click(function (e) {
     }
 
 });
+
+$("#btn_GenerateCashierReport").click(function(e) {
+
+    e.preventDefault();
+
+    var startDate = $("#ii_datefrom").val().trim();
+    var endDate = $("#ii_dateto").val().trim();
+
+    if (startDate == "") {
+        sweetAlertError("Please input the start date!");
+        return;
+    }
+
+    if (endDate == "") {
+        sweetAlertError("Please input the end date!");
+        return;
+    }
+
+    window.open("cashierpayments.php?idate="+startDate+"&edate="+endDate, "_blank");
+
+});
+
+$("#btn_GenerateCustomerReport").click(function(e) {
+
+    e.preventDefault();
+
+    var uid = $("#oo_customer").val().trim();
+    var startDate = $("#oo_datefrom").val().trim();
+    var endDate = $("#oo_dateto").val().trim();
+
+    if (uid == "") {
+        sweetAlertError("Please select customer!");
+        return;
+    }
+
+    if (startDate == "") {
+        sweetAlertError("Please input the start date!");
+        return;
+    }
+
+    if (endDate == "") {
+        sweetAlertError("Please input the end date!");
+        return;
+    }
+
+    window.open("customerpayments.php?uid="+ uid +"&idate="+startDate+"&edate="+endDate, "_blank");
+
+});

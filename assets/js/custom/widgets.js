@@ -27,10 +27,10 @@ var KTWidgets = function () {
                     type: 'area',
                     height: height,
                     toolbar: {
-                        show: false
+                        show: true
                     },
                     zoom: {
-                        enabled: false
+                        enabled: true
                     },
                     sparkline: {
                         enabled: true
@@ -38,7 +38,7 @@ var KTWidgets = function () {
                 },
                 plotOptions: {},
                 legend: {
-                    show: false
+                    show: true
                 },
                 dataLabels: {
                     enabled: false
@@ -56,20 +56,20 @@ var KTWidgets = function () {
                 xaxis: {
                     categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'],
                     axisBorder: {
-                        show: false,
+                        show: true,
                     },
                     axisTicks: {
-                        show: false
+                        show: true
                     },
                     labels: {
-                        show: false,
+                        show: true,
                         style: {
                             colors: KTUtil.getCssVariableValue('--bs-gray-500'),
                             fontSize: '12px',
                         }
                     },
                     crosshairs: {
-                        show: false,
+                        show: true,
                         position: 'front',
                         stroke: {
                             color: KTUtil.getCssVariableValue('--bs-gray-200'),
@@ -124,7 +124,7 @@ var KTWidgets = function () {
                     },
                     y: {
                         formatter: function(val) {
-                            return "$" + val + " sales"
+                            return val
                         }
                     }
                 },   

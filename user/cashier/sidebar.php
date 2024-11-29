@@ -4,7 +4,6 @@
             <div class="menu-item pt-5">
                 <div class="menu-content"><span class="fw-bold text-muted text-uppercase fs-7">Apps</span></div>
             </div>
-            <div class="menu-item"><a class="menu-link" href="dashboard.php"><span class="menu-icon"><i class="ki-duotone ki-element-11 fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Dashboard</span></a></div>
             <div class="menu-item"><a class="menu-link" href="customer.php"><span class="menu-icon"><i class="ki-duotone ki-user-square fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i></span><span class="menu-title">Customer</span></a></div>
             <div class="menu-item"><a class="menu-link" href="payments.php"><span class="menu-icon"><i class="ki-duotone ki-wallet fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Payments</span></a></div>
         </div>

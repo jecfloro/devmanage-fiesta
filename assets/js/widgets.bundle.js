@@ -218,7 +218,7 @@ var KTCardsWidget10 = function () {
         };
 
         // Init 
-        drawCircle('#E4E6EF', options.lineWidth, 100 / 100); 
+        drawCircle('#E4E6EF', options.lineWidth, 100 / 50); 
         drawCircle(KTUtil.getCssVariableValue('--bs-primary'), options.lineWidth, 100 / 150);
         drawCircle(KTUtil.getCssVariableValue('--bs-success'), options.lineWidth, 100 / 250);   
     }

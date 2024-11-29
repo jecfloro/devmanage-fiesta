@@ -186,13 +186,13 @@ $(function () {
                         })
                     });
                 } else {
-                    
+
                     $.getJSON(url_region, function (data) {
                         $.each(data, function (key, entry) {
                             if (entry.region_code == status.user[0]["userRegionCode"]) {
-                                dropdown_region.append($('<option></option>').attr({ 'value': entry.region_name, 'region-code': entry.region_code, 'selected': 'selected'}).text(entry.region_name));
+                                dropdown_region.append($('<option></option>').attr({ 'value': entry.region_name, 'region-code': entry.region_code, 'selected': 'selected' }).text(entry.region_name));
                             } else {
-                                dropdown_region.append($('<option></option>').attr({ 'value': entry.region_name, 'region-code': entry.region_code}).text(entry.region_name));
+                                dropdown_region.append($('<option></option>').attr({ 'value': entry.region_name, 'region-code': entry.region_code }).text(entry.region_name));
                             }
                         })
                     });
@@ -203,34 +203,34 @@ $(function () {
                         var result = data.filter(function (value) {
                             return value.region_code == status.user[0]["userRegionCode"];
                         });
-            
+
                         result.sort(function (a, b) {
                             return a.province_name.localeCompare(b.province_name);
                         });
-            
+
                         $.each(result, function (key, entry) {
                             dropdown_province.append($('<option></option>').attr({ 'value': entry.province_name, 'province-code': entry.province_code }).text(entry.province_name));
                         })
-            
+
                     });
                 } else {
                     $.getJSON(url_province, function (data) {
                         var result = data.filter(function (value) {
                             return value.region_code == status.user[0]["userRegionCode"];
                         });
-            
+
                         result.sort(function (a, b) {
                             return a.province_name.localeCompare(b.province_name);
                         });
-            
+
                         $.each(result, function (key, entry) {
                             if (entry.province_code == status.user[0]["userProvinceCode"]) {
-                                dropdown_province.append($('<option></option>').attr({ 'value': entry.province_name, 'province-code': entry.province_code, 'selected': 'selected'}).text(entry.province_name));
+                                dropdown_province.append($('<option></option>').attr({ 'value': entry.province_name, 'province-code': entry.province_code, 'selected': 'selected' }).text(entry.province_name));
                             } else {
                                 dropdown_province.append($('<option></option>').attr({ 'value': entry.province_name, 'province-code': entry.province_code }).text(entry.province_name));
                             }
                         })
-            
+
                     });
                 }
 
@@ -239,26 +239,26 @@ $(function () {
                         var result = data.filter(function (value) {
                             return value.province_code == status.user[0]["userProvinceCode"];
                         });
-            
+
                         result.sort(function (a, b) {
                             return a.city_name.localeCompare(b.city_name);
                         });
-            
+
                         $.each(result, function (key, entry) {
                             dropdown_city.append($('<option></option>').attr({ 'value': entry.city_name, 'city-code': entry.city_code }).text(entry.city_name));
                         })
-            
+
                     });
                 } else {
                     $.getJSON(url_city, function (data) {
                         var result = data.filter(function (value) {
                             return value.province_code == status.user[0]["userProvinceCode"];
                         });
-            
+
                         result.sort(function (a, b) {
                             return a.city_name.localeCompare(b.city_name);
                         });
-            
+
                         $.each(result, function (key, entry) {
                             if (entry.city_code == status.user[0]["userCityCode"]) {
                                 dropdown_city.append($('<option></option>').attr({ 'value': entry.city_name, 'city-code': entry.city_code, 'selected': 'selected' }).text(entry.city_name));
@@ -266,7 +266,7 @@ $(function () {
                                 dropdown_city.append($('<option></option>').attr({ 'value': entry.city_name, 'city-code': entry.city_code }).text(entry.city_name));
                             }
                         })
-            
+
                     });
                 }
 
@@ -275,26 +275,26 @@ $(function () {
                         var result = data.filter(function (value) {
                             return value.city_code == status.user[0]["userCityCode"];
                         });
-            
+
                         result.sort(function (a, b) {
                             return a.brgy_name.localeCompare(b.brgy_name);
                         });
-            
+
                         $.each(result, function (key, entry) {
                             dropdown_barangay.append($('<option></option>').attr({ 'value': entry.brgy_name, 'brgy-code': entry.brgy_code }).text(entry.brgy_name));
                         })
-            
+
                     });
                 } else {
                     $.getJSON(url_barangay, function (data) {
                         var result = data.filter(function (value) {
                             return value.city_code == status.user[0]["userCityCode"];
                         });
-            
+
                         result.sort(function (a, b) {
                             return a.brgy_name.localeCompare(b.brgy_name);
                         });
-            
+
                         $.each(result, function (key, entry) {
                             if (entry.brgy_code == status.user[0]["userBarangayCode"]) {
                                 dropdown_barangay.append($('<option></option>').attr({ 'value': entry.brgy_name, 'brgy-code': entry.brgy_code, 'selected': 'selected' }).text(entry.brgy_name));
@@ -302,10 +302,10 @@ $(function () {
                                 dropdown_barangay.append($('<option></option>').attr({ 'value': entry.brgy_name, 'brgy-code': entry.brgy_code }).text(entry.brgy_name));
                             }
                         })
-            
+
                     });
                 }
-                
+
             }
             if (status.status == 401 || status.status == 404) {
                 alert(status.message);
@@ -466,65 +466,53 @@ $("[data-ii-updateprofile-modal-action='update']").click(function (e) {
         return;
     }
 
-    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
-
-    if (ii_accessconfirmation == "") {
-        $("#ii_accesspassword").val(setting);
-        $("#modal_access").modal("show");
-        setTimeout(() => {
-            $("#ii_password").focus();
-        }, 500);
-    } else {
-
-        $.ajax({
-            url: '../../app/functions/user-management/fn_updateUserProfile.php',
-            type: 'POST',
-            data: {
-                ii_lastname: ii_lastname,
-                ii_firstname: ii_firstname,
-                ii_middlename: ii_middlename,
-                ii_nickname: ii_nickname,
-                select_gender: select_gender,
-                select_civilstatus: select_civilstatus,
-                ii_nationality: ii_nationality,
-                ii_age: ii_age,
-                ii_birthdate: ii_birthdate,
-                ii_placeofbirth: ii_placeofbirth,
-                ii_contactnumber: ii_contactnumber,
-                ii_address: ii_address,
-                region_code: region_code,
-                province_code: province_code,
-                city_code: city_code,
-                barangay_code: barangay_code,
-                region: region,
-                province: province,
-                city: city,
-                barangay: barangay
-            },
-            cache: false,
-            success: function (response) {
-                var status = JSON.parse(response);
-                if (status.status == 200) {
-                    $("#modal_access").modal("hide");
-                    sweetAlertSuccess(status.message);
-                    $("#ii_accessconfirmation").val("");
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                }
-                if (status.status == 403) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 500) {
-                    sweetAlertError(status.message);
-                }
-            },
-            error: function (response) {
-                sweetAlertError("Server Error, Please contact administrator!");
+    $.ajax({
+        url: '../../app/functions/user-management/fn_updateUserProfile.php',
+        type: 'POST',
+        data: {
+            ii_lastname: ii_lastname,
+            ii_firstname: ii_firstname,
+            ii_middlename: ii_middlename,
+            ii_nickname: ii_nickname,
+            select_gender: select_gender,
+            select_civilstatus: select_civilstatus,
+            ii_nationality: ii_nationality,
+            ii_age: ii_age,
+            ii_birthdate: ii_birthdate,
+            ii_placeofbirth: ii_placeofbirth,
+            ii_contactnumber: ii_contactnumber,
+            ii_address: ii_address,
+            region_code: region_code,
+            province_code: province_code,
+            city_code: city_code,
+            barangay_code: barangay_code,
+            region: region,
+            province: province,
+            city: city,
+            barangay: barangay
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                $("#modal_access").modal("hide");
+                sweetAlertSuccess(status.message);
+                $("#ii_accessconfirmation").val("");
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }
-        })
-
-    }
+            if (status.status == 403) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
 
 });
 
@@ -559,40 +547,8 @@ $("[data-ii-userpassword-modal-action='submit']").click(function (e) {
 
                 var ii_accesspassword = $("#ii_accesspassword").val().trim();
 
-                if (ii_accesspassword == "updateprofile") {
-                    $("[data-ii-updateprofile-modal-action='update']").click();
-                }
-
                 if (ii_accesspassword == "enableauth") {
                     $("[data-ii-googleauth-modal-action='submit']").click();
-                }
-
-                if (ii_accesspassword == "updatespouse") {
-                    $("[data-ii-updatespouse-modal-action='update']").click();
-                }
-
-                if (ii_accesspassword == "updatehomeownership") {
-                    $("[data-ii-updatehomeownership-modal-action='update']").click();
-                }
-
-                if (ii_accesspassword == "updateemployment") {
-                    $("[data-ii-updateemployment-modal-action='update']").click();
-                }
-
-                if (ii_accesspassword == "updatepersonal") {
-                    $("[data-ii-updatepersonal-modal-action='update']").click();
-                }
-
-                if (ii_accesspassword == "updatechildren") {
-                    $("[data-ii-updatechildren-modal-action='update']").click();
-                }
-
-                if (ii_accesspassword == "updaterelatives") {
-                    $("[data-ii-updaterelatives-modal-action='update']").click();
-                }
-
-                if (ii_accesspassword == "updateneighbors") {
-                    $("[data-ii-updateneighbors-modal-action='update']").click();
                 }
 
             }
@@ -901,55 +857,45 @@ if ($("[data-ii-updatespouse-modal-action='update']").length == 1) {
 
         var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
 
-        if (ii_accessconfirmation == "") {
-            $("#ii_accesspassword").val(setting);
-            $("#modal_access").modal("show");
-            setTimeout(() => {
-                $("#ii_password").focus();
-            }, 500);
-        } else {
-
-            $.ajax({
-                url: '../../app/functions/user-management/fn_updateUserProfileSpouse.php',
-                type: 'POST',
-                data: {
-                    ii_spouselastname: ii_spouselastname,
-                    ii_spousefirstname: ii_spousefirstname,
-                    ii_spousemiddlename: ii_spousemiddlename,
-                    ii_spousenickname: ii_spousenickname,
-                    select_spousegender: select_spousegender,
-                    select_spousecivilstatus: select_spousecivilstatus,
-                    ii_spousenationality: ii_spousenationality,
-                    ii_spouseage: ii_spouseage,
-                    ii_spousebirthdate: ii_spousebirthdate,
-                    ii_spouseplaceofbirth: ii_spouseplaceofbirth,
-                    ii_spousecontactnumber: ii_spousecontactnumber
-                },
-                cache: false,
-                success: function (response) {
-                    var status = JSON.parse(response);
-                    if (status.status == 200) {
-                        $("#modal_access").modal("hide");
-                        sweetAlertSuccess(status.message);
-                        $("#ii_accessconfirmation").val("");
-                        $("#ii_password").val("");
-                        // setTimeout(() => {
-                        //     location.reload();
-                        // }, 1000);
-                    }
-                    if (status.status == 403) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 500) {
-                        sweetAlertError(status.message);
-                    }
-                },
-                error: function (response) {
-                    sweetAlertError("Server Error, Please contact administrator!");
+        $.ajax({
+            url: '../../app/functions/user-management/fn_updateUserProfileSpouse.php',
+            type: 'POST',
+            data: {
+                ii_spouselastname: ii_spouselastname,
+                ii_spousefirstname: ii_spousefirstname,
+                ii_spousemiddlename: ii_spousemiddlename,
+                ii_spousenickname: ii_spousenickname,
+                select_spousegender: select_spousegender,
+                select_spousecivilstatus: select_spousecivilstatus,
+                ii_spousenationality: ii_spousenationality,
+                ii_spouseage: ii_spouseage,
+                ii_spousebirthdate: ii_spousebirthdate,
+                ii_spouseplaceofbirth: ii_spouseplaceofbirth,
+                ii_spousecontactnumber: ii_spousecontactnumber
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    $("#ii_accessconfirmation").val("");
+                    $("#ii_password").val("");
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 1000);
                 }
-            })
-
-        }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
 
     });
 
@@ -1079,50 +1025,40 @@ if ($("[data-ii-updatehomeownership-modal-action='update']").length == 1) {
 
         var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
 
-        if (ii_accessconfirmation == "") {
-            $("#ii_accesspassword").val(setting);
-            $("#modal_access").modal("show");
-            setTimeout(() => {
-                $("#ii_password").focus();
-            }, 500);
-        } else {
-
-            $.ajax({
-                url: '../../app/functions/user-management/fn_updateUserProfileHomeOwnership.php',
-                type: 'POST',
-                data: {
-                    homeownership_select: homeownership_select,
-                    ii_homeownershipmonthlyamortization: ii_homeownershipmonthlyamortization,
-                    ii_homeownershipmonthlyrental: ii_homeownershipmonthlyrental,
-                    ii_homeownershiplandlord: ii_homeownershiplandlord,
-                    ii_homeownershipyearsstay: ii_homeownershipyearsstay,
-                    ii_homeownershippreviousaddress: ii_homeownershippreviousaddress
-                },
-                cache: false,
-                success: function (response) {
-                    var status = JSON.parse(response);
-                    if (status.status == 200) {
-                        $("#modal_access").modal("hide");
-                        sweetAlertSuccess(status.message);
-                        $("#ii_accessconfirmation").val("");
-                        $("#ii_password").val("");
-                        // setTimeout(() => {
-                        //     location.reload();
-                        // }, 1000);
-                    }
-                    if (status.status == 403) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 500) {
-                        sweetAlertError(status.message);
-                    }
-                },
-                error: function (response) {
-                    sweetAlertError("Server Error, Please contact administrator!");
+        $.ajax({
+            url: '../../app/functions/user-management/fn_updateUserProfileHomeOwnership.php',
+            type: 'POST',
+            data: {
+                homeownership_select: homeownership_select,
+                ii_homeownershipmonthlyamortization: ii_homeownershipmonthlyamortization,
+                ii_homeownershipmonthlyrental: ii_homeownershipmonthlyrental,
+                ii_homeownershiplandlord: ii_homeownershiplandlord,
+                ii_homeownershipyearsstay: ii_homeownershipyearsstay,
+                ii_homeownershippreviousaddress: ii_homeownershippreviousaddress
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    $("#ii_accessconfirmation").val("");
+                    $("#ii_password").val("");
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 1000);
                 }
-            })
-
-        }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
 
     });
 
@@ -1248,54 +1184,44 @@ if ($("[data-ii-updateemployment-modal-action='update']").length == 1) {
 
         var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
 
-        if (ii_accessconfirmation == "") {
-            $("#ii_accesspassword").val(setting);
-            $("#modal_access").modal("show");
-            setTimeout(() => {
-                $("#ii_password").focus();
-            }, 500);
-        } else {
-
-            $.ajax({
-                url: '../../app/functions/user-management/fn_updateUserProfileEmployment.php',
-                type: 'POST',
-                data: {
-                    set_1: set_1,
-                    set_2: set_2,
-                    ii_employmentemployerbusiness_1: ii_employmentemployerbusiness_1,
-                    ii_employmenttelephonenumber_1: ii_employmenttelephonenumber_1,
-                    ii_employmentposition_1: ii_employmentposition_1,
-                    ii_employmentyearsemployed_1: ii_employmentyearsemployed_1,
-                    ii_employmentemployerbusiness_2: ii_employmentemployerbusiness_2,
-                    ii_employmenttelephonenumber_2: ii_employmenttelephonenumber_2,
-                    ii_employmentposition_2: ii_employmentposition_2,
-                    ii_employmentyearsemployed_2: ii_employmentyearsemployed_2
-                },
-                cache: false,
-                success: function (response) {
-                    var status = JSON.parse(response);
-                    if (status.status == 200) {
-                        $("#modal_access").modal("hide");
-                        sweetAlertSuccess(status.message);
-                        $("#ii_accessconfirmation").val("");
-                        $("#ii_password").val("");
-                        // setTimeout(() => {
-                        //     location.reload();
-                        // }, 1000);
-                    }
-                    if (status.status == 403) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 500) {
-                        sweetAlertError(status.message);
-                    }
-                },
-                error: function (response) {
-                    sweetAlertError("Server Error, Please contact administrator!");
+        $.ajax({
+            url: '../../app/functions/user-management/fn_updateUserProfileEmployment.php',
+            type: 'POST',
+            data: {
+                set_1: set_1,
+                set_2: set_2,
+                ii_employmentemployerbusiness_1: ii_employmentemployerbusiness_1,
+                ii_employmenttelephonenumber_1: ii_employmenttelephonenumber_1,
+                ii_employmentposition_1: ii_employmentposition_1,
+                ii_employmentyearsemployed_1: ii_employmentyearsemployed_1,
+                ii_employmentemployerbusiness_2: ii_employmentemployerbusiness_2,
+                ii_employmenttelephonenumber_2: ii_employmenttelephonenumber_2,
+                ii_employmentposition_2: ii_employmentposition_2,
+                ii_employmentyearsemployed_2: ii_employmentyearsemployed_2
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    $("#ii_accessconfirmation").val("");
+                    $("#ii_password").val("");
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 1000);
                 }
-            })
-
-        }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
 
     });
 
@@ -1433,56 +1359,46 @@ if ($("[data-ii-updatepersonal-modal-action='update']").length == 1) {
 
         var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
 
-        if (ii_accessconfirmation == "") {
-            $("#ii_accesspassword").val(setting);
-            $("#modal_access").modal("show");
-            setTimeout(() => {
-                $("#ii_password").focus();
-            }, 500);
-        } else {
-
-            $.ajax({
-                url: '../../app/functions/user-management/fn_updateUserProfilePersonal.php',
-                type: 'POST',
-                data: {
-                    set_1: set_1,
-                    set_2: set_2,
-                    ii_personalfname_1: ii_personalfname_1,
-                    ii_personalfage_1: ii_personalfage_1,
-                    ii_personaladdress_1: ii_personaladdress_1,
-                    ii_personalemployer_1: ii_personalemployer_1,
-                    ii_personalemployeraddress_1: ii_personalemployeraddress_1,
-                    ii_personalmname_2: ii_personalmname_2,
-                    ii_personalmage_2: ii_personalmage_2,
-                    ii_personaladdress_2: ii_personaladdress_2,
-                    ii_personalemployer_2: ii_personalemployer_2,
-                    ii_personalemployeraddress_2: ii_personalemployeraddress_2
-                },
-                cache: false,
-                success: function (response) {
-                    var status = JSON.parse(response);
-                    if (status.status == 200) {
-                        $("#modal_access").modal("hide");
-                        sweetAlertSuccess(status.message);
-                        $("#ii_accessconfirmation").val("");
-                        $("#ii_password").val("");
-                        // setTimeout(() => {
-                        //     location.reload();
-                        // }, 1000);
-                    }
-                    if (status.status == 403) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 500) {
-                        sweetAlertError(status.message);
-                    }
-                },
-                error: function (response) {
-                    sweetAlertError("Server Error, Please contact administrator!");
+        $.ajax({
+            url: '../../app/functions/user-management/fn_updateUserProfilePersonal.php',
+            type: 'POST',
+            data: {
+                set_1: set_1,
+                set_2: set_2,
+                ii_personalfname_1: ii_personalfname_1,
+                ii_personalfage_1: ii_personalfage_1,
+                ii_personaladdress_1: ii_personaladdress_1,
+                ii_personalemployer_1: ii_personalemployer_1,
+                ii_personalemployeraddress_1: ii_personalemployeraddress_1,
+                ii_personalmname_2: ii_personalmname_2,
+                ii_personalmage_2: ii_personalmage_2,
+                ii_personaladdress_2: ii_personaladdress_2,
+                ii_personalemployer_2: ii_personalemployer_2,
+                ii_personalemployeraddress_2: ii_personalemployeraddress_2
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    $("#ii_accessconfirmation").val("");
+                    $("#ii_password").val("");
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 1000);
                 }
-            })
-
-        }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
 
     });
 
@@ -1516,7 +1432,7 @@ if ($("[data-ii-updatechildren-modal-action='update']").length == 1) {
         var ii_childrenage_5 = $("#ii_childrenage_5").val().trim();
         var ii_childrengraduate_5 = $("#ii_childrengraduate_5").val().trim();
         var ii_childrenschool_5 = $("#ii_childrenschool_5").val().trim();
-        
+
         let set_1 = 0;
         let set_2 = 0;
         let set_3 = 0;
@@ -1653,71 +1569,59 @@ if ($("[data-ii-updatechildren-modal-action='update']").length == 1) {
 
         }
 
-        var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
-
-        if (ii_accessconfirmation == "") {
-            $("#ii_accesspassword").val(setting);
-            $("#modal_access").modal("show");
-            setTimeout(() => {
-                $("#ii_password").focus();
-            }, 500);
-        } else {
-
-            $.ajax({
-                url: '../../app/functions/user-management/fn_updateUserProfileChildren.php',
-                type: 'POST',
-                data: {
-                    set_1: set_1,
-                    set_2: set_2,
-                    set_3: set_3,
-                    set_4: set_4,
-                    set_5: set_5,
-                    ii_childrenname_1: ii_childrenname_1,
-                    ii_childrenage_1: ii_childrenage_1,
-                    ii_childrengraduate_1: ii_childrengraduate_1,
-                    ii_childrenschool_1: ii_childrenschool_1,
-                    ii_childrenname_2: ii_childrenname_2,
-                    ii_childrenage_2: ii_childrenage_2,
-                    ii_childrengraduate_2: ii_childrengraduate_2,
-                    ii_childrenschool_2: ii_childrenschool_2,
-                    ii_childrenname_3: ii_childrenname_3,
-                    ii_childrenage_3: ii_childrenage_3,
-                    ii_childrengraduate_3: ii_childrengraduate_3,
-                    ii_childrenschool_3: ii_childrenschool_3,
-                    ii_childrenname_4: ii_childrenname_4,
-                    ii_childrenage_4: ii_childrenage_4,
-                    ii_childrengraduate_4: ii_childrengraduate_4,
-                    ii_childrenschool_4: ii_childrenschool_4,
-                    ii_childrenname_5: ii_childrenname_5,
-                    ii_childrenage_5: ii_childrenage_5,
-                    ii_childrengraduate_5: ii_childrengraduate_5,
-                    ii_childrenschool_5: ii_childrenschool_5
-                },
-                cache: false,
-                success: function (response) {
-                    var status = JSON.parse(response);
-                    if (status.status == 200) {
-                        $("#modal_access").modal("hide");
-                        sweetAlertSuccess(status.message);
-                        $("#ii_accessconfirmation").val("");
-                        $("#ii_password").val("");
-                        // setTimeout(() => {
-                        //     location.reload();
-                        // }, 1000);
-                    }
-                    if (status.status == 403) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 500) {
-                        sweetAlertError(status.message);
-                    }
-                },
-                error: function (response) {
-                    sweetAlertError("Server Error, Please contact administrator!");
+        $.ajax({
+            url: '../../app/functions/user-management/fn_updateUserProfileChildren.php',
+            type: 'POST',
+            data: {
+                set_1: set_1,
+                set_2: set_2,
+                set_3: set_3,
+                set_4: set_4,
+                set_5: set_5,
+                ii_childrenname_1: ii_childrenname_1,
+                ii_childrenage_1: ii_childrenage_1,
+                ii_childrengraduate_1: ii_childrengraduate_1,
+                ii_childrenschool_1: ii_childrenschool_1,
+                ii_childrenname_2: ii_childrenname_2,
+                ii_childrenage_2: ii_childrenage_2,
+                ii_childrengraduate_2: ii_childrengraduate_2,
+                ii_childrenschool_2: ii_childrenschool_2,
+                ii_childrenname_3: ii_childrenname_3,
+                ii_childrenage_3: ii_childrenage_3,
+                ii_childrengraduate_3: ii_childrengraduate_3,
+                ii_childrenschool_3: ii_childrenschool_3,
+                ii_childrenname_4: ii_childrenname_4,
+                ii_childrenage_4: ii_childrenage_4,
+                ii_childrengraduate_4: ii_childrengraduate_4,
+                ii_childrenschool_4: ii_childrenschool_4,
+                ii_childrenname_5: ii_childrenname_5,
+                ii_childrenage_5: ii_childrenage_5,
+                ii_childrengraduate_5: ii_childrengraduate_5,
+                ii_childrenschool_5: ii_childrenschool_5
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    $("#ii_accessconfirmation").val("");
+                    $("#ii_password").val("");
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 1000);
                 }
-            })
-
-        }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
 
     });
 
@@ -1820,54 +1724,42 @@ if ($("[data-ii-updaterelatives-modal-action='update']").length == 1) {
             return;
         }
 
-        var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
-
-        if (ii_accessconfirmation == "") {
-            $("#ii_accesspassword").val(setting);
-            $("#modal_access").modal("show");
-            setTimeout(() => {
-                $("#ii_password").focus();
-            }, 500);
-        } else {
-
-            $.ajax({
-                url: '../../app/functions/user-management/fn_updateUserProfileRelatives.php',
-                type: 'POST',
-                data: {
-                    set_1: set_1,
-                    set_2: set_2,
-                    ii_relativesname_1: ii_relativesname_1,
-                    ii_relativesaddress_1: ii_relativesaddress_1,
-                    ii_relativescpnumber_1: ii_relativescpnumber_1,
-                    ii_relativesname_2: ii_relativesname_2,
-                    ii_relativesaddress_2: ii_relativesaddress_2,
-                    ii_relativescpnumber_2: ii_relativescpnumber_2
-                },
-                cache: false,
-                success: function (response) {
-                    var status = JSON.parse(response);
-                    if (status.status == 200) {
-                        $("#modal_access").modal("hide");
-                        sweetAlertSuccess(status.message);
-                        $("#ii_accessconfirmation").val("");
-                        $("#ii_password").val("");
-                        // setTimeout(() => {
-                        //     location.reload();
-                        // }, 1000);
-                    }
-                    if (status.status == 403) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 500) {
-                        sweetAlertError(status.message);
-                    }
-                },
-                error: function (response) {
-                    sweetAlertError("Server Error, Please contact administrator!");
+        $.ajax({
+            url: '../../app/functions/user-management/fn_updateUserProfileRelatives.php',
+            type: 'POST',
+            data: {
+                set_1: set_1,
+                set_2: set_2,
+                ii_relativesname_1: ii_relativesname_1,
+                ii_relativesaddress_1: ii_relativesaddress_1,
+                ii_relativescpnumber_1: ii_relativescpnumber_1,
+                ii_relativesname_2: ii_relativesname_2,
+                ii_relativesaddress_2: ii_relativesaddress_2,
+                ii_relativescpnumber_2: ii_relativescpnumber_2
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    $("#ii_accessconfirmation").val("");
+                    $("#ii_password").val("");
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 1000);
                 }
-            })
-
-        }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
 
     });
 
@@ -1970,55 +1862,43 @@ if ($("[data-ii-updateneighbors-modal-action='update']").length == 1) {
             return;
         }
 
-        var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
-
-        if (ii_accessconfirmation == "") {
-            $("#ii_accesspassword").val(setting);
-            $("#modal_access").modal("show");
-            setTimeout(() => {
-                $("#ii_password").focus();
-            }, 500);
-        } else {
-
-            $.ajax({
-                url: '../../app/functions/user-management/fn_updateUserProfileNeighbor.php',
-                type: 'POST',
-                data: {
-                    set_1: set_1,
-                    set_2: set_2,
-                    ii_neighborsname_1: ii_neighborsname_1,
-                    ii_neighborsaddress_1: ii_neighborsaddress_1,
-                    ii_neighborscpnumber_1: ii_neighborscpnumber_1,
-                    ii_neighborsname_2: ii_neighborsname_2,
-                    ii_neighborsaddress_2: ii_neighborsaddress_2,
-                    ii_neighborscpnumber_2: ii_neighborscpnumber_2
-                },
-                cache: false,
-                success: function (response) {
-                    var status = JSON.parse(response);
-                    if (status.status == 200) {
-                        $("#modal_access").modal("hide");
-                        sweetAlertSuccess(status.message);
-                        $("#ii_accessconfirmation").val("");
-                        $("#ii_password").val("");
-                        // setTimeout(() => {
-                        //     location.reload();
-                        // }, 1000);
-                    }
-                    if (status.status == 403) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 500) {
-                        sweetAlertError(status.message);
-                    }
-                },
-                error: function (response) {
-                    sweetAlertError("Server Error, Please contact administrator!");
+        $.ajax({
+            url: '../../app/functions/user-management/fn_updateUserProfileNeighbor.php',
+            type: 'POST',
+            data: {
+                set_1: set_1,
+                set_2: set_2,
+                ii_neighborsname_1: ii_neighborsname_1,
+                ii_neighborsaddress_1: ii_neighborsaddress_1,
+                ii_neighborscpnumber_1: ii_neighborscpnumber_1,
+                ii_neighborsname_2: ii_neighborsname_2,
+                ii_neighborsaddress_2: ii_neighborsaddress_2,
+                ii_neighborscpnumber_2: ii_neighborscpnumber_2
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    $("#ii_accessconfirmation").val("");
+                    $("#ii_password").val("");
+                    // setTimeout(() => {
+                    //     location.reload();
+                    // }, 1000);
                 }
-            })
-
-        }
-
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+        
     });
 
 }
