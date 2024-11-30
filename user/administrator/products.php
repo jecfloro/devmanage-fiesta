@@ -980,8 +980,6 @@ try {
                             </div>
                             <div class="d-flex gap-3 mt-5 flex-wrap">
                                 <button class="btn btn-primary btn-sm">General Information</button>
-                                <button class="btn btn-light btn-sm">Purchase History</button>
-                                <button class="btn btn-light btn-sm">Notes</button>
                             </div>
                             <div class="row mt-5 g-3">
                                 <div class="col-xl-7">

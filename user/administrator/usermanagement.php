@@ -371,12 +371,12 @@ try {
                                                                     </td>
                                                                     <td class="text-end datainput">
                                                                         <div class="d-flex justify-content-end gap-2">
-                                                                            <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-edit-action="edit">
+                                                                            <!-- <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-edit-action="edit">
                                                                                 <i class="ki-duotone ki-notepad-edit fs-2x">
                                                                                     <span class="path1"></span>
                                                                                     <span class="path2"></span>
                                                                                 </i>
-                                                                            </div>
+                                                                            </div> -->
                                                                             <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $ruser["PK_appsysUsers"]; ?>" data-ii-input-lock-action="lock">
                                                                                 <i class="ki-duotone ki-lock-2 fs-2x">
                                                                                     <span class="path1"></span>
