@@ -27,9 +27,17 @@ try {
         $email = $ruserprofile["user_email"];
     }
 
+    $brands = $conn->prepare("SELECT a.PK_mscBrands, a.FK_mscCategories, a.description AS brandDescription, b.description AS categoryDescription FROM msc_brands AS a JOIN msc_categories AS b ON a.FK_mscCategories = b.PK_mscCategories");
+    $brands->execute();
+    $cbrands = $brands->rowCount();
+
     $categories = $conn->prepare("SELECT * FROM msc_categories");
     $categories->execute();
     $ccategories = $categories->rowCount();
+
+    $categoriesedit = $conn->prepare("SELECT * FROM msc_categories");
+    $categoriesedit->execute();
+    $ccategoriesedit = $categoriesedit->rowCount();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -239,8 +247,8 @@ try {
                                         Settings
                                     </li>
                                     <li class="breadcrumb-item text-dark">
-                                        <a href="product-categories.php" class="text-dark text-hover-primary">
-                                            Product Categories
+                                        <a href="brands.php" class="text-dark text-hover-primary">
+                                            Brands
                                         </a>
                                     </li>
                                 </ul>
@@ -258,15 +266,15 @@ try {
                                         <div class="card-header border-0 pt-6">
                                             <div class="card-title">
                                                 <div class="d-flex align-items-center position-relative my-1">
-                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-productcategory-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search Category" />
+                                                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5"><span class="path1"></span><span class="path2"></span></i> <input type="text" data-kt-brands-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search Brand" />
                                                 </div>
                                             </div>
                                             <div class="card-toolbar">
                                                 <!-- Search -->
                                                 <div class="d-flex justify-content-end gap-3 flex-wrap">
-                                                    <button type="button" class="btn btn-primary d-flex align-items-center ps-5" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                                                    <button type="button" class="btn btn-primary d-flex align-items-center ps-5" data-bs-toggle="modal" data-bs-target="#addBrandModal">
                                                         <i class="ki-duotone ki-plus fs-2"></i>
-                                                        <span>Add Category</span>
+                                                        <span>Add Brand</span>
                                                     </button>
                                                     <a href="" class="btn btn-secondary d-flex align-items-center">
                                                         <i class="ki-duotone ki-arrow-circle-right fs-2">
@@ -279,31 +287,33 @@ try {
                                             </div>
                                         </div>
                                         <div class="card-body py-4">
-                                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_productCategory">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="tb_brands">
                                                 <thead>
                                                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                                                        <th>Brand</th>
                                                         <th>Category</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-gray-600 fw-semibold">
-                                                    <?php if ($ccategories > 0) { ?>
-                                                        <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                    <?php if ($cbrands > 0) { ?>
+                                                        <?php while ($rbrands = $brands->fetch(PDO::FETCH_ASSOC)) { ?>
                                                             <tr>
-                                                                <td><?php echo $rcategories["description"]; ?></td>
+                                                                <td><?php echo $rbrands["brandDescription"]; ?></td>
+                                                                <td><?php echo $rbrands["categoryDescription"]; ?></td>
                                                                 <td class="text-end datainput">
                                                                     <div class="d-flex justify-content-end gap-2">
-                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rcategories["PK_mscCategories"]; ?>" data-ii-input-edit-action="edit">
+                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rbrands["PK_mscBrands"]; ?>" data-ii-input-editbrand-action="edit">
                                                                             <i class="ki-duotone ki-notepad-edit fs-2x">
                                                                                 <span class="path1"></span>
                                                                                 <span class="path2"></span>
                                                                             </i>
                                                                         </div>
-                                                                        <a href="product-properties.php?cid=<?php echo $rcategories["PK_mscCategories"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3">
+                                                                        <a href="brand-models.php?bid=<?php echo $rbrands["PK_mscBrands"]; ?>" class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3">
                                                                             <i class="ki-duotone ki-setting-4 fs-2x">
                                                                             </i>
                                                                         </a>
-                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rcategories["PK_mscCategories"]; ?>" data-ii-input-delete-action="delete">
+                                                                        <div class="tableaction-hover rounded pt-2 pb-1 ps-3 pe-3" data-ii-val="<?php echo $rbrands["PK_mscBrands"]; ?>" data-ii-input-deletebrand-action="delete">
                                                                             <i class="ki-duotone ki-trash fs-2x">
                                                                                 <span class="path1"></span>
                                                                                 <span class="path2"></span>
@@ -339,11 +349,11 @@ try {
                     </div>
                 </div>
                 <!-- Modal -->
-                <div class="modal fade" tabindex="-1" id="addCategoryModal">
+                <div class="modal fade" tabindex="-1" id="addBrandModal">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header" id="modal_accessHeader">
-                                <h2 class="fw-bold mt-3">Add Category</h2>
+                                <h2 class="fw-bold mt-3">Add Brand</h2>
                                 <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
                                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                                 </div>
@@ -352,23 +362,38 @@ try {
                             <div class="modal-body">
                                 <div class="row g-5">
                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                        <input type="text" id="ii_category" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Category">
+                                        <input type="text" id="ii_brand" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Brand Name">
+                                    </div>
+                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                        <select class="form-select form-select-solid fw-bolder"
+                                            data-kt-select2="true" data-placeholder="Select Category"
+                                            data-allow-clear="true"
+                                            data-hide-search="true" id="ii_productcategory">
+                                            <option value=""></option>
+                                            <?php if ($ccategories > 0) { ?>
+                                                <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                    <option value="<?php echo $rcategories["PK_mscCategories"]; ?>">
+                                                        <?php echo $rcategories["description"]; ?>
+                                                    </option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-ii-categoryadd-modal-action="submit" data-passaccess="addcategory">Save changes</button>
+                                <button type="button" class="btn btn-primary" data-ii-brandadd-modal-action="submit" data-passaccess="addbrand">Save changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" tabindex="-1" id="editCategoryModal">
+                <div class="modal fade" tabindex="-1" id="editBrandModal">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header" id="modal_accessHeader">
-                                <h2 class="fw-bold mt-3">Edit Category</h2>
+                                <h2 class="fw-bold mt-3">Edit Brand</h2>
                                 <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
                                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                                 </div>
@@ -376,35 +401,51 @@ try {
 
                             <div class="modal-body">
                                 <div class="row g-5">
+                                    <div class="col-xl-12 fv-row fv-plugins-icon-container" hidden>
+                                        <input type="text" id="ii_brandidedit" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Brand Name">
+                                    </div>
                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
-                                        <input type="text" id="ii_categoryidedit" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Category" hidden>
-                                        <input type="text" id="ii_categoryedit" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Category">
+                                        <input type="text" id="ii_brandedit" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Brand Name">
+                                    </div>
+                                    <div class="col-xl-12 fv-row fv-plugins-icon-container">
+                                        <select class="form-select form-select-solid fw-bolder"
+                                            data-kt-select2="true" data-placeholder="Select Category"
+                                            data-allow-clear="true"
+                                            data-hide-search="true" id="ii_productcategoryedit">
+                                            <option value=""></option>
+                                            <?php if ($ccategoriesedit > 0) { ?>
+                                                <?php while ($rcategoriesedit = $categoriesedit->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                    <option value="<?php echo $rcategoriesedit["PK_mscCategories"]; ?>">
+                                                        <?php echo $rcategoriesedit["description"]; ?>
+                                                    </option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-ii-categoryedit-modal-action="submit" data-passaccess="editcategory">Save changes</button>
+                                <button type="button" class="btn btn-primary" data-ii-brandedit-modal-action="submit" data-passaccess="editbrand">Save changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" tabindex="-1" id="deleteCategoryModal">
+                <div class="modal fade" tabindex="-1" id="deleteBrandModal">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header" id="modal_accessHeader">
-                                <h2 class="fw-bold mt-3">Delete Category</h2>
+                                <h2 class="fw-bold mt-3">Delete Brand</h2>
                                 <div class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
                                     <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                                 </div>
                             </div>
-                            
+
                             <div class="modal-body">
                                 <div class="row g-5">
                                     <div class="col-xl-12 fv-row fv-plugins-icon-container text-center">
-                                        <input type="text" id="ii_categoryiddelete" class="form-control form-control-lg form-control-solid fw-bolder" placeholder="Enter Category" hidden>
-                                        <p>All products assigned to this category will tagged as "Unassigned"</p>
+                                        <input type="text" id="ii_brandiddelete" class="form-control form-control-lg form-control-solid fw-bolder" hidden>
                                         <p class="fw-bolder mb-n3">Confirm Delete?</p>
                                     </div>
                                 </div>
@@ -412,7 +453,7 @@ try {
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" data-ii-categorydelete-modal-action="submit" data-passaccess="deletecategory">Delete</button>
+                                <button type="button" class="btn btn-primary" data-ii-branddelete-modal-action="submit" data-passaccess="deletebrand">Save changes</button>
                             </div>
                         </div>
                     </div>
@@ -431,7 +472,7 @@ try {
     <script src="../../assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <script src="../../assets/js/widgets.bundle.js"></script>
     <script src="../../assets/js/custom/widgets.js"></script>
-    <script src="../../assets/js/datatables/tb-productcategories.js"></script>
+    <script src="../../assets/js/datatables/tb-brands.js"></script>
     <script type="module" src="../../app/js/main.product.js"></script>
 </body>
 

@@ -3,6 +3,117 @@
 import { defaultFormat, PasswordFormat, emailFormat, phoneFormat } from "./main.formatScript.js";
 import { sweetAlertSuccess, sweetAlertError } from "./main.SweetAlert.js";
 
+$("[data-ii-userpassword-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var ii_password = $("#ii_password").val().trim();
+
+    if (ii_password == "") {
+        sweetAlertError("Password is empty!");
+        return;
+    }
+
+    if (!ii_password.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Password!");
+        return;
+    }
+
+    $.ajax({
+        url: '../../app/functions/authentication/fn_PasswordVerify.php',
+        type: 'POST',
+        data: {
+            ii_password: ii_password
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200 && status.access == 1) {
+
+                $("#ii_accessconfirmation").val(1);
+
+                var ii_accesspassword = $("#ii_accesspassword").val().trim();
+
+                if (ii_accesspassword == "addcategory") {
+                    $("[data-ii-categoryadd-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "editcategory") {
+                    $("[data-ii-categoryedit-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "deletecategory") {
+                    $("[data-ii-categorydelete-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "addproduct") {
+                    $("[data-ii-productadd-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "editproduct") {
+                    $("[data-ii-productedit-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "deleteproduct") {
+                    $("[data-delete-product-details='delete']").click();
+                }
+
+                if (ii_accesspassword == "addproperty") {
+                    $("[data-ii-propertyadd-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "editproperty") {
+                    $("[data-ii-propertyedit-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "deleteproperty") {
+                    $("[data-ii-propertydelete-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "addbrand") {
+                    $("[data-ii-brandadd-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "editbrand") {
+                    $("[data-ii-brandedit-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "deletebrand") {
+                    $("[data-ii-branddelete-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "addmodel") {
+                    $("[data-ii-modeladd-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "editmodel") {
+                    $("[data-ii-modeledit-modal-action='submit']").click();
+                }
+
+                if (ii_accesspassword == "deletemodel") {
+                    $("[data-ii-modeldelete-modal-action='submit']").click();
+                }
+
+            }
+
+            if (status.status == 401) {
+                $("#ii_password").val("");
+                sweetAlertError(status.message);
+            }
+            if (status.status == 404) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
+
+});
+
 $("[data-ii-categoryadd-modal-action='submit']").click(function (e) {
 
     e.preventDefault();
@@ -64,76 +175,6 @@ $("[data-ii-categoryadd-modal-action='submit']").click(function (e) {
         })
 
     }
-
-});
-
-$("[data-ii-userpassword-modal-action='submit']").click(function (e) {
-
-    e.preventDefault();
-
-    var ii_password = $("#ii_password").val().trim();
-
-    if (ii_password == "") {
-        sweetAlertError("Password is empty!");
-        return;
-    }
-
-    if (!ii_password.match(defaultFormat)) {
-        sweetAlertError("Invalid Characters on Password!");
-        return;
-    }
-
-    $.ajax({
-        url: '../../app/functions/authentication/fn_PasswordVerify.php',
-        type: 'POST',
-        data: {
-            ii_password: ii_password
-        },
-        cache: false,
-        success: function (response) {
-            var status = JSON.parse(response);
-            if (status.status == 200 && status.access == 1) {
-
-                $("#ii_accessconfirmation").val(1);
-
-                var ii_accesspassword = $("#ii_accesspassword").val().trim();
-
-                if (ii_accesspassword == "addcategory") {
-                    $("[data-ii-categoryadd-modal-action='submit']").click();
-                }
-
-                if (ii_accesspassword == "editcategory") {
-                    $("[data-ii-categoryedit-modal-action='submit']").click();
-                }
-
-                if (ii_accesspassword == "deletecategory") {
-                    $("[data-ii-categorydelete-modal-action='submit']").click();
-                }
-
-                if (ii_accesspassword == "addproduct") {
-                    $("[data-ii-productadd-modal-action='submit']").click();
-                }
-
-                if (ii_accesspassword == "editproduct") {
-                    $("[data-ii-productedit-modal-action='submit']").click();
-                }
-
-            }
-            if (status.status == 401) {
-                $("#ii_password").val("");
-                sweetAlertError(status.message);
-            }
-            if (status.status == 404) {
-                sweetAlertError(status.message);
-            }
-            if (status.status == 500) {
-                sweetAlertError(status.message);
-            }
-        },
-        error: function (response) {
-            sweetAlertError("Server Error, Please contact administrator!");
-        }
-    })
 
 });
 
@@ -494,13 +535,258 @@ $(document).on('click', ".dataInput [data-input-delete='delete']", function (e) 
 
 });
 
+$("#ii_productcategory").change(function (e) {
+
+    e.preventDefault();
+
+    var ii_productcategory = $(this).val();
+
+    if (ii_productcategory == "") {
+
+        $("#ii_productbrand").empty();
+        $("#ii_productbrand").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+        $("#ii_productmodel").empty();
+        $("#ii_productmodel").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+    } else {
+
+        $("#ii_productmodel").empty();
+        $("#ii_productmodel").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+        $.ajax({
+            url: '../../app/functions/products/fn_searchDropdownBrand.php',
+            type: 'POST',
+            data: {
+                ii_productcategory: ii_productcategory
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+
+                    $("#ii_productbrand").empty();
+
+                    $("#ii_productbrand").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+                    for (var i = 0; i < status.brands.length; i++) {
+                        $("#ii_productbrand").append($('<option></option>').attr({ 'value': status.brands[i]["PK_mscBrands"] }).text(status.brands[i]["description"]));
+                    }
+
+                }
+                if (status.status == 500) {
+                    alert(status.message);
+                }
+            }
+        })
+
+        $.ajax({
+            url: '../../app/functions/products/fn_searchDropdownProperties.php',
+            type: 'POST',
+            data: {
+                ii_productcategory: ii_productcategory
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+
+                    $(".ii_productdetailscontainer").empty();
+
+                    for (var i = 0; i < status.properties.length; i++) {
+                        $(".ii_productdetailscontainer").append("<div class='row mb-5 g-3 pd_item' data-count='" + status.properties[i]["PK_mscProperties"] + "'><div class='col-xl-6'><input type='text' id='ii_pdetails1_" + status.properties[i]["PK_mscProperties"] + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Description Title' value='" + status.properties[i]["description"] + "'></div><div class='col-xl-6 d-flex gap-3 dataInput'><input type='text' id='ii_pdetails2_" + status.properties[i]["PK_mscProperties"] + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Details' value=''><div class='d-flex justify-content-end align-items-center' data-input-delete='delete' data-del='" + status.properties[i]["PK_mscProperties"] + "'><span class='btn btn-light'>delete</span></div></div></div>");
+                    }
+
+                }
+                if (status.status == 500) {
+                    alert(status.message);
+                }
+            }
+        })
+
+
+    }
+
+});
+
+$("#ii_productbrand").change(function (e) {
+
+    var ii_productbrand = $(this).val();
+
+    if (ii_productbrand == "") {
+
+        $("#ii_productmodel").empty();
+        $("#ii_productmodel").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_searchDropdownModel.php',
+            type: 'POST',
+            data: {
+                ii_productbrand: ii_productbrand
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+
+                    $("#ii_productmodel").empty();
+
+                    $("#ii_productmodel").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+                    for (var i = 0; i < status.models.length; i++) {
+                        $("#ii_productmodel").append($('<option></option>').attr({ 'value': status.models[i]["PK_mscModels"] }).text(status.models[i]["description"]));
+                    }
+
+                }
+                if (status.status == 500) {
+                    alert(status.message);
+                }
+            }
+        })
+
+    }
+
+});
+
+$("#ii_productcategoryedit").change(function (e) {
+
+    e.preventDefault();
+
+    var ii_productcategoryedit = $(this).val();
+
+    if (ii_productcategoryedit == "") {
+
+        $("#ii_productbrandedit").empty();
+        $("#ii_productbrandedit").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+        $("#ii_productmodeledit").empty();
+        $("#ii_productmodeledit").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+    } else {
+
+        Swal.fire({
+            text: 'Changing product category will update product details fields',
+            icon: "warning",
+            buttonsStyling: false,
+            confirmButtonText: "Okay",
+            customClass: {
+                confirmButton: "btn btn-darkgreen"
+            },
+            timer: 2000,
+            timerProgressBar: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $("#ii_productmodeledit").empty();
+                $("#ii_productmodeledit").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+                $.ajax({
+                    url: '../../app/functions/products/fn_searchDropdownBrandEdit2.php',
+                    type: 'POST',
+                    data: {
+                        ii_productcategoryedit: ii_productcategoryedit
+                    },
+                    cache: false,
+                    success: function (response) {
+                        var status = JSON.parse(response);
+                        if (status.status == 200) {
+
+                            $("#ii_productbrandedit").empty();
+
+                            $("#ii_productbrandedit").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+                            for (var i = 0; i < status.brands.length; i++) {
+                                $("#ii_productbrandedit").append($('<option></option>').attr({ 'value': status.brands[i]["PK_mscBrands"] }).text(status.brands[i]["description"]));
+                            }
+
+                        }
+                        if (status.status == 500) {
+                            alert(status.message);
+                        }
+                    }
+                })
+
+                $.ajax({
+                    url: '../../app/functions/products/fn_searchDropdownPropertiesEdit2.php',
+                    type: 'POST',
+                    data: {
+                        ii_productcategoryedit: ii_productcategoryedit
+                    },
+                    cache: false,
+                    success: function (response) {
+                        var status = JSON.parse(response);
+                        if (status.status == 200) {
+
+                            $(".ii_productdetailscontaineredit").empty();
+
+                            for (var i = 0; i < status.properties.length; i++) {
+                                $(".ii_productdetailscontaineredit").append("<div class='row mb-5 g-3 pd_itemedit' data-count='" + status.properties[i]["PK_mscProperties"] + "'><div class='col-xl-6'><input type='text' id='ii_pdetails1_" + status.properties[i]["PK_mscProperties"] + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Description Title' value='" + status.properties[i]["description"] + "'></div><div class='col-xl-6 d-flex gap-3 dataInput'><input type='text' id='ii_pdetails2_" + status.properties[i]["PK_mscProperties"] + "' class='form-control form-control-lg form-control-solid fw-bolder' placeholder='Details' value=''><div class='d-flex justify-content-end align-items-center' data-input-delete='delete' data-del='" + status.properties[i]["PK_mscProperties"] + "'><span class='btn btn-light'>delete</span></div></div></div>");
+                            }
+
+                        }
+                        if (status.status == 500) {
+                            alert(status.message);
+                        }
+                    }
+                })
+
+            }
+        });
+
+
+    }
+
+});
+
+$("#ii_productbrandedit").change(function (e) {
+
+    var ii_productbrandedit = $(this).val();
+
+    if (ii_productbrandedit == "") {
+
+        $("#ii_productmodeledit").empty();
+        $("#ii_productmodeledit").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_searchDropdownModelEdit2.php',
+            type: 'POST',
+            data: {
+                ii_productbrandedit: ii_productbrandedit
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+
+                    $("#ii_productmodeledit").empty();
+
+                    $("#ii_productmodeledit").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+                    for (var i = 0; i < status.models.length; i++) {
+                        $("#ii_productmodeledit").append($('<option></option>').attr({ 'value': status.models[i]["PK_mscModels"] }).text(status.models[i]["description"]));
+                    }
+
+                }
+                if (status.status == 500) {
+                    alert(status.message);
+                }
+            }
+        })
+
+    }
+
+});
+
 $("[data-ii-productadd-modal-action='submit']").click(function (e) {
 
     e.preventDefault();
 
     var setting = this.getAttribute("data-passaccess");
 
-    var chkbxReturnable;
     var ii_productname = $("#ii_productname").val().trim();
     var ii_productunit = $("#ii_productunit").val().trim();
     var ii_productbrand = $("#ii_productbrand").val().trim();
@@ -516,12 +802,6 @@ $("[data-ii-productadd-modal-action='submit']").click(function (e) {
     var ii_repoprice = $("#ii_repoprice").val().trim();
     var ii_productsetting = $("#ii_productsetting").val();
     var ii_productstatus = $("#ii_productstatus").val();
-
-    if ($("#chkbxReturnable").is(":checked")) {
-        chkbxReturnable = 1;
-    } else {
-        chkbxReturnable = 0;
-    }
 
     let proddetailslen = $(".pd_item").length;
 
@@ -648,7 +928,6 @@ $("[data-ii-productadd-modal-action='submit']").click(function (e) {
             url: '../../app/functions/products/fn_addProduct.php',
             type: 'POST',
             data: {
-                chkbxReturnable: chkbxReturnable,
                 ii_productname: ii_productname,
                 ii_productunit: ii_productunit,
                 ii_productbrand: ii_productbrand,
@@ -792,13 +1071,105 @@ $("[data-edit-product-details='edit']").click(function (e) {
 
                 $("#ii_productnameedit").val(status.productname);
                 $("#ii_productunitedit").val(status.productunit);
-                $("#ii_productbrandedit").val(status.productbrand);
-                $("#ii_productmodeledit").val(status.productmodel);
-                $("#ii_productskuedit").val(status.productsku);
-                $("#select2-ii_productcategoryedit-container").text(status.productcategory);
-                $("#ii_productcategoryedit").val(status.productcid);
-                $("#ii_productdescriptionedit").val(status.productdescription);
 
+                var dropdowncategoryid = status.productcid;
+                var dropdownbrandid = status.productbrandid;
+                var dropdownmodelid = status.productmodelid;
+
+                $.ajax({
+                    url: '../../app/functions/products/fn_searchDropdownCategoryEdit.php',
+                    type: 'POST',
+                    cache: false,
+                    success: function (response) {
+                        var status = JSON.parse(response);
+                        if (status.status == 200) {
+
+                            $("#ii_productcategoryedit").empty();
+                            $("#ii_productcategoryedit").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+                            for (var i = 0; i < status.categories.length; i++) {
+
+                                if (status.categories[i]["PK_mscCategories"] == dropdowncategoryid) {
+                                    $("#ii_productcategoryedit").append($('<option></option>').attr({ 'value': status.categories[i]["PK_mscCategories"], 'selected': 'selected' }).text(status.categories[i]["description"]));
+                                } else {
+                                    $("#ii_productcategoryedit").append($('<option></option>').attr({ 'value': status.categories[i]["PK_mscCategories"] }).text(status.categories[i]["description"]));
+                                }
+
+                            }
+
+                        }
+                        if (status.status == 500) {
+                            alert(status.message);
+                        }
+                    }
+                })
+
+                $.ajax({
+                    url: '../../app/functions/products/fn_searchDropdownBrandEdit.php',
+                    type: 'POST',
+                    data: {
+                        dropdowncategoryid: dropdowncategoryid
+                    },
+                    cache: false,
+                    success: function (response) {
+                        var status = JSON.parse(response);
+                        if (status.status == 200) {
+
+                            $("#ii_productbrandedit").empty();
+
+                            $("#ii_productbrandedit").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+                            for (var i = 0; i < status.brands.length; i++) {
+
+                                if (status.brands[i]["PK_mscBrands"] == dropdownbrandid) {
+                                    $("#ii_productbrandedit").append($('<option></option>').attr({ 'value': status.brands[i]["PK_mscBrands"], 'selected': 'selected' }).text(status.brands[i]["description"]));
+                                } else {
+                                    $("#ii_productbrandedit").append($('<option></option>').attr({ 'value': status.brands[i]["PK_mscBrands"] }).text(status.brands[i]["description"]));
+                                }
+
+                            }
+
+                        }
+                        if (status.status == 500) {
+                            alert(status.message);
+                        }
+                    }
+                })
+
+                $.ajax({
+                    url: '../../app/functions/products/fn_searchDropdownModelEdit.php',
+                    type: 'POST',
+                    data: {
+                        dropdownbrandid: dropdownbrandid
+                    },
+                    cache: false,
+                    success: function (response) {
+                        var status = JSON.parse(response);
+                        if (status.status == 200) {
+
+                            $("#ii_productmodeledit").empty();
+
+                            $("#ii_productmodeledit").append($('<option></option>').attr({ 'value': '' }).text(''));
+
+                            for (var i = 0; i < status.models.length; i++) {
+
+                                if (status.models[i]["PK_mscModels"] == dropdownmodelid) {
+                                    $("#ii_productmodeledit").append($('<option></option>').attr({ 'value': status.models[i]["PK_mscModels"], 'selected': 'selected' }).text(status.models[i]["description"]));
+                                } else {
+                                    $("#ii_productmodeledit").append($('<option></option>').attr({ 'value': status.models[i]["PK_mscModels"] }).text(status.models[i]["description"]));
+                                }
+
+                            }
+
+                        }
+                        if (status.status == 500) {
+                            alert(status.message);
+                        }
+                    }
+                })
+
+                $("#ii_productskuedit").val(status.productsku);
+                $("#ii_productdescriptionedit").val(status.productdescription);
                 $("#ii_totalquantityedit").val(status.productquantity);
                 $("#ii_minstockedit").val(status.productstockminimum);
                 $("#ii_maxstockedit").val(status.productstockmaximum);
@@ -896,10 +1267,10 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
     var ii_productidedit = $("#ii_productidedit").val().trim();
     var ii_productnameedit = $("#ii_productnameedit").val().trim();
     var ii_productunitedit = $("#ii_productunitedit").val().trim();
+    var ii_productcategoryedit = $("#ii_productcategoryedit").val().trim();
     var ii_productbrandedit = $("#ii_productbrandedit").val().trim();
     var ii_productmodeledit = $("#ii_productmodeledit").val().trim();
     var ii_productskuedit = $("#ii_productskuedit").val();
-    var ii_productcategoryedit = $("#ii_productcategoryedit").val().trim();
     var ii_productdescriptionedit = $("#ii_productdescriptionedit").val().trim();
     var ii_totalquantityedit = $("#ii_totalquantityedit").val().trim();
     var ii_minstockedit = $("#ii_minstockedit").val().trim();
@@ -1059,10 +1430,10 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
                 ii_productidedit: ii_productidedit,
                 ii_productnameedit: ii_productnameedit,
                 ii_productunitedit: ii_productunitedit,
+                ii_productcategoryedit: ii_productcategoryedit,
                 ii_productbrandedit: ii_productbrandedit,
                 ii_productmodeledit: ii_productmodeledit,
                 ii_productskuedit: ii_productskuedit,
-                ii_productcategoryedit: ii_productcategoryedit,
                 ii_productdescriptionedit: ii_productdescriptionedit,
                 ii_totalquantityedit: ii_totalquantityedit,
                 ii_minstockedit: ii_minstockedit,
@@ -1119,8 +1490,64 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
                         setTimeout(() => {
                             location.reload();
                         }, 1000);
-                        
+
                     }
+
+                }
+                if (status.status == 401) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$("[data-delete-product-details='delete']").click(function (e) {
+
+    e.preventDefault();
+
+    var ProductID = $("#ii_productidedit").val().trim();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_deleteProduct.php',
+            type: 'POST',
+            data: {
+                ProductID: ProductID
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+
+                    $("#kt_drawer_trigger").click();
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
 
                 }
                 if (status.status == 401) {
@@ -1228,7 +1655,7 @@ $("#uploadContainer").on('click', "[data-ii-input-action='delete']", function ()
         success: function (response) {
             var status = JSON.parse(response);
             if (status.status == 200) {
-                
+
             }
             if (status.status == 401) {
                 sweetAlertError(status.message);
@@ -1246,5 +1673,705 @@ $("#uploadContainer").on('click', "[data-ii-input-action='delete']", function ()
     })
 
     $(this).parent().remove();
+
+});
+
+$("[data-ii-propertyadd-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_property = $("#ii_property").val().trim();
+
+    if (ii_property == "") {
+        sweetAlertError("Property Name is required!");
+        return;
+    }
+
+    if (!ii_property.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Property Name!");
+        return;
+    }
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#addPropertyModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_addProperty.php',
+            type: 'POST',
+            data: {
+                ii_property: ii_property
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 401) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$(".datainput [data-ii-input-editproperty-action='edit']").click(function (e) {
+
+    e.preventDefault();
+
+    var PropertyID = this.getAttribute("data-ii-val");
+
+    $.ajax({
+        url: '../../app/functions/products/fn_searchProperty.php',
+        type: 'POST',
+        data: {
+            PropertyID: PropertyID
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+
+                $("#ii_propertyidedit").val(PropertyID);
+                $("#ii_propertyedit").val(status.category);
+
+            }
+            if (status.status == 500) {
+                alert(status.message);
+            }
+        }
+    })
+
+    $("#editPropertyModal").modal("show");
+
+});
+
+$("[data-ii-propertyedit-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_propertyidedit = $("#ii_propertyidedit").val().trim();
+    var ii_propertyedit = $("#ii_propertyedit").val().trim();
+
+    if (ii_propertyedit == "") {
+        sweetAlertError("Property Name is required!");
+        return;
+    }
+
+    if (!ii_propertyedit.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Property Name!");
+        return;
+    }
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#editPropertyModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_updateProperty.php',
+            type: 'POST',
+            data: {
+                ii_propertyidedit: ii_propertyidedit,
+                ii_propertyedit: ii_propertyedit
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$(".datainput [data-ii-input-deleteproperty-action='delete']").click(function (e) {
+
+    e.preventDefault();
+
+    var PropertyID = this.getAttribute("data-ii-val");
+
+    $("#ii_propertyiddelete").val(PropertyID);
+
+    $("#deletePropertyModal").modal("show");
+
+});
+
+$("[data-ii-propertydelete-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_propertyiddelete = $("#ii_propertyiddelete").val().trim();
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#deletePropertyModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_deleteProperty.php',
+            type: 'POST',
+            data: {
+                ii_propertyiddelete: ii_propertyiddelete
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$("[data-ii-brandadd-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_brand = $("#ii_brand").val().trim();
+    var ii_productcategory = $("#ii_productcategory").val().trim();
+
+    if (ii_brand == "") {
+        sweetAlertError("Brand Name is required!");
+        return;
+    }
+
+    if (!ii_brand.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Brand Name!");
+        return;
+    }
+
+    if (ii_productcategory == "") {
+        sweetAlertError("Category is required!");
+        return;
+    }
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#addBrandModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_addBrand.php',
+            type: 'POST',
+            data: {
+                ii_brand: ii_brand,
+                ii_productcategory: ii_productcategory
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 401) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$(".datainput [data-ii-input-editbrand-action='edit']").click(function (e) {
+
+    e.preventDefault();
+
+    var BrandID = this.getAttribute("data-ii-val");
+
+    $.ajax({
+        url: '../../app/functions/products/fn_searchBrand.php',
+        type: 'POST',
+        data: {
+            BrandID: BrandID
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+
+                $("#ii_brandidedit").val(BrandID);
+                $("#ii_brandedit").val(status.brand);
+                $("#ii_productcategoryedit").val(status.category);
+                $("#select2-ii_productcategoryedit-container").text(status.categoryname);
+
+            }
+            if (status.status == 500) {
+                alert(status.message);
+            }
+        }
+    })
+
+    $("#editBrandModal").modal("show");
+
+});
+
+$("[data-ii-brandedit-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_brandidedit = $("#ii_brandidedit").val().trim();
+    var ii_brandedit = $("#ii_brandedit").val().trim();
+    var ii_productcategoryedit = $("#ii_productcategoryedit").val().trim();
+
+    if (ii_brandedit == "") {
+        sweetAlertError("Brand Name is required!");
+        return;
+    }
+
+    if (!ii_brandedit.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Brand Name!");
+        return;
+    }
+
+    if (ii_productcategoryedit == "") {
+        sweetAlertError("Category is required!");
+        return;
+    }
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#editBrandModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_updateBrand.php',
+            type: 'POST',
+            data: {
+                ii_brandidedit: ii_brandidedit,
+                ii_brandedit: ii_brandedit,
+                ii_productcategoryedit: ii_productcategoryedit
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$(".datainput [data-ii-input-deletebrand-action='delete']").click(function (e) {
+
+    e.preventDefault();
+
+    var BrandID = this.getAttribute("data-ii-val");
+
+    $("#ii_brandiddelete").val(BrandID);
+
+    $("#deleteBrandModal").modal("show");
+
+});
+
+$("[data-ii-branddelete-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_brandiddelete = $("#ii_brandiddelete").val().trim();
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#deleteBrandModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_deleteBrand.php',
+            type: 'POST',
+            data: {
+                ii_brandiddelete: ii_brandiddelete
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$("[data-ii-modeladd-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_model = $("#ii_model").val().trim();
+
+    if (ii_model == "") {
+        sweetAlertError("Model Name is required!");
+        return;
+    }
+
+    if (!ii_model.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Model Name!");
+        return;
+    }
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#addModelModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_addModel.php',
+            type: 'POST',
+            data: {
+                ii_model: ii_model
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 401) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$(".datainput [data-ii-input-editmodel-action='edit']").click(function (e) {
+
+    e.preventDefault();
+
+    var ModelID = this.getAttribute("data-ii-val");
+
+    $.ajax({
+        url: '../../app/functions/products/fn_searchModel.php',
+        type: 'POST',
+        data: {
+            ModelID: ModelID
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+
+                $("#ii_modelidedit").val(ModelID);
+                $("#ii_modeledit").val(status.model);
+
+            }
+            if (status.status == 500) {
+                alert(status.message);
+            }
+        }
+    })
+
+    $("#editModelModal").modal("show");
+
+});
+
+$("[data-ii-modeledit-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_modelidedit = $("#ii_modelidedit").val().trim();
+    var ii_modeledit = $("#ii_modeledit").val().trim();
+
+    if (ii_modeledit == "") {
+        sweetAlertError("Model Name is required!");
+        return;
+    }
+
+    if (!ii_modeledit.match(defaultFormat)) {
+        sweetAlertError("Invalid Characters on Model Name!");
+        return;
+    }
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#editModelModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_updateModel.php',
+            type: 'POST',
+            data: {
+                ii_modelidedit: ii_modelidedit,
+                ii_modeledit: ii_modeledit
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
+
+});
+
+$(".datainput [data-ii-input-deletemodel-action='delete']").click(function (e) {
+
+    e.preventDefault();
+
+    var ModelID = this.getAttribute("data-ii-val");
+
+    $("#ii_modeliddelete").val(ModelID);
+
+    $("#deleteModelModal").modal("show");
+
+});
+
+$("[data-ii-modeldelete-modal-action='submit']").click(function (e) {
+
+    e.preventDefault();
+
+    var setting = this.getAttribute("data-passaccess");
+
+    var ii_modeliddelete = $("#ii_modeliddelete").val().trim();
+
+    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
+
+    if (ii_accessconfirmation == "") {
+        $("#ii_accesspassword").val(setting);
+        $("#deleteModelModal").modal("hide");
+        $("#modal_access").modal("show");
+        setTimeout(() => {
+            $("#ii_password").focus();
+        }, 500);
+    } else {
+
+        $.ajax({
+            url: '../../app/functions/products/fn_deleteModel.php',
+            type: 'POST',
+            data: {
+                ii_modeliddelete: ii_modeliddelete
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
+
+    }
 
 });

@@ -9,6 +9,7 @@
             <div class="menu-content"><span class="fw-bold text-muted text-uppercase fs-7">Settings</span></div>
         </div>
         <div class="menu-item"><a class="menu-link" href="products.php"><span class="menu-icon"><i class="ki-duotone ki-setting fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Products</span></a></div>
+        <div class="menu-item"><a class="menu-link" href="brands.php"><span class="menu-icon"><i class="ki-duotone ki-setting fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Brands</span></a></div>
         <div class="menu-item"><a class="menu-link" href="product-categories.php"><span class="menu-icon"><i class="ki-duotone ki-setting fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Product Categories</span></a></div>
         <!-- <div class="menu-item">
             <div class="menu-content">

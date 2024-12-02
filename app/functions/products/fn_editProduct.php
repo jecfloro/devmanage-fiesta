@@ -15,10 +15,10 @@ $chkbxReturnable = $_POST['chkbxReturnable'];
 $ii_productidedit = $_POST['ii_productidedit'];
 $ii_productnameedit = $_POST['ii_productnameedit'];
 $ii_productunitedit = $_POST['ii_productunitedit'];
+$ii_productcategoryedit = $_POST['ii_productcategoryedit'];
 $ii_productbrandedit = $_POST['ii_productbrandedit'];
 $ii_productmodeledit = $_POST['ii_productmodeledit'];
 $ii_productskuedit = $_POST['ii_productskuedit'];
-$ii_productcategoryedit = $_POST['ii_productcategoryedit'];
 $ii_productdescriptionedit = $_POST['ii_productdescriptionedit'];
 $ii_totalquantityedit = $_POST['ii_totalquantityedit'];
 $ii_minstockedit = $_POST['ii_minstockedit'];
@@ -35,6 +35,18 @@ $_SESSION["tempproductid"] = $ii_productidedit;
 try {
     $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $brands = $conn->prepare("SELECT * FROM msc_brands WHERE PK_mscBrands = '$ii_productbrandedit'");
+    $brands->execute();
+    $cbrands = $brands->rowCount();
+    $rbrands = $brands->fetch(PDO::FETCH_ASSOC);
+    $ii_brandsdescription = $rbrands['description'];
+
+    $models = $conn->prepare("SELECT * FROM msc_models WHERE PK_mscModels = '$ii_productmodeledit'");
+    $models->execute();
+    $cmodels = $models->rowCount();
+    $rmodels = $models->fetch(PDO::FETCH_ASSOC);
+    $ii_modelssdescription = $rmodels['description'];
 
     $select_product = $conn->query("SELECT * FROM `msc_products` WHERE `PK_mscProducts` = '$ii_productidedit'");
     $select_product->execute();
@@ -56,7 +68,7 @@ try {
             $isSetting = "isRepo";
         }
 
-        $update = $conn->prepare("UPDATE msc_products SET productName = '$ii_productnameedit', productUnit = '$ii_productunitedit', productBrand = '$ii_productbrandedit', productModel = '$ii_productmodeledit', productSKU = '$ii_productskuedit', FK_mscCategories = '$ii_productcategoryedit', productDescription = '$ii_productdescriptionedit', quantity = '$ii_totalquantityedit', regularPrice = '$ii_regularpriceedit', salePrice = '$ii_salepriceedit', repoPrice = '$ii_repopriceedit', stockMinimum = '$ii_minstockedit', stockMaximum = '$ii_maxstockedit', $isSetting = 1, productStatus = '$ii_productstatusedit' WHERE PK_mscProducts = '$ii_productidedit'");
+        $update = $conn->prepare("UPDATE msc_products SET productName = '$ii_productnameedit', productUnit = '$ii_productunitedit', productBrandID = '$ii_productbrandedit', productBrand = '$ii_brandsdescription', productModelID = '$ii_productmodeledit', productModel = '$ii_modelssdescription', productSKU = '$ii_productskuedit', FK_mscCategories = '$ii_productcategoryedit', productDescription = '$ii_productdescriptionedit', quantity = '$ii_totalquantityedit', regularPrice = '$ii_regularpriceedit', salePrice = '$ii_salepriceedit', repoPrice = '$ii_repopriceedit', stockMinimum = '$ii_minstockedit', stockMaximum = '$ii_maxstockedit', $isSetting = 1, productStatus = '$ii_productstatusedit' WHERE PK_mscProducts = '$ii_productidedit'");
         $update->execute();
         $cupdate = $update->rowCount();
 

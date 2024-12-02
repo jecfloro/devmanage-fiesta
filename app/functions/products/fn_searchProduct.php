@@ -26,7 +26,9 @@ try {
 
         $productname = $rproduct[0]["productName"];
         $productunit = $rproduct[0]["productUnit"];
+        $productbrandid = $rproduct[0]["productBrandID"];
         $productbrand = $rproduct[0]["productBrand"];
+        $productmodelid = $rproduct[0]["productModelID"];
         $productmodel = $rproduct[0]["productModel"];
         $productsku = $rproduct[0]["productSKU"];
         $productdescription = $rproduct[0]["productDescription"];
@@ -58,7 +60,9 @@ try {
         $response = array('status' => 200, 
             'productname' => $productname,
             'productunit' => $productunit,
+            'productbrandid' => $productbrandid,
             'productbrand' => $productbrand,
+            'productmodelid' => $productmodelid,
             'productmodel' => $productmodel,
             'productsku' => $productsku,
             'productdescription' => $productdescription,

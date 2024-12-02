@@ -553,16 +553,6 @@ try {
                                 <div class="row g-5">
                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                         <p class="fw-bolder text-muted">General Information</p>
-                                        <div class="">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="chkbxReturnable">
-                                                <label class="form-check-label fw-bolder text-dark"
-                                                    for="chkbxReturnable">
-                                                    Returnable Product
-                                                </label>
-                                            </div>
-                                        </div>
                                         <div class="mt-5">
                                             <label for="ii_productname" class="fw-bolder required">Product Name</label>
                                             <input type="text" id="ii_productname"
@@ -576,16 +566,39 @@ try {
                                                 placeholder="Product Unit">
                                         </div>
                                         <div class="mt-5">
+                                            <label for="ii_productcategory" class="fw-bolder required">Product
+                                                Category</label>
+                                            <select class="form-select form-select-solid fw-bolder"
+                                                data-kt-select2="true" data-placeholder="Select Category"
+                                                data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                data-hide-search="true" id="ii_productcategory">
+                                                <option></option>
+                                                <?php if ($ccategories > 0) { ?>
+                                                    <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
+                                                        <option value="<?php echo $rcategories["PK_mscCategories"]; ?>">
+                                                            <?php echo $rcategories["description"]; ?>
+                                                        </option>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="mt-5">
                                             <label for="ii_productbrand" class="fw-bolder required">Product Brand</label>
-                                            <input type="text" id="ii_productbrand"
-                                                class="form-control form-control-lg form-control-solid fw-bolder"
-                                                placeholder="Product Brand">
+                                            <select class="form-select form-select-solid fw-bolder"
+                                                data-kt-select2="true" data-placeholder="Select Brand"
+                                                data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                data-hide-search="true" id="ii_productbrand">
+                                                <option></option>
+                                            </select>
                                         </div>
                                         <div class="mt-5">
                                             <label for="ii_productmodel" class="fw-bolder required">Product Model</label>
-                                            <input type="text" id="ii_productmodel"
-                                                class="form-control form-control-lg form-control-solid fw-bolder"
-                                                placeholder="Product Model">
+                                            <select class="form-select form-select-solid fw-bolder"
+                                                data-kt-select2="true" data-placeholder="Select Model"
+                                                data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                data-hide-search="true" id="ii_productmodel">
+                                                <option></option>
+                                            </select>
                                         </div>
                                         <div class="row g-3 mt-5">
                                             <div class="col-xl-6">
@@ -595,25 +608,6 @@ try {
                                                     <input type="text" id="ii_productsku"
                                                         class="form-control form-control-lg form-control-solid fw-bolder"
                                                         placeholder="XXX-XXX-XX">
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <div class="">
-                                                    <label for="ii_productcategory" class="fw-bolder required">Product
-                                                        Category</label>
-                                                    <select class="form-select form-select-solid fw-bolder"
-                                                        data-kt-select2="true" data-placeholder="Select Category"
-                                                        data-allow-clear="true" data-kt-user-table-filter="usertype"
-                                                        data-hide-search="true" id="ii_productcategory">
-                                                        <option></option>
-                                                        <?php if ($ccategories > 0) { ?>
-                                                            <?php while ($rcategories = $categories->fetch(PDO::FETCH_ASSOC)) { ?>
-                                                                <option value="<?php echo $rcategories["PK_mscCategories"]; ?>">
-                                                                    <?php echo $rcategories["description"]; ?>
-                                                                </option>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -776,16 +770,32 @@ try {
                                                 placeholder="Product Unit">
                                         </div>
                                         <div class="mt-5">
+                                            <label for="ii_productcategoryedit" class="fw-bolder required">Product
+                                                Category</label>
+                                            <select class="form-select form-select-solid fw-bolder"
+                                                data-kt-select2="true" data-placeholder="Select Category"
+                                                data-allow-clear="true"
+                                                data-hide-search="true" id="ii_productcategoryedit">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                        <div class="mt-5">
                                             <label for="ii_productbrandedit" class="fw-bolder required">Product Brand</label>
-                                            <input type="text" id="ii_productbrandedit"
-                                                class="form-control form-control-lg form-control-solid fw-bolder"
-                                                placeholder="Product Brand">
+                                            <select class="form-select form-select-solid fw-bolder"
+                                                data-kt-select2="true" data-placeholder="Select Brand"
+                                                data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                data-hide-search="true" id="ii_productbrandedit">
+                                                <option></option>
+                                            </select>
                                         </div>
                                         <div class="mt-5">
                                             <label for="ii_productmodeledit" class="fw-bolder required">Product Model</label>
-                                            <input type="text" id="ii_productmodeledit"
-                                                class="form-control form-control-lg form-control-solid fw-bolder"
-                                                placeholder="Product Model">
+                                            <select class="form-select form-select-solid fw-bolder"
+                                                data-kt-select2="true" data-placeholder="Select Model"
+                                                data-allow-clear="true" data-kt-user-table-filter="usertype"
+                                                data-hide-search="true" id="ii_productmodeledit">
+                                                <option></option>
+                                            </select>
                                         </div>
                                         <div class="row g-3 mt-5">
                                             <div class="col-xl-6">
@@ -795,24 +805,6 @@ try {
                                                     <input type="text" id="ii_productskuedit"
                                                         class="form-control form-control-lg form-control-solid fw-bolder"
                                                         placeholder="XXX-XXX-XX">
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-6">
-                                                <div class="">
-                                                    <label for="ii_productcategoryedit" class="fw-bolder required">Product
-                                                        Category</label>
-                                                    <select class="form-select form-select-solid fw-bolder"
-                                                        data-kt-select2="true" data-placeholder="Select Category"
-                                                        data-allow-clear="true"
-                                                        data-hide-search="true" id="ii_productcategoryedit">
-                                                        <?php if ($ccategoriesedit > 0) { ?>
-                                                            <?php while ($rcategoriesedit = $categoriesedit->fetch(PDO::FETCH_ASSOC)) { ?>
-                                                                <option value="<?php echo $rcategoriesedit["PK_mscCategories"]; ?>">
-                                                                    <?php echo $rcategoriesedit["description"]; ?>
-                                                                </option>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -926,7 +918,7 @@ try {
                                                 <div class="mt-3 border row p-3 rounded d-none" id="uploadTempContainer">
                                                 </div>
                                                 <div class="mt-3 border row p-3 rounded" id="uploadContainer">
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -965,7 +957,7 @@ try {
                             <div class="card-title">
                                 <div class="d-flex me-3 gap-3">
                                     <button class="btn btn-light btn-sm" data-edit-product-details="edit">Edit</button>
-                                    <button class="btn btn-light btn-sm" data-delete-product-details="delete">Delete</button>
+                                    <button class="btn btn-light btn-sm" data-delete-product-details="delete" data-passaccess="deleteproduct">Delete</button>
                                 </div>
                             </div>
                         </div>

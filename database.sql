@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `appsysusers` (
   `isCiApproved` int DEFAULT NULL,
   `isCoordinatorApproved` int DEFAULT NULL,
   PRIMARY KEY (`PK_appsysUsers`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table devmanage-fiesta.appsysusers: ~6 rows (approximately)
 INSERT INTO `appsysusers` (`PK_appsysUsers`, `user_email`, `user_password`, `user_empId`, `user_recoveryCode`, `user_activationCode`, `user_secret`, `isSecret`, `isActivated`, `isDisabled`, `isDeactivated`, `isAdmin`, `isCustomer`, `isBranchManager`, `isCreditInvestigator`, `isCreditCoordinator`, `isCashier`, `userLastname`, `userFirstName`, `userMiddleName`, `userNickName`, `userGender`, `userCivilStatus`, `userNationality`, `userAge`, `userDateofBirth`, `userPlaceofBirth`, `userContactNumber`, `userAddress`, `userRegionCode`, `userRegion`, `userProvinceCode`, `userProvince`, `userCityCode`, `userCity`, `userBarangayCode`, `userBarangay`, `userFullName`, `isProfileFilled`, `isSpouseFilled`, `isHomeOwnershipFilled`, `isEmploymentFilled`, `isPersonalPrefFilled`, `isChildrenFilled`, `isRelativesFilled`, `isNeighborFilled`, `isNew`, `isCiApproved`, `isCoordinatorApproved`) VALUES
@@ -80,7 +80,7 @@ INSERT INTO `appsysusers` (`PK_appsysUsers`, `user_email`, `user_password`, `use
 	(46, 'kerwinadrian1998@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', NULL, '3uRf27b0CL', 'ofcOpbmF1YuVEtNT6DKiHrJwXGlBLW', 'D3GFOFNFHV2DNILR', NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, b'1', NULL, 'ALBELDA', 'KERWIN ADRIAN', 'BACONGUIS', 'EBOY', 0, 'SINGLE', 'FILIPINO', 26, '1998-09-25', 'TAGUM CITY', '946-3571-540', 'PRK 2B LOPEZ VILLE BLK 1 LOT 3', '11', 'REGION XI (DAVAO REGION)', '1123', 'DAVAO DEL NORTE', '112315', 'CITY OF PANABO', '112315028', 'SALVACION', 'ALBELDA, KERWIN ADRIAN BACONGUIS', b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(47, 'jpgubalani21@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', NULL, 'vNajAglyFu', 'bS3Uk795ozLEBKFtxjYCh8MpmfDgaW', '4S4RJE43M4ANAV6U', NULL, b'1', NULL, NULL, NULL, NULL, NULL, b'1', NULL, NULL, 'GUBALANI', 'JP', 'NA', 'JAYPE', 0, 'SINGLE', 'FILIPINO', 25, '1999-11-17', 'TAGUM CITY', '946-3571-540', 'SOUTHERN DAVAO PRK 1', '11', 'REGION XI (DAVAO REGION)', '1123', 'DAVAO DEL NORTE', '112315', 'CITY OF PANABO', '112315028', 'SALVACION', 'GUBALANI, JP NA', b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(48, 'alejo.debbie12@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', NULL, 'jWKOLqdRUA', 'wBNnqWQAYp8yo6afsOCLxlvjktJPuG', 'VN4FE74ZSVULSROM', NULL, b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, b'1', 'ALEJO', 'DEBBIE', 'JAYME', 'DEB', 1, 'MARRIED', 'FILIPINO', 24, '2000-08-17', 'TAGUM CITY', '946-3571-540', 'UPPER LICANAN', '11', 'REGION XI (DAVAO REGION)', '1123', 'DAVAO DEL NORTE', '112315', 'CITY OF PANABO', '112315028', 'SALVACION', 'ALEJO, DEBBIE JAYME', b'1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-	(49, 'sachikoyalbelda@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', NULL, 'elPUJH1L4u', 'ZOhdeYjRgc0mCxz6Q47ouEiISlsTDJ', 'CLVJ65QH7CEIV3QM', NULL, b'1', NULL, NULL, NULL, b'1', NULL, NULL, NULL, NULL, 'ALBLEDA', 'SACHI', 'JAYME', 'SACHIKOY', 0, 'SINGLE', 'FILIPINO', 1999, '1999-09-23', 'TAGUM CITY', '946-3571-540', 'PRK 4A', '11', 'REGION XI (DAVAO REGION)', '1123', 'DAVAO DEL NORTE', '112315', 'CITY OF PANABO', '', '', 'ALBLEDA, SACHI JAYME', b'1', b'1', b'1', b'1', b'1', NULL, b'1', b'1', 1, 1, 1);
+	(49, 'sachikoyalbelda@gmail.com', 'ZVd4QlN0a3JXalN6NXZGUW1oQzFmQT09', NULL, 'elPUJH1L4u', 'ZOhdeYjRgc0mCxz6Q47ouEiISlsTDJ', 'CLVJ65QH7CEIV3QM', NULL, b'1', NULL, NULL, NULL, b'1', NULL, NULL, NULL, NULL, 'ALBLEDA', 'SACHI', 'JAYME', 'SACHIKOY', 0, 'SINGLE', 'FILIPINO', 1999, '1999-09-23', 'TAGUM CITY', '946-3571-540', 'PRK 4A', '11', 'REGION XI (DAVAO REGION)', '1123', 'DAVAO DEL NORTE', '112315', 'CITY OF PANABO', '', 'CHOOSE BARANGAY', 'ALBLEDA, SACHI JAYME', b'1', b'1', b'1', b'1', b'1', NULL, b'1', b'1', 1, 1, 1);
 
 -- Dumping structure for table devmanage-fiesta.appsysusers_children
 CREATE TABLE IF NOT EXISTS `appsysusers_children` (
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `appsysusers_homeownership` (
 
 -- Dumping data for table devmanage-fiesta.appsysusers_homeownership: ~1 rows (approximately)
 INSERT INTO `appsysusers_homeownership` (`PK_appsysusers_homeownership`, `FK_appsysUsers`, `selectedOption`, `monthlyAmortization`, `monthlyRental`, `landLord`, `yearsStay`, `previousAddress`) VALUES
-	(1, 49, 'Owned', 0.00, 0.00, '0', 0, 'na');
+	(1, 49, 'Owned', 1.00, 1.00, '1', 1, '1');
 
 -- Dumping structure for table devmanage-fiesta.appsysusers_neighbors
 CREATE TABLE IF NOT EXISTS `appsysusers_neighbors` (
@@ -300,12 +300,7 @@ CREATE TABLE IF NOT EXISTS `mm_location` (
   PRIMARY KEY (`PK_mm_location`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.mm_location: ~4 rows (approximately)
-INSERT INTO `mm_location` (`PK_mm_location`, `FK_appsysUsers`, `lat`, `long`, `isDefault`, `addedBy`, `dateAdded`, `addressNoteDescription`) VALUES
-	(1, 43, '7.3126562', '125.6860616', b'1', 42, '2024-11-21 14:02:26', '11'),
-	(3, 42, '7.3132123', '125.6853506', NULL, 44, '2024-11-25 11:10:07', 'CHANGE'),
-	(5, 42, '7.3217263', '125.6827436', b'1', 47, '2024-11-25 13:37:54', 'lopez ville'),
-	(6, 49, '7.3217263', '125.6827436', b'1', 47, '2024-11-25 14:27:50', 'lopez ville');
+-- Dumping data for table devmanage-fiesta.mm_location: ~0 rows (approximately)
 
 -- Dumping structure for table devmanage-fiesta.mm_payments
 CREATE TABLE IF NOT EXISTS `mm_payments` (
@@ -318,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `mm_payments` (
   `daysInterval` int DEFAULT NULL,
   `FK_appsysUsers` int DEFAULT NULL,
   PRIMARY KEY (`PK_mm_payments`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table devmanage-fiesta.mm_payments: ~0 rows (approximately)
 
@@ -337,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `mm_schedule` (
   `processedBy` int DEFAULT NULL,
   `receiptNo` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`PK_mm_schedule`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table devmanage-fiesta.mm_schedule: ~0 rows (approximately)
 
@@ -366,9 +361,23 @@ CREATE TABLE IF NOT EXISTS `mn_installments` (
   `schedulePayment` int DEFAULT NULL,
   PRIMARY KEY (`PK_mn_installments`),
   UNIQUE KEY `installmentCode` (`installmentCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.mn_installments: ~0 rows (approximately)
+-- Dumping data for table devmanage-fiesta.mn_installments: ~3 rows (approximately)
+INSERT INTO `mn_installments` (`PK_mn_installments`, `FK_appsysUsers`, `FK_mscProducts`, `installmentCode`, `approvedMonths`, `productPrice`, `productDownpayment`, `productPercent`, `requestedDate`, `approvedDate`, `approvedBy`, `approvedPaymentSched`, `rejectedBy`, `rejectedDate`, `rejectReason`, `reviewBy`, `reviewDate`, `cancelledDate`, `completedDate`, `installmentStatus`, `schedulePayment`) VALUES
+	(4, 49, 27, 'CGZIODHB8P3J710VM96L', 12, 42699.00, 10000.00, NULL, '2024-11-28 16:14:57', '2024-11-28 16:15:29', 46, '2024-12-28', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'APPROVED', NULL),
+	(5, 50, 28, 'KPZQBY1L3OAEMHWJXRV2', NULL, 9900.00, NULL, NULL, '2024-11-30 07:06:17', NULL, NULL, NULL, 46, '2024-11-30 07:07:34', 'WRONG DETAILS', NULL, NULL, NULL, NULL, 'REJECTED', NULL),
+	(6, 50, 27, 'O3B9N1ATLSM6YECWPZK8', 12, 42699.00, 20000.00, NULL, '2024-11-30 07:07:06', '2024-11-30 07:08:22', 46, '2024-12-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'APPROVED', NULL);
+
+-- Dumping structure for table devmanage-fiesta.msc_brands
+CREATE TABLE IF NOT EXISTS `msc_brands` (
+  `PK_mscBrands` int NOT NULL AUTO_INCREMENT,
+  `FK_mscCategories` int DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`PK_mscBrands`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table devmanage-fiesta.msc_brands: ~0 rows (approximately)
 
 -- Dumping structure for table devmanage-fiesta.msc_categories
 CREATE TABLE IF NOT EXISTS `msc_categories` (
@@ -400,14 +409,9 @@ CREATE TABLE IF NOT EXISTS `msc_details` (
   `title` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`PK_mscDetails`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table devmanage-fiesta.msc_details: ~4 rows (approximately)
-INSERT INTO `msc_details` (`PK_mscDetails`, `order`, `detailsId`, `title`, `description`) VALUES
-	(63, 1, 'p5Ww89', 'Refrigerator Type', 'Top Freezer, Two Door'),
-	(64, 2, 'p5Ww89', 'Capacity', '6.0 cu.ft.'),
-	(65, 3, 'p5Ww89', '1', '1'),
-	(66, 1, 'p5Ww90', '1', '1');
 
 -- Dumping structure for table devmanage-fiesta.msc_images
 CREATE TABLE IF NOT EXISTS `msc_images` (
@@ -420,16 +424,26 @@ CREATE TABLE IF NOT EXISTS `msc_images` (
   PRIMARY KEY (`PK_mscUploads`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table devmanage-fiesta.msc_images: ~1 rows (approximately)
-INSERT INTO `msc_images` (`PK_mscUploads`, `FK_mscProducts`, `fileCode`, `fileName`, `fileExtension`, `fileUploaded`) VALUES
-	(21, 27, '6743ebf815008-1732504568.jpg', '3.jpg', 'jpg', '2024-11-25 11:16:08');
+-- Dumping data for table devmanage-fiesta.msc_images: ~0 rows (approximately)
+
+-- Dumping structure for table devmanage-fiesta.msc_models
+CREATE TABLE IF NOT EXISTS `msc_models` (
+  `PK_mscModels` int NOT NULL AUTO_INCREMENT,
+  `FK_mscBrands` int DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`PK_mscModels`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table devmanage-fiesta.msc_models: ~0 rows (approximately)
 
 -- Dumping structure for table devmanage-fiesta.msc_products
 CREATE TABLE IF NOT EXISTS `msc_products` (
   `PK_mscProducts` int NOT NULL AUTO_INCREMENT,
   `productName` varchar(255) DEFAULT NULL,
   `productUnit` varchar(255) DEFAULT NULL,
+  `productBrandID` int DEFAULT NULL,
   `productBrand` varchar(255) DEFAULT NULL,
+  `productModelID` int DEFAULT NULL,
   `productModel` varchar(255) DEFAULT NULL,
   `productSKU` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `FK_mscCategories` int DEFAULT NULL COMMENT 'TABLE MSCCATEGORIES',
@@ -447,13 +461,19 @@ CREATE TABLE IF NOT EXISTS `msc_products` (
   `productStatus` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`PK_mscProducts`),
   UNIQUE KEY `productName` (`productName`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table devmanage-fiesta.msc_products: ~3 rows (approximately)
-INSERT INTO `msc_products` (`PK_mscProducts`, `productName`, `productUnit`, `productBrand`, `productModel`, `productSKU`, `FK_mscCategories`, `productDescription`, `FK_detailsId`, `quantity`, `regularPrice`, `salePrice`, `repoPrice`, `stockMinimum`, `stockMaximum`, `isRegular`, `isSale`, `isRepo`, `productStatus`) VALUES
-	(27, 'Panasonic NRBX471CPSP', 'Ex', 'Panasonic', 'NRBX471CPSP', '000000001', 25, 'Prime Fresh\nAg Clean\nAI Econavi with 4 Sensors\nInverter Compressor\nElectrostatic Touch Control Panel\nFresh Safe\nDoor Pockets\nHeight Adjustable Shelves\nTempered Glass Shelves\nLED Light\nPower Control\nTwist Ice Tray\nQuick Freezing\nQuick Ice Making\nR600a Refrigerant', 'T1y9Aj', 10, 42699.00, 40699.00, 37699.00, 0, 0, b'1', NULL, NULL, 'Active'),
-	(28, 'Fujidenzo RDD60S', '4', '4', '4', '000000000', 25, 'Direct Cool\nManual Defrost\nEnergy Efficient Compressor\nR600a Refrigerant\nClean Back Design\nSpace Saver\nBig Freezer Space\nStainless Look\nReversible Door\nAdjustable Wire Shelves\nHardtop Design', 'p5Ww89', 5, 11900.00, 9900.00, 7900.00, 0, 0, NULL, b'1', b'1', 'Active'),
-	(30, 'Fujidenzo RDD61S', '1', '1', '1', '000000000', 25, 'Direct Cool\nManual Defrost\nEnergy Efficient Compressor\nR600a Refrigerant\nClean Back Design\nSpace Saver\nBig Freezer Space\nStainless Look\nReversible Door\nAdjustable Wire Shelves\nHardtop Design', 'p5Ww90', 5, 8000.00, 7000.00, 4900.00, 0, 0, NULL, b'1', b'1', 'Active');
+-- Dumping data for table devmanage-fiesta.msc_products: ~0 rows (approximately)
+
+-- Dumping structure for table devmanage-fiesta.msc_properties
+CREATE TABLE IF NOT EXISTS `msc_properties` (
+  `PK_mscProperties` int NOT NULL AUTO_INCREMENT,
+  `FK_mscCategories` int DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`PK_mscProperties`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table devmanage-fiesta.msc_properties: ~0 rows (approximately)
 
 -- Dumping structure for table devmanage-fiesta.msc_uploads
 CREATE TABLE IF NOT EXISTS `msc_uploads` (
