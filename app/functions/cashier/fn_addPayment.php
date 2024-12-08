@@ -47,7 +47,15 @@ try {
         $pkdate = $rschedule[$i - 1]["dateSchedule"];
         $pkbalance = round(floatval($rschedule[$i - 1]["remaining"]));
         $pkstatus = $rschedule[$i - 1]["status"];
-        $numformat = round(floatval($rschedule[$i - 1]["amount"]));
+        $pkrebate = $rschedule[$i - 1]["rebate"];
+        $pkrebatestatus = $rschedule[$i - 1]["isRebated"];
+
+        if ($date > $pkdate && $pkrebatestatus == "") {
+            $numformat = round(floatval($rschedule[$i - 1]["amount"] + $pkrebate));
+        } else {
+            $numformat = round(floatval($rschedule[$i - 1]["amount"]));
+        }
+
 
         if ($pkstatus == "BALANCE") {
             $calc = $ii_amount - $pkbalance;
@@ -60,6 +68,10 @@ try {
         } else if ($date < $pkdate) {
             $evaluation = "PAID";
         } else if ($date > $pkdate) {
+
+            $update = $conn->prepare("UPDATE mm_schedule SET `isRebated` = 1 WHERE `PK_mm_schedule` = '$pkid' AND `FK_mn_installments` = '$tempiid' AND `FK_appsysUsers` = '$tempuid'");
+            $update->execute();
+
             $evaluation = "LATE";
         } else {
 

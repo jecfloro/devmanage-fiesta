@@ -142,7 +142,7 @@ body {
   }
 }
 
-@media (max-width: 681px) {
+@media (max-width: 1011px) {
   .align-items-custom {
     display: flex !important;
     align-items: center !important;

@@ -3,6 +3,14 @@
 import { defaultFormat, PasswordFormat, emailFormat, phoneFormat } from "./main.formatScript.js";
 import { sweetAlertSuccess, sweetAlertError } from "./main.SweetAlert.js";
 
+var lat, long;
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+} else {
+    alert("Geolocation is not supported by this browser");
+}
+
 // Focus Input
 $("#user_email").focus();
 
@@ -100,61 +108,78 @@ $("#authBtnVerify_submit").click(function (e) {
 
 });
 
-$("#authBtnRegister_submit").click(function (e) {
+var lat, long;
 
-    e.preventDefault();
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+} else {
+    alert("Geolocation is not supported by this browser");
+}
 
-    var user_email = $("#user_email").val().trim();
+function showPosition(position) {
 
-    if (user_email == "") {
-        sweetAlertError("Email is empty!");
-        return;
-    }
-
-    if (!user_email.match(emailFormat)) {
-        sweetAlertError("Email format must be user@gmail.com!");
-        return;
-    }
-
-    $.ajax({
-        url: '../../app/functions/authentication/fn_register.php',
-        type: 'POST',
-        data: {
-            user_email: user_email
-        },
-        cache: false,
-        success: function (response) {
-            var status = JSON.parse(response);
-            $("#authBtnRegister_submit").prop( "disabled", true );
-            if (status.status == 200) {
-                sweetAlertSuccess(status.message);
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
-                $("#authBtnRegister_submit").prop( "disabled", false );
-            } else {
-                sweetAlertSuccess("Please check email for account activation!");
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
-                $("#authBtnRegister_submit").prop( "disabled", false );
-            }
-            if (status.status == 401) {
-                sweetAlertError(status.message);
-            }
-            if (status.status == 404) {
-                sweetAlertError(status.message);
-            }
-        },
-        error: function (response) {
-            sweetAlertError("Server Error, Please contact administrator!");
+    $("#authBtnRegister_submit").click(function (e) {
+    
+        e.preventDefault();
+    
+        var user_email = $("#user_email").val().trim();
+    
+        if (user_email == "") {
+            sweetAlertError("Email is empty!");
+            return;
         }
-    })
+    
+        if (!user_email.match(emailFormat)) {
+            sweetAlertError("Email format must be user@gmail.com!");
+            return;
+        }
+    
+            lat = position.coords.latitude;
+            long = position.coords.longitude;
+    
+            $.ajax({
+                url: '../../app/functions/authentication/fn_register.php',
+                type: 'POST',
+                data: {
+                    lat: lat,
+                    long: long,
+                    user_email: user_email
+                },
+                cache: false,
+                success: function (response) {
+                    var status = JSON.parse(response);
+                    $("#authBtnRegister_submit").prop("disabled", true);
+                    if (status.status == 200) {
+                        sweetAlertSuccess(status.message);
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+                        $("#authBtnRegister_submit").prop("disabled", false);
+                    } else {
+                        sweetAlertSuccess("Please check email for account activation!");
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
+                        $("#authBtnRegister_submit").prop("disabled", false);
+                    }
+                    if (status.status == 401) {
+                        sweetAlertError(status.message);
+                    }
+                    if (status.status == 404) {
+                        sweetAlertError(status.message);
+                    }
+                },
+                error: function (response) {
+                    sweetAlertError("Server Error, Please contact administrator!");
+                }
+            })
+    
+        sweetAlertSuccess("Please check email for account activation!");
+        setTimeout(() => {
+            location.href = "/";
+        }, 2000);
+        $("#authBtnRegister_submit").prop("disabled", false);
+    
+    });
 
-    sweetAlertSuccess("Please check email for account activation!");
-    setTimeout(() => {
-        location.href = "/";
-    }, 2000);
-    $("#authBtnRegister_submit").prop( "disabled", false );
-
-});
+}

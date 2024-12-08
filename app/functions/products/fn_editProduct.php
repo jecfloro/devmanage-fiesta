@@ -13,8 +13,6 @@ $todaysDate = date("Y-m-d H:i:s");
 
 $chkbxReturnable = $_POST['chkbxReturnable'];
 $ii_productidedit = $_POST['ii_productidedit'];
-$ii_productnameedit = $_POST['ii_productnameedit'];
-$ii_productunitedit = $_POST['ii_productunitedit'];
 $ii_productcategoryedit = $_POST['ii_productcategoryedit'];
 $ii_productbrandedit = $_POST['ii_productbrandedit'];
 $ii_productmodeledit = $_POST['ii_productmodeledit'];
@@ -68,7 +66,7 @@ try {
             $isSetting = "isRepo";
         }
 
-        $update = $conn->prepare("UPDATE msc_products SET productName = '$ii_productnameedit', productUnit = '$ii_productunitedit', productBrandID = '$ii_productbrandedit', productBrand = '$ii_brandsdescription', productModelID = '$ii_productmodeledit', productModel = '$ii_modelssdescription', productSKU = '$ii_productskuedit', FK_mscCategories = '$ii_productcategoryedit', productDescription = '$ii_productdescriptionedit', quantity = '$ii_totalquantityedit', regularPrice = '$ii_regularpriceedit', salePrice = '$ii_salepriceedit', repoPrice = '$ii_repopriceedit', stockMinimum = '$ii_minstockedit', stockMaximum = '$ii_maxstockedit', $isSetting = 1, productStatus = '$ii_productstatusedit' WHERE PK_mscProducts = '$ii_productidedit'");
+        $update = $conn->prepare("UPDATE msc_products SET productName = '$ii_modelssdescription', productBrandID = '$ii_productbrandedit', productBrand = '$ii_brandsdescription', productModelID = '$ii_productmodeledit', productModel = '$ii_modelssdescription', productSKU = '$ii_productskuedit', FK_mscCategories = '$ii_productcategoryedit', productDescription = '$ii_productdescriptionedit', quantity = '$ii_totalquantityedit', regularPrice = '$ii_regularpriceedit', salePrice = '$ii_salepriceedit', repoPrice = '$ii_repopriceedit', stockMinimum = '$ii_minstockedit', stockMaximum = '$ii_maxstockedit', $isSetting = 1, productStatus = '$ii_productstatusedit' WHERE PK_mscProducts = '$ii_productidedit'");
         $update->execute();
         $cupdate = $update->rowCount();
 

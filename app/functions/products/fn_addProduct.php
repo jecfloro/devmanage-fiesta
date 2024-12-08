@@ -11,8 +11,6 @@ $year_end = date("Y") + 1;
 $date = date("Y-m-d");
 $todaysDate = date("Y-m-d H:i:s");
 
-$ii_productname = $_POST['ii_productname'];
-$ii_productunit = $_POST['ii_productunit'];
 $ii_productbrand = $_POST['ii_productbrand'];
 $ii_productmodel = $_POST['ii_productmodel'];
 $ii_productsku = $_POST['ii_productsku'];
@@ -44,7 +42,7 @@ try {
     $rmodels = $models->fetch(PDO::FETCH_ASSOC);
     $ii_modelssdescription = $rmodels['description'];
     
-    $ii_productnameencrypt = $ii_productname;
+    $ii_productnameencrypt = $ii_modelssdescription;
     $ii_productskuencrypt = $ii_productsku;
     $ii_productdescriptionencrypt = $ii_productdescription;
 
@@ -68,9 +66,8 @@ try {
             $isSetting = "isRepo";
         }
 
-        $insert = $conn->prepare("INSERT INTO `msc_products` (productName, productUnit, productBrandID, productBrand, productModelID, productModel, productSKU, FK_mscCategories, productDescription, FK_detailsId, quantity, regularPrice, salePrice, repoPrice, stockMinimum, stockMaximum, $isSetting, productStatus) VALUES (
+        $insert = $conn->prepare("INSERT INTO `msc_products` (productName, productBrandID, productBrand, productModelID, productModel, productSKU, FK_mscCategories, productDescription, FK_detailsId, quantity, regularPrice, salePrice, repoPrice, stockMinimum, stockMaximum, $isSetting, productStatus) VALUES (
         '$ii_productnameencrypt',
-        '$ii_productunit',
         '$ii_productbrand',
         '$ii_brandsdescription',
         '$ii_productmodel',

@@ -5,6 +5,19 @@ import { sweetAlertSuccess, sweetAlertError } from "./main.SweetAlert.js";
 
 localStorage.removeItem("redirect");
 
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+} else {
+    alert("Geolocation is not supported by this browser");
+}
+
+function showPosition(position) {
+
+    var lat = position.coords.latitude;
+    var long = position.coords.longitude;
+
+}
+
 $("[data-ii-productapply-action='submit']").click(function (e) {
 
     e.preventDefault();

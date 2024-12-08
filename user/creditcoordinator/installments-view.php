@@ -96,7 +96,11 @@ try {
     $paymentslist->execute();
     $cpaymentslist = $paymentslist->rowCount();
     $rpaymentslist = $paymentslist->fetch(PDO::FETCH_ASSOC);
-    
+
+    $user = $conn->prepare("SELECT * FROM appsysusers WHERE isCustomer = 1 AND PK_appsysUsers = '$uid'");
+    $user->execute();
+    $cuser = $user->rowCount();
+    $ruser = $user->fetch(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -324,34 +328,57 @@ try {
                                         <div class="card-body d-flex justify-content-between flex-wrap gap-3">
                                             <div class="d-flex flex-column">
                                                 <h3 class="fw-bolder"><?php echo $rinstallments["productName"] ?></h3>
-                                                <span>#<?php echo $rinstallments["installmentCode"] ?></span>
+                                                <span>#<?php echo $rinstallments["installmentCode"]; ?></span>
                                             </div>
                                             <div class="">
                                                 <?php if ($rinstallments["installmentStatus"] != "APPROVED" && $rinstallments["installmentStatus"] != "COMPLETED") { ?>
-                                                    <?php if ($rinstallments["installmentStatus"] != "REJECTED" && $rinstallments["installmentStatus"] != "CANCELLED") { ?>
-                                                        <div class="card-toolbar">
-                                                            <button type="button" class="btn btn-clean btn-sm btn-icon btn-icon-primary btn-active-light-primary me-n3 menu-dropdown" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                                                <i class="ki-duotone ki-dots-square-vertical fs-2 text-primary"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i> </button>
-                                                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
-                                                                <div class="menu-item px-3">
-                                                                    <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions</div>
+                                                    <?php if ($ruser["isCiApproved"] == 1 && $rinstallments["isUpdated"] == 0) { ?>
+                                                        <?php if ($rinstallments["installmentStatus"] != "REJECTED" && $rinstallments["installmentStatus"] != "CANCELLED") { ?>
+                                                            <div class="card-toolbar">
+                                                                <button type="button" class="btn btn-clean btn-sm btn-icon btn-icon-primary btn-active-light-primary me-n3 menu-dropdown" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                                    <i class="ki-duotone ki-dots-square-vertical fs-2 text-primary"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i> </button>
+                                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
+                                                                    <div class="menu-item px-3">
+                                                                        <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions</div>
+                                                                    </div>
+                                                                    <div class="separator mb-3 opacity-75"></div>
+                                                                    <div class="menu-item px-3" data-modal-select="Notify">
+                                                                        <span class="menu-link px-3">
+                                                                            Approve Installment
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="separator mt-3 opacity-75"></div>
                                                                 </div>
-                                                                <div class="separator mb-3 opacity-75"></div>
-                                                                <?php if ($rinstallments["installmentStatus"] == "PENDING") { ?>
-                                                                    <div class="menu-item px-3" data-modal-select="Approve">
-                                                                        <span class="menu-link px-3">
-                                                                            Approve
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="menu-item px-3" data-modal-select="Reject">
-                                                                        <span class="menu-link px-3">
-                                                                            Reject
-                                                                        </span>
-                                                                    </div>
-                                                                <?php } ?>
-                                                                <div class="separator mt-3 opacity-75"></div>
                                                             </div>
-                                                        </div>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                    <?php if ($ruser["isCiApproved"] == 1 && $rinstallments["isUpdated"] == 1) { ?>
+                                                        <?php if ($rinstallments["installmentStatus"] != "REJECTED" && $rinstallments["installmentStatus"] != "CANCELLED") { ?>
+                                                            <div class="card-toolbar">
+                                                                <button type="button" class="btn btn-clean btn-sm btn-icon btn-icon-primary btn-active-light-primary me-n3 menu-dropdown" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                                    <i class="ki-duotone ki-dots-square-vertical fs-2 text-primary"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i> </button>
+                                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
+                                                                    <div class="menu-item px-3">
+                                                                        <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions</div>
+                                                                    </div>
+                                                                    <div class="separator mb-3 opacity-75"></div>
+                                                                    <?php if ($rinstallments["installmentStatus"] == "PENDING") { ?>
+                                                                        <div class="menu-item px-3" data-modal-select="Approve">
+                                                                            <span class="menu-link px-3">
+                                                                                Downpayment
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="menu-item px-3" data-modal-select="Reject">
+                                                                            <span class="menu-link px-3">
+                                                                                Reject
+                                                                            </span>
+                                                                        </div>
+                                                                    <?php } ?>
+
+                                                                    <div class="separator mt-3 opacity-75"></div>
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
                                                     <?php } ?>
                                                 <?php } ?>
                                             </div>

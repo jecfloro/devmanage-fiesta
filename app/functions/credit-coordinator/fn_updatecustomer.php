@@ -25,69 +25,56 @@ $year_end = date("Y") + 1;
 $date = date("Y-m-d");
 $todaysDate = date("Y-m-d H:i:s");
 
-$ii_emailaddress = $_POST['ii_emailaddress'];
-$select_usertype = $_POST['select_usertype'];
+$session_iid = $_POST['session_iid'];
+$session_uid = $_POST['session_uid'];
+$user_email = $_POST['user_email'];
 
 try {
     $conn = new PDO("mysql:host=$fa_dbserver;dbname=$fa_dbname", $fa_dbuser, $fa_dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $select_email = $conn->query("SELECT * FROM appsysusers WHERE user_email = '$ii_emailaddress'");
-    $rselect_email = $select_email->fetchall(PDO::FETCH_ASSOC);
+    $userprofile = $conn->prepare("SELECT * FROM appsysusers WHERE PK_appsysUsers = '$session_uid'");
+    $userprofile->execute();
+    $cuserprofile = $userprofile->rowCount();
+    $ruserprofile = $userprofile->fetch(PDO::FETCH_ASSOC);
 
-    if (count($rselect_email) > 0) {
-        $response = array('status' => 404, 'message' => "Email already exists!");
-        echo json_encode($response);
-    } else {
+    if ($cuserprofile > 0) {
+        $email = $ruserprofile["user_email"];
+    }
 
-        $randomPassword = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 1, 6);
-        $ii_password = secureToken::tokenencrypt($randomPassword);
-        $recoveryCode = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 1, 10);
-        $activationCode = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 1, 30);
+    $installments = $conn->prepare("SELECT * FROM mn_installments JOIN msc_products ON mn_installments.FK_mscProducts = msc_products.PK_mscProducts JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories WHERE FK_appsysUsers = '$session_uid' AND PK_mn_installments = '$session_iid'");
+    $installments->execute();
+    $cinstallments = $installments->rowCount();
+    $rinstallments = $installments->fetch(PDO::FETCH_ASSOC);
 
-        $generateSecret = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
-        $secret = $generateSecret->generateSecret();
+    $productName = $rinstallments["productName"];
 
-        if ($select_usertype == "Administrator") {
-            $isUserType = "isAdmin";
-        }
-        if ($select_usertype == "Cashier") {
-            $isUserType = "isCashier";
-        }
-        if ($select_usertype == "Credit Coordinator") {
-            $isUserType = "isCreditCoordinator";
-        }
-        if ($select_usertype == "Credit Investigator") {
-            $isUserType = "isCreditInvestigator";
-        }
-        if ($select_usertype == "Branch Manager") {
-            $isUserType = "isBranchManager";
-        }
+    $generateSecret = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
+    $secret = $generateSecret->generateSecret();
 
-        $mail = new PHPMailer(true);
+    $mail = new PHPMailer(true);
 
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-        $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
-        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = 'supp.eservices@gmail.com';            //SMTP username
-        $mail->Password   = 'bgoakrtuecrwtufz';                     //SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-        $mail->Port       = 465;
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+    $mail->isSMTP();                                            //Send using SMTP
+    $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+    $mail->Username   = 'supp.eservices@gmail.com';            //SMTP username
+    $mail->Password   = 'bgoakrtuecrwtufz';                     //SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+    $mail->Port       = 465;
 
-        //Recipients
-        $mail->setFrom('supp.eservices@gmail.com', 'Fiest Appliances Support: Administrator');
-        $mail->addAddress($ii_emailaddress);     //Add a recipient
-        $mail->addReplyTo('noreply@gmail.com', 'Do Not Reply To This Email');
+    //Recipients
+    $mail->setFrom('supp.eservices@gmail.com', 'Fiest Appliances Support: Administrator');
+    $mail->addAddress('jec.floro@gmail.com');     //Add a recipient
+    $mail->addReplyTo('noreply@gmail.com', 'Do Not Reply To This Email');
 
-        //Content
-        $mail->isHTML(true);                                        //Set email format to HTML
-        $mail->Subject = 'Fiest Appliances Center, Inc.';
-        //Content
-        $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = 'Fiest Appliances Center, Inc. - Account Activation';
-        $mail->Body    = '<!DOCTYPE html>
-<html lang="en">
+    //Content
+    $mail->isHTML(true);                                        //Set email format to HTML
+    $mail->Subject = 'Fiest Appliances Center, Inc.';
+    //Content
+    $mail->isHTML(true);                                  //Set email format to HTML
+    $mail->Subject = 'Fiest Appliances Center, Inc. - Installment Approval';
+    $mail->Body    = '<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -98,8 +85,8 @@ try {
         @media only screen and (max-width: 550px) {
         .responsive_at_550 {
         width: 90% !important;
-        max-width: 90% !important;
-        }
+            max-width: 910% !important;
+            }
         }
     </style>
 </head>
@@ -126,7 +113,7 @@ try {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <table width="500" border="0" cellpadding="0" cellspacing="0" align="center" style="padding-left:20px; padding-right:20px;" class="responsive_at_550">
+                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="padding-left:20px; padding-right:20px;" class="responsive_at_550">
                                         <tbody>
                                             <tr>
                                                 <td align="center" bgcolor="#f0f7f0">
@@ -144,21 +131,18 @@ try {
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                    Fiesta Appliances 
-                                                    <table width="90%" border="0" cellpadding="0" cellspacing="0" align="center">
+                                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="padding-left:20px; padding-right:20px;">
                                                         <tbody>
                                                             <tr>
-                                                                <td width="100%" align="center">
-                                                                    <h1 style="padding-top: 20px;">Thank you for Registration!</h1>
-                                                                </td>
+                                                                <td height="30" align="center">Fiesta Appliances </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                    <table width="90%" border="0" cellpadding="0" cellspacing="0" align="center">
+                                                    <table width="90%" border="0" cellpadding="0" cellspacing="0" align="center" style="padding-left:20px; padding-right:20px;">
                                                         <tbody>
                                                             <tr>
                                                                 <td width="100%" align="center">
-                                                                    <p style="font-size:14px; color:#202020; padding-left:20px; padding-right:20px; text-align: center;">Your password is: '.$randomPassword.'</p>
+                                                                    <h1 style="padding-top: 20px;">Your Installment on "'.$productName.'" has been approved!</h1>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -174,7 +158,7 @@ try {
                                                         <tbody>
                                                             <tr>
                                                                 <td align="center" bgcolor="#458C41">
-                                                                    <a style="display:block; color:#ffffff; font-size:14px; font-weight:bold; text-decoration:none; padding-left:20px; padding-right:20px; padding-top:20px; padding-bottom:20px;" href="https://fiesta-appliances.online/account-activation.php?activation_code='.$activationCode.'">Verify E-mail Address</a>
+                                                                    <a style="display:block; color:#ffffff; font-size:14px; font-weight:bold; text-decoration:none; padding-left:20px; padding-right:20px; padding-top:20px; padding-bottom:20px;" href="https://fiesta-appliances.online/">View Installment</a>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -215,17 +199,17 @@ try {
 </body>
 </html>';
 
-        $mail->send();
+    $mail->send();
 
-        $insert = $conn->prepare("INSERT INTO `appsysusers` (user_email, user_password, $isUserType, user_recoveryCode, user_activationCode, user_secret) VALUES ('$ii_emailaddress', '$ii_password', 1, '$recoveryCode', '$activationCode', '$secret')");
-        $insert->execute();
-        $cinsert = $insert->rowCount();
+    $update = $conn->prepare("UPDATE mn_installments SET isUpdated = 1 WHERE FK_appsysUsers = '$session_uid' AND PK_mn_installments = '$session_iid'");
+    $update->execute();
+    $cupdate = $update->rowCount();
 
-        if ($cinsert > 0) {
-        } else {
-            $response = array('status' => 500, 'message' => "Server Error, Please contact administrator!");
-            echo json_encode($response);
-        }
+    if ($cupdate > 0) {
+        
+    } else {
+        $response = array('status' => 500, 'message' => "Server Error, Please contact administrator!");
+        echo json_encode($response);
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();

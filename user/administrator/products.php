@@ -554,18 +554,6 @@ try {
                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                         <p class="fw-bolder text-muted">General Information</p>
                                         <div class="mt-5">
-                                            <label for="ii_productname" class="fw-bolder required">Product Name</label>
-                                            <input type="text" id="ii_productname"
-                                                class="form-control form-control-lg form-control-solid fw-bolder"
-                                                placeholder="Product Name">
-                                        </div>
-                                        <div class="mt-5">
-                                            <label for="ii_productunit" class="fw-bolder required">Product Unit</label>
-                                            <input type="text" id="ii_productunit"
-                                                class="form-control form-control-lg form-control-solid fw-bolder"
-                                                placeholder="Product Unit">
-                                        </div>
-                                        <div class="mt-5">
                                             <label for="ii_productcategory" class="fw-bolder required">Product
                                                 Category</label>
                                             <select class="form-select form-select-solid fw-bolder"
@@ -741,33 +729,11 @@ try {
                                 <div class="row g-5">
                                     <div class="col-xl-12 fv-row fv-plugins-icon-container">
                                         <p class="fw-bolder text-muted">General Information</p>
-                                        <div class="">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="chkbxReturnableedit">
-                                                <label class="form-check-label fw-bolder text-dark"
-                                                    for="chkbxReturnableedit">
-                                                    Returnable Product
-                                                </label>
-                                            </div>
-                                        </div>
                                         <div class="mt-5" hidden>
                                             <label for="ii_productidedit" class="fw-bolder required">Product ID</label>
                                             <input type="text" id="ii_productidedit"
                                                 class="form-control form-control-lg form-control-solid fw-bolder"
                                                 placeholder="Product ID">
-                                        </div>
-                                        <div class="mt-5">
-                                            <label for="ii_productnameedit" class="fw-bolder required">Product Name</label>
-                                            <input type="text" id="ii_productnameedit"
-                                                class="form-control form-control-lg form-control-solid fw-bolder"
-                                                placeholder="Product Name">
-                                        </div>
-                                        <div class="mt-5">
-                                            <label for="ii_productunitedit" class="fw-bolder required">Product Unit</label>
-                                            <input type="text" id="ii_productunitedit"
-                                                class="form-control form-control-lg form-control-solid fw-bolder"
-                                                placeholder="Product Unit">
                                         </div>
                                         <div class="mt-5">
                                             <label for="ii_productcategoryedit" class="fw-bolder required">Product

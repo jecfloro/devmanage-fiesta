@@ -787,8 +787,6 @@ $("[data-ii-productadd-modal-action='submit']").click(function (e) {
 
     var setting = this.getAttribute("data-passaccess");
 
-    var ii_productname = $("#ii_productname").val().trim();
-    var ii_productunit = $("#ii_productunit").val().trim();
     var ii_productbrand = $("#ii_productbrand").val().trim();
     var ii_productmodel = $("#ii_productmodel").val().trim();
     var ii_productsku = $("#ii_productsku").val().trim();
@@ -833,16 +831,6 @@ $("[data-ii-productadd-modal-action='submit']").click(function (e) {
         return;
     }
 
-    if (ii_productname == "") {
-        sweetAlertError("Product Name is required!");
-        return;
-    }
-
-    if (ii_productunit == "") {
-        sweetAlertError("Product Unit is required!");
-        return;
-    }
-
     if (ii_productbrand == "") {
         sweetAlertError("Product Brand is required!");
         return;
@@ -883,15 +871,6 @@ $("[data-ii-productadd-modal-action='submit']").click(function (e) {
         return;
     }
 
-    if (!ii_productname.match(defaultFormat)) {
-        sweetAlertError("Invalid Characters on Product Name!");
-        return;
-    }
-
-    if (!ii_productunit.match(defaultFormat)) {
-        sweetAlertError("Invalid Characters on Product Unit!");
-        return;
-    }
 
     if (!ii_productbrand.match(defaultFormat)) {
         sweetAlertError("Invalid Characters on Product Brand!");
@@ -928,8 +907,6 @@ $("[data-ii-productadd-modal-action='submit']").click(function (e) {
             url: '../../app/functions/products/fn_addProduct.php',
             type: 'POST',
             data: {
-                ii_productname: ii_productname,
-                ii_productunit: ii_productunit,
                 ii_productbrand: ii_productbrand,
                 ii_productmodel: ii_productmodel,
                 ii_productsku: ii_productsku,
@@ -1265,8 +1242,6 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
 
     var chkbxReturnable;
     var ii_productidedit = $("#ii_productidedit").val().trim();
-    var ii_productnameedit = $("#ii_productnameedit").val().trim();
-    var ii_productunitedit = $("#ii_productunitedit").val().trim();
     var ii_productcategoryedit = $("#ii_productcategoryedit").val().trim();
     var ii_productbrandedit = $("#ii_productbrandedit").val().trim();
     var ii_productmodeledit = $("#ii_productmodeledit").val().trim();
@@ -1331,16 +1306,6 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
         return;
     }
 
-    if (ii_productnameedit == "") {
-        sweetAlertError("Product Name is required!");
-        return;
-    }
-
-    if (ii_productunitedit == "") {
-        sweetAlertError("Product Unit is required!");
-        return;
-    }
-
     if (ii_productbrandedit == "") {
         sweetAlertError("Product Brand is required!");
         return;
@@ -1381,16 +1346,6 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
         return;
     }
 
-    if (!ii_productnameedit.match(defaultFormat)) {
-        sweetAlertError("Invalid Characters on Product Name!");
-        return;
-    }
-
-    if (!ii_productunitedit.match(defaultFormat)) {
-        sweetAlertError("Invalid Characters on Product Unit!");
-        return;
-    }
-
     if (!ii_productbrandedit.match(defaultFormat)) {
         sweetAlertError("Invalid Characters on Product Brand!");
         return;
@@ -1428,8 +1383,6 @@ $("[data-ii-productedit-modal-action='submit']").click(function (e) {
             data: {
                 chkbxReturnable: chkbxReturnable,
                 ii_productidedit: ii_productidedit,
-                ii_productnameedit: ii_productnameedit,
-                ii_productunitedit: ii_productunitedit,
                 ii_productcategoryedit: ii_productcategoryedit,
                 ii_productbrandedit: ii_productbrandedit,
                 ii_productmodeledit: ii_productmodeledit,

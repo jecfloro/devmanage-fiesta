@@ -218,7 +218,7 @@ try {
                                                 </a>
                                             <?php } ?>
                                         </div>
-                                        <div class="d-flex flex-column align-items-xl-start align-items-custom">
+                                        <div class="d-flex flex-column align-items-xl-start align-items-custom w-lg-500px">
                                             <h1 class="fw-bolder fs-2x"><?php echo $rproduct["productName"]; ?></h1>
                                             <span>Availability: <?php echo $rproduct["quantity"]; ?> in stock</span>
                                             <div class="mt-5">

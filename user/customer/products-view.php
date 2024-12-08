@@ -33,10 +33,18 @@ try {
 
     $prodid = $_GET["p"];
 
+    if ($prodid == "") {
+        header("Location: /");
+    }
+
     $product = $conn->prepare("SELECT * FROM msc_products JOIN msc_categories ON msc_products.FK_mscCategories = msc_categories.PK_mscCategories WHERE PK_mscProducts = '$prodid'");
     $product->execute();
     $cproduct = $product->rowCount();
     $rproduct = $product->fetch(PDO::FETCH_ASSOC);
+
+    if ($prodid == "" || $cproduct <= 0) {
+        header("Location: /");
+    }
 
     if ($ruserprofile["isProfileFilled"] != 1 && $ruserprofile["isHomeOwnershipFilled"] != 1 && $ruserprofile["isEmploymentFilled"] != 1 && $ruserprofile["isPersonalPrefFilled"] != 1 && $ruserprofile["isRelativesFilled"] != 1 && $ruserprofile["isNeighborFilled"] != 1) {
         header("Location: /");
@@ -329,7 +337,7 @@ try {
                                                 </a>
                                             <?php } ?>
                                         </div>
-                                        <div class="d-flex flex-column align-items-xl-start align-items-custom">
+                                        <div class="d-flex flex-column align-items-xl-start align-items-custom w-lg-500px">
                                             <h1 class="fw-bolder fs-2x"><?php echo $rproduct["productName"]; ?></h1>
                                             <span>Availability: <?php echo $rproduct["quantity"]; ?> in stock</span>
                                             <div class="mt-5">

@@ -102,55 +102,42 @@ $("[data-location='addLocation']").click(function (e) {
         return;
     }
 
-    var setting = this.getAttribute("data-passaccess");
-    var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
-
-    if (ii_accessconfirmation == "") {
-        $("#ii_accesspassword").val(setting);
-        $("#modal_access").modal("show");
-        setTimeout(() => {
-            $("#ii_password").focus();
-        }, 500);
-    } else {
-
-        $.ajax({
-            url: '../../app/functions/credit-investigator/fn_addLocation.php',
-            type: 'POST',
-            data: {
-                ii_lat: ii_lat,
-                ii_long: ii_long,
-                ii_address: ii_address,
-                ii_isDefault: ii_isDefault
-            },
-            cache: false,
-            success: function (response) {
-                var status = JSON.parse(response);
-                if (status.status == 200) {
-                    $("#modal_access").modal("hide");
-                    sweetAlertSuccess(status.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                }
-                if (status.status == 401) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 403) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 409) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 500) {
-                    sweetAlertError(status.message);
-                }
-            },
-            error: function (response) {
-                sweetAlertError("Server Error, Please contact administrator!");
+    $.ajax({
+        url: '../../app/functions/credit-investigator/fn_addLocation.php',
+        type: 'POST',
+        data: {
+            ii_lat: ii_lat,
+            ii_long: ii_long,
+            ii_address: ii_address,
+            ii_isDefault: ii_isDefault
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                $("#modal_access").modal("hide");
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }
-        })
-
-    }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 403) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 409) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
 
 });
 
@@ -178,51 +165,40 @@ $("[data-location='deleteLocation']").click(function (e) {
     var setting = this.getAttribute("data-passaccess");
     var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
 
-    if (ii_accessconfirmation == "") {
-        $("#ii_accesspassword").val(setting);
-        $("#modalDelete").modal("hide");
-        $("#modal_access").modal("show");
-        setTimeout(() => {
-            $("#ii_password").focus();
-        }, 500);
-    } else {
-
-        $.ajax({
-            url: '../../app/functions/credit-investigator/fn_deleteLocation.php',
-            type: 'POST',
-            data: {
-                ii_datauser: ii_datauser,
-                ii_datalocation: ii_datalocation
-            },
-            cache: false,
-            success: function (response) {
-                var status = JSON.parse(response);
-                if (status.status == 200) {
-                    $("#modal_access").modal("hide");
-                    sweetAlertSuccess(status.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                }
-                if (status.status == 401) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 403) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 409) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 500) {
-                    sweetAlertError(status.message);
-                }
-            },
-            error: function (response) {
-                sweetAlertError("Server Error, Please contact administrator!");
+    $.ajax({
+        url: '../../app/functions/credit-investigator/fn_deleteLocation.php',
+        type: 'POST',
+        data: {
+            ii_datauser: ii_datauser,
+            ii_datalocation: ii_datalocation
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                $("#modal_access").modal("hide");
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }
-        })
-
-    }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 403) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 409) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
 
 });   
 
@@ -250,51 +226,40 @@ $("[data-location='defaultLocation']").click(function (e) {
     var setting = this.getAttribute("data-passaccess");
     var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
 
-    if (ii_accessconfirmation == "") {
-        $("#ii_accesspassword").val(setting);
-        $("#modalDefault").modal("hide");
-        $("#modal_access").modal("show");
-        setTimeout(() => {
-            $("#ii_password").focus();
-        }, 500);
-    } else {
-
-        $.ajax({
-            url: '../../app/functions/credit-investigator/fn_defaultLocation.php',
-            type: 'POST',
-            data: {
-                ii_datauser: ii_datauser,
-                ii_datalocation: ii_datalocation
-            },
-            cache: false,
-            success: function (response) {
-                var status = JSON.parse(response);
-                if (status.status == 200) {
-                    $("#modal_access").modal("hide");
-                    sweetAlertSuccess(status.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                }
-                if (status.status == 401) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 403) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 409) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 500) {
-                    sweetAlertError(status.message);
-                }
-            },
-            error: function (response) {
-                sweetAlertError("Server Error, Please contact administrator!");
+    $.ajax({
+        url: '../../app/functions/credit-investigator/fn_defaultLocation.php',
+        type: 'POST',
+        data: {
+            ii_datauser: ii_datauser,
+            ii_datalocation: ii_datalocation
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                $("#modal_access").modal("hide");
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }
-        })
-
-    }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 403) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 409) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
 
 }); 
 
@@ -305,49 +270,39 @@ $("[data-ii-approve-customer='acceptApproval']").click(function (e) {
     var setting = this.getAttribute("data-passaccess");
     var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
 
-    if (ii_accessconfirmation == "") {
-        $("#ii_accesspassword").val(setting);
-        $("#modal_access").modal("show");
-        setTimeout(() => {
-            $("#ii_password").focus();
-        }, 500);
-    } else {
-
-        $.ajax({
-            url: '../../app/functions/credit-investigator/fn_acceptApproval.php',
-            type: 'POST',
-            data: {
-                dataid: dataid
-            },
-            cache: false,
-            success: function (response) {
-                var status = JSON.parse(response);
-                if (status.status == 200) {
-                    $("#modal_access").modal("hide");
-                    sweetAlertSuccess(status.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                }
-                if (status.status == 401) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 403) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 409) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 500) {
-                    sweetAlertError(status.message);
-                }
-            },
-            error: function (response) {
-                sweetAlertError("Server Error, Please contact administrator!");
+    $.ajax({
+        url: '../../app/functions/credit-investigator/fn_acceptApproval.php',
+        type: 'POST',
+        data: {
+            dataid: dataid
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                $("#modal_access").modal("hide");
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }
-        })
-
-    }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 403) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 409) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
 
 });
 
@@ -357,49 +312,39 @@ $("[data-ii-approve-customer='rejectApproval']").click(function (e) {
     var setting = this.getAttribute("data-passaccess");
     var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
 
-    if (ii_accessconfirmation == "") {
-        $("#ii_accesspassword").val(setting);
-        $("#modal_access").modal("show");
-        setTimeout(() => {
-            $("#ii_password").focus();
-        }, 500);
-    } else {
-
-        $.ajax({
-            url: '../../app/functions/credit-investigator/fn_rejectApproval.php',
-            type: 'POST',
-            data: {
-                dataid: dataid
-            },
-            cache: false,
-            success: function (response) {
-                var status = JSON.parse(response);
-                if (status.status == 200) {
-                    $("#modal_access").modal("hide");
-                    sweetAlertSuccess(status.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                }
-                if (status.status == 401) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 403) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 409) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 500) {
-                    sweetAlertError(status.message);
-                }
-            },
-            error: function (response) {
-                sweetAlertError("Server Error, Please contact administrator!");
+    $.ajax({
+        url: '../../app/functions/credit-investigator/fn_rejectApproval.php',
+        type: 'POST',
+        data: {
+            dataid: dataid
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                $("#modal_access").modal("hide");
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }
-        })
-
-    }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 403) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 409) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
 
 });
 
@@ -409,48 +354,38 @@ $("[data-ii-approve-customer='undoApproval']").click(function (e) {
     var setting = this.getAttribute("data-passaccess");
     var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
 
-    if (ii_accessconfirmation == "") {
-        $("#ii_accesspassword").val(setting);
-        $("#modal_access").modal("show");
-        setTimeout(() => {
-            $("#ii_password").focus();
-        }, 500);
-    } else {
-
-        $.ajax({
-            url: '../../app/functions/credit-investigator/fn_undoApproval.php',
-            type: 'POST',
-            data: {
-                dataid: dataid
-            },
-            cache: false,
-            success: function (response) {
-                var status = JSON.parse(response);
-                if (status.status == 200) {
-                    $("#modal_access").modal("hide");
-                    sweetAlertSuccess(status.message);
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                }
-                if (status.status == 401) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 403) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 409) {
-                    sweetAlertError(status.message);
-                }
-                if (status.status == 500) {
-                    sweetAlertError(status.message);
-                }
-            },
-            error: function (response) {
-                sweetAlertError("Server Error, Please contact administrator!");
+    $.ajax({
+        url: '../../app/functions/credit-investigator/fn_undoApproval.php',
+        type: 'POST',
+        data: {
+            dataid: dataid
+        },
+        cache: false,
+        success: function (response) {
+            var status = JSON.parse(response);
+            if (status.status == 200) {
+                $("#modal_access").modal("hide");
+                sweetAlertSuccess(status.message);
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
             }
-        })
-
-    }
+            if (status.status == 401) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 403) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 409) {
+                sweetAlertError(status.message);
+            }
+            if (status.status == 500) {
+                sweetAlertError(status.message);
+            }
+        },
+        error: function (response) {
+            sweetAlertError("Server Error, Please contact administrator!");
+        }
+    })
 
 });

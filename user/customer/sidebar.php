@@ -4,7 +4,6 @@
         <div class="menu-item pt-5">
             <div class="menu-content"><span class="fw-bold text-muted text-uppercase fs-7">Apps</span></div>
         </div>
-        <div class="menu-item"><a class="menu-link" href="products.php"><span class="menu-icon"><i class="ki-duotone ki-lots-shopping fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span></i></span><span class="menu-title">Products</span></a></div>
         <div class="menu-item"><a class="menu-link" href="installments.php"><span class="menu-icon"><i class="ki-duotone ki-calendar-tick fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span></i></span><span class="menu-title">Installments</span></a></div>
         <div class="menu-item"><a class="menu-link" href="location.php"><span class="menu-icon"><i class="ki-duotone ki-geolocation fs-2"><span class="path1"></span><span class="path2"></span></i></span><span class="menu-title">Location</span></a></div>
         <div class="menu-item"><a class="menu-link" href="payments.php"><span class="menu-icon"><i class="ki-duotone ki-wallet fs-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i></span><span class="menu-title">Payments</span></a></div>

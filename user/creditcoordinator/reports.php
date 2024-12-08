@@ -510,6 +510,14 @@ try {
                                         </span>
                                         <input type="date" class="form-control" id="qq_dateto" />
                                     </div>
+                                    <select name="" id="qq_installmentselection" class="form-control form-control-solid mb-5">
+                                        <option value="">Select Installment Status</option>
+                                        <option value="ALL">All</option>
+                                        <option value="PENDING">Pending</option>
+                                        <option value="APPROVED">Approved</option>
+                                        <option value="REJECTED">Rejected</option>
+                                        <option value="COMPLETED">Completed</option>
+                                    </select>
                                 </div>
                             </div>
 

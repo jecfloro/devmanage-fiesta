@@ -28,8 +28,15 @@ try {
 
     $idate = $_GET["idate"];
     $edate = $_GET["edate"];
+    $status = $_GET["status"];
 
-    $userInstallments = $conn->prepare("SELECT * FROM appsysusers AS a JOIN mn_installments AS b ON a.PK_appsysUsers = b.FK_appsysUsers JOIN msc_products AS c ON b.FK_mscProducts = c.PK_mscProducts ORDER BY a.PK_appsysUsers DESC");
+    if ($status == "ALL") {
+        $quu = "";
+    } else {
+        $quu = "WHERE installmentStatus = '$status'";
+    }
+
+    $userInstallments = $conn->prepare("SELECT * FROM appsysusers AS a JOIN mn_installments AS b ON a.PK_appsysUsers = b.FK_appsysUsers JOIN msc_products AS c ON b.FK_mscProducts = c.PK_mscProducts $quu ORDER BY a.PK_appsysUsers DESC");
     $userInstallments->execute();
     $cuserInstallments = $userInstallments->rowCount();
 

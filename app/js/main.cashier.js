@@ -120,55 +120,41 @@ $("[data-modal-select='addPayment']").click(function (e) {
             return;
         }
 
-        var setting = this.getAttribute("data-passaccess");
-        var ii_accessconfirmation = $("#ii_accessconfirmation").val().trim();
-
-        if (ii_accessconfirmation == "") {
-            $("#ii_accesspassword").val(setting);
-            $("#modalPayment").modal('hide');
-            $("#modal_access").modal("show");
-            setTimeout(() => {
-                $("#ii_password").focus();
-            }, 500);
-        } else {
-
-            $.ajax({
-                url: '../../app/functions/cashier/fn_addPayment.php',
-                type: 'POST',
-                data: {
-                    ii_receiptno: ii_receiptno,
-                    ii_amount: ii_amount,
-                    ii_chkboxPayment: ii_chkboxPayment
-                },
-                cache: false,
-                success: function (response) {
-                    var status = JSON.parse(response);
-                    if (status.status == 200) {
-                        $("#modal_access").modal("hide");
-                        sweetAlertSuccess(status.message);
-                        setTimeout(() => {
-                            location.reload();
-                        }, 1000);
-                    }
-                    if (status.status == 401) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 403) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 409) {
-                        sweetAlertError(status.message);
-                    }
-                    if (status.status == 500) {
-                        sweetAlertError(status.message);
-                    }
-                },
-                error: function (response) {
-                    sweetAlertError("Server Error, Please contact administrator!");
+        $.ajax({
+            url: '../../app/functions/cashier/fn_addPayment.php',
+            type: 'POST',
+            data: {
+                ii_receiptno: ii_receiptno,
+                ii_amount: ii_amount,
+                ii_chkboxPayment: ii_chkboxPayment
+            },
+            cache: false,
+            success: function (response) {
+                var status = JSON.parse(response);
+                if (status.status == 200) {
+                    $("#modal_access").modal("hide");
+                    sweetAlertSuccess(status.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
                 }
-            })
-
-        }
+                if (status.status == 401) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 403) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 409) {
+                    sweetAlertError(status.message);
+                }
+                if (status.status == 500) {
+                    sweetAlertError(status.message);
+                }
+            },
+            error: function (response) {
+                sweetAlertError("Server Error, Please contact administrator!");
+            }
+        })
 
     }
 

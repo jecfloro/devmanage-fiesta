@@ -64,10 +64,10 @@
             $updateinfo->execute();
 
             if ($cupdate > 0) {
-                $response = array('status' => 200, 'message' => "Spouse Information Updated!");
+                $response = array('status' => 200, 'message' => "Home Ownership Information Updated!");
                 echo json_encode($response);
             } else {
-                $response = array('status' => 200, 'message' => "Spouse Information Updated!");
+                $response = array('status' => 200, 'message' => "Home Ownership Information Updated!");
                 echo json_encode($response);
             }
 

@@ -32,6 +32,7 @@ try {
 
     $deduct = $rinstallments["productPrice"] - $rinstallments["productDownpayment"];
     $installment = round($deduct / $rinstallments["approvedMonths"]);
+    $rebate = round ($installment * 0.03);
     $multiply = $installment * $rinstallments["approvedMonths"];
 
     if ($cupdate > 0) {
@@ -42,13 +43,13 @@ try {
 
             $date30days = date('Y-m-d', strtotime($starting_date . ' + 30 days'));
             
-            $insert = $conn->prepare("INSERT INTO mm_schedule (`order`, `FK_mn_installments`, `FK_appsysUsers`, `dateSchedule`, `amount`) VALUES ('$ii','$tempiid','$tempuid','$date30days','$installment')");
+            $insert = $conn->prepare("INSERT INTO mm_schedule (`order`, `FK_mn_installments`, `FK_appsysUsers`, `dateSchedule`, `amount`, `rebate`) VALUES ('$ii','$tempiid','$tempuid','$date30days','$installment', '$rebate')");
             $insert->execute();
 
             $starting_date = $date30days;
         }
 
-        $response = array('status' => 200, 'message' => "Installment Approved!");
+        $response = array('status' => 200, 'message' => "Downpayment Processed!");
         echo json_encode($response);
     } else {
         $response = array('status' => 500, 'message' => "Server Error, Please contact administrator!");
