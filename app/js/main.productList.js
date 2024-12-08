@@ -63,13 +63,13 @@ var execFilter = () => {
 
                             if ($("#productlist_container").length == 1) {
 
-                                $("#productlist_container").append("<a href='product.php?p=" + status.productarr[i]["productid"] + "' class='border p-5 rounded shadow-sm product-list cursor-pointer card-hover'><div class=''><img alt='Product Image' src='../../assets/media/images/product.png' width='100%' class='mh-auto mw-auto rounded' /></div><div class='mt-3'><h2>" + status.productarr[i]["productname"] + "</h2><span></span><div class=''><span class='badge bg-primary text-white'>" + sett + "</span></div></div><div class='mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3'>" + divv + "</div></a>");
+                                $("#productlist_container").append("<a href='product.php?p=" + status.productarr[i]["productid"] + "' class='border p-5 rounded shadow-sm product-list cursor-pointer card-hover'><div class=''><img alt='Product Image' src='/uploads_images/" + status.productarr[i]["productimage"] + "' width='100%' height='200px' class='mh-auto mw-auto rounded' /></div><div class='mt-3'><h2>" + status.productarr[i]["productname"] + "</h2><span></span><div class=''><span class='badge bg-primary text-white'>" + sett + "</span></div></div><div class='mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3'>" + divv + "</div></a>");
                                 
                             }
 
                             if ($("#product_container").length == 1) {
 
-                                $("#product_container").append("<a href='products-view.php?p=" + status.productarr[i]["productid"] + "' class='border p-5 rounded shadow-sm product-list cursor-pointer card-hover'><div class=''><img alt='Product Image' src='../../assets/media/images/product.png' width='100%' class='mh-auto mw-auto rounded' /></div><div class='mt-3'><h2>" + status.productarr[i]["productname"] + "</h2><span></span><div class=''><span class='badge bg-primary text-white'>" + sett + "</span></div></div><div class='mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3'>" + divv + "</div></a>");
+                                $("#product_container").append("<a href='products-view.php?p=" + status.productarr[i]["productid"] + "' class='border p-5 rounded shadow-sm product-list cursor-pointer card-hover'><div class=''><img alt='Product Image' src='/uploads_images/" + status.productarr[i]["productimage"] + "' width='100%' height='200px' class='mh-auto mw-auto rounded' /></div><div class='mt-3'><h2>" + status.productarr[i]["productname"] + "</h2><span></span><div class=''><span class='badge bg-primary text-white'>" + sett + "</span></div></div><div class='mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3'>" + divv + "</div></a>");
                                 
                             }
     

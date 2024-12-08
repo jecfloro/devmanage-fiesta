@@ -71,7 +71,8 @@ try {
         $productarr = [];
 
         for ($aa = 0; $aa < count($rproduct); $aa++) {
-
+            
+            $productpk = $rproduct[$aa]["PK_mscProducts"];
             $productname = $rproduct[$aa]["productName"];
             $productsku = $rproduct[$aa]["productSKU"];
             $productdescription = $rproduct[$aa]["productDescription"];
@@ -90,6 +91,11 @@ try {
             $productisrepo = $rproduct[$aa]["isRepo"];
             $productstatus = $rproduct[$aa]["productStatus"];
 
+            $image = $conn->prepare("SELECT * FROM msc_images WHERE FK_mscProducts = '$productpk' ORDER BY PK_mscUploads ASC LIMIT 1");
+            $image->execute();
+            $cimage = $image->rowCount();
+            $rimage = $image->fetchAll(PDO::FETCH_ASSOC);
+
             $prodarr = array(
                 'productid' => $productid,
                 'productname' => $productname,
@@ -105,7 +111,9 @@ try {
                 'productisregular' => $productisregular,
                 'productissale' => $productissale,
                 'productisrepo' => $productisrepo,
-                'productstatus' => $productstatus
+                'productstatus' => $productstatus,
+                'productpk' => $productpk,
+                'productimage' => $rimage[0]['fileCode'],
             );
 
             array_push($productarr, $prodarr);
